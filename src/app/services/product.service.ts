@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductDetail } from '../product-list/product-detail';
-import { ProductCreate } from '../product-list/product-create';
-import { ProductView } from '../product-list/product-view';
+import { ProductDetail } from '../models/product/product-detail.interface';
+import { ProductCreate } from '../models/product/product-create.interface';
+import { ProductView } from '../models/product/product-view.interface';
 
 
 @Injectable({
