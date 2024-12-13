@@ -27,3 +27,4 @@ export const productDetailResolver: ResolveFn<undefined | ProductDetail> = (
     })
   );
 };
+

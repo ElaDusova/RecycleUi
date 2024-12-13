@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -22,15 +23,15 @@ protected readonly productService = inject(ProductService);
   protected formular = this.fb.group({
   name: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required],  
+    validators: [Validators.required],
   }),
   ean: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required],  
+    validators: [Validators.required],
   }),
   description: new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required],  
+    validators: [Validators.required],
   }),
   picturePath: new FormControl('', {
     nonNullable: false,

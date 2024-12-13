@@ -17,9 +17,9 @@ export class ProductService {
     const url = this.baseUrl;
     return this.httpClient.get<ProductDetail[]>(url);
   }
-  getProduct(id: string): Observable<ProductView>{
+  getProduct(id: string): Observable<ProductDetail>{
     const url = `${this.baseUrl}`;
-    return this.httpClient.get<ProductView>(url);
+    return this.httpClient.get<ProductDetail>(url);
   }
   createProduct(data: ProductCreate) : Observable<ProductDetail>{
     const url = this.baseUrl;

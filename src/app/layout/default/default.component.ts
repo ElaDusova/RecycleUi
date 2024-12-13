@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, AsyncPipe],
   templateUrl: './default.component.html',
- // styleUrl: './default.component.scss',
+  styleUrl: './default.component.scss',
 })
 export class DefaultComponent {
   protected readonly router = inject(Router);
