@@ -2,7 +2,8 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
-
+import { ProductDetailComponent } from '../product-detail/product-detail/product-detail.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',

@@ -7,6 +7,8 @@ import { productDetailResolver } from './resolvers/product-detail-resolver';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { AuthGuard } from './guards/auth.guard';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 export const routes: Routes = [
   {
