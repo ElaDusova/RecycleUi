@@ -4,6 +4,7 @@ import { ReplaySubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginModel } from '../models/login.interface';
 import { tap } from 'rxjs/operators';
+import { RegisterModel } from '../models/register.interface';
 
 
 @Injectable({
@@ -16,12 +17,17 @@ import { tap } from 'rxjs/operators';
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
+    register(data: RegisterModel): Observable<any> {
+      return this.httpClient
+      .post<any>(`${this.baseUrl}/Register`, data);
+    }
+
     login(data: LoginModel): Observable<any> {
       return this.httpClient
         .post<any>(`${this.baseUrl}/Login`, data)
         .pipe(tap(() => this.isLoggedInSubject.next(true)));
     }
-  
+
     logout(): void {
       this.httpClient
         .post(`${this.baseUrl}/Logout`, {}, { withCredentials: true })
@@ -30,11 +36,11 @@ import { tap } from 'rxjs/operators';
           this.router.navigate(['/login']);
         });
     }
-  
+
     isAuthenticated(): boolean {
       let isAuthenticated = false;
       this.isLoggedInSubject.subscribe(status => isAuthenticated = status).unsubscribe();
       return isAuthenticated;
     }
-  
+
   }

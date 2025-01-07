@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { ProductDetailComponent } from '../product-detail/product-detail/product-detail.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -13,6 +13,8 @@ import { RouterLink } from '@angular/router';
     AsyncPipe,
     FormsModule,
     ReactiveFormsModule,
+    ProductDetailComponent,
+    RouterModule
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'

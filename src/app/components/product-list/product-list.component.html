@@ -1,6 +1,6 @@
 @if (!showForm){
-  <button class="my-3 bg-green-400 text-white py-2 px-4 rounded-lg hover:bg-purple-700" type="button" (click)="showForm = true">
-    Add Product
+  <button class="my-3 bg-purple-400 text-white py-2 px-4 rounded-lg hover:bg-purple-700" type="button" (click)="showForm = true">
+    Přidat post
   </button>
   } @if (showForm){
   <!-- p-6 shadow-lg w-full max-w-md -->
@@ -9,18 +9,18 @@
       <div>
         <input
           class="form-control block w-full p-2.5 border border-gray-300 rounded-lg focus:border-purple-200"
-          placeholder="Name of the product."
+          placeholder="Co se Vám honí hlavou…"
           formControlName="content"
           id="content"
         />
       </div>
       <div class="my-2 flex justify-end space-x-2">
         <button
-          class="bg-green-400 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:bg-purple-200"
+          class="bg-purple-400 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:bg-purple-200"
           type="submit"
           [disabled]="formular.invalid"
         >
-          Send
+          Odeslat
         </button>
 
         <button
@@ -29,21 +29,15 @@
           class="p-2 text-teal-400 text-black py-2 px-4 rounded-lg hover:bg-teal-400 hover:text-black"
           (click)="closeForm()"
         >
-          Cancel
+          Zrušit
         </button>
       </div>
     </form>
-    <section class="grid items-center text-white">
-      @if (products$ | async; as products) {
-        @for (product of products; track product.id) {
-          <section class="mb-3">
-            <a [routerLink]="'/product/detail/' + product.id">
-              {{ product.name }}
-            </a>
-          </section>
-        }
-        @empty {
-          <p>No data :-(</p>
-        }
-      }
-    </section>
+  </section>
+} @if(products$ | async; as products) { @for(product of products; track product) {
+  <section class="mb-3">
+    <a routerLink="/product/detail/{{ product.id }}">
+      <app-product-detail [item]="product"></app-product-detail>
+    </a>
+  </section>
+  } @empty { Žádná data :-( } }

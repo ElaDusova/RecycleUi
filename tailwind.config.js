@@ -13,6 +13,8 @@ module.exports = {
     theme: {
       colors: {
         'mainGreen': '#a3e635',
+        'hoverGreen': '#219100',
+        'componentGreen': '#86dc6b',
       }
     }
 }
