@@ -11,26 +11,25 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ContainerPageComponent } from './pages/container-page/container-page.component';
 import { ProductSearchComponent } from './pages/product-search/product-search.component';
-import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+// import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
     children: [
-      { path: 'home', component: HomePageComponent, title: 'Home', },
+      {   path: 'home', component: HomePageComponent, title: 'Home', },
       { path: 'register', component: RegisterPageComponent, title: 'Registration' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
       {path: 'not-found',component: NotFoundPageComponent,title: 'Not Found ',},
       { path: 'container', component: ContainerPageComponent, title: 'Containers', },
       { path: 'product-search', component: ProductSearchComponent, title: 'Product Search', },
-      {path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: productDetailResolver },},
-      {path: 'forgot-password',component: ForgotPasswordPageComponent,title: 'Forgot Password',},
-    ],
+      {path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: productDetailResolver },},    ],
   },
   { path: '**', redirectTo: '/not-found' },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route is matched
+ // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route is matched
 ];
 @NgModule({
 })
 export class AppRoutingModule { }
+

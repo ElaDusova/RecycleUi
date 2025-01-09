@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductDetail } from '../models/product/product-detail.interface';
 import { ProductCreate } from '../models/product/product-create.interface';
@@ -9,7 +9,8 @@ import { ProductCreate } from '../models/product/product-create.interface';
 })
 export class ProductService {
   protected readonly baseUrl = '/api/v1/Product';
-  constructor(private httpClient: HttpClient) { }
+  private readonly httpClient = inject(HttpClient);
+
 
   getProducts(): Observable<ProductDetail[]>{
     const url = this.baseUrl;

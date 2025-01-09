@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@ang
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { catchError, switchMap } from 'rxjs';
+import { passwordMatchValidator } from '../../validators/password-match.validator';
 
 @Component({
   selector: 'app-register-page',
@@ -27,16 +28,19 @@ export class RegisterPageComponent {
   protected formular = this.fb.group({
     email: new FormControl('', { nonNullable: true}),
     password: new FormControl('', { nonNullable: true}),
-    name: new FormControl('', { nonNullable: true}),
+    username: new FormControl('', { nonNullable: true}),
     passwordConfirm: new FormControl('', { nonNullable: true}),
-    surname: new FormControl('', { nonNullable: true}),
-    birthdate: new FormControl('', { nonNullable: true}),
-    phone: new FormControl('', { nonNullable: true}),
-  });
+    lastname: new FormControl('', { nonNullable: true}),
+    firstname: new FormControl('', { nonNullable: true}),
+    dateofbirth: new FormControl('', { nonNullable: true}),
+  },
+  { validators: passwordMatchValidator() }
+);
+
 
   onSubmit(): void {
     const data = this.formular.getRawValue();
-
+console.log(data);
     this.authService.register(data).pipe(
       catchError((error) => {
         // Handle error here
@@ -48,6 +52,9 @@ export class RegisterPageComponent {
         // Handle successful registration
         console.log('Registration successful');
         this.router.navigate(['/login']); // Redirect to login page
+
+        this.formular.reset();
+
       },
       error: (error) => {
         // Handle registration error

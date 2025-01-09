@@ -6,19 +6,46 @@
 
     <!-- Registration Form -->
     <form class="space-y-6" [formGroup]="formular" (ngSubmit)="onSubmit()">
+      <!-- First Name -->
+      <div class="mb-5">
+        <label for="firstname" class="block mb-2 text-sm font-medium">First Name</label>
+        <input type="text" id="firstname" formControlName="firstname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First name" required />
+      </div>
+
+      <!-- Last Name -->
+      <div class="mb-5">
+        <label for="lastname" class="block mb-2 text-sm font-medium">Last Name</label>
+        <input type="text" id="lastname" formControlName="lastname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Last name" required />
+      </div>
+
+      <!-- Username -->
+      <div class="mb-5">
+        <label for="username" class="block mb-2 text-sm font-medium">Username</label>
+        <input type="text" id="username" formControlName="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required />
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="mb-5">
+        <label for="dateofbirth" class="block mb-2 text-sm font-medium">Date of Birth</label>
+        <input type="date" id="dateofbirth" formControlName="dateofbirth" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+      </div>
+
+      <!-- Email -->
       <div class="mb-5">
         <label for="email" class="block mb-2 text-sm font-medium">Your email</label>
         <input type="email" id="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@mail.com" required />
       </div>
 
-      <div class="mb-5">
-        <label for="name" class="block mb-2 text-sm font-medium">Your name</label>
-        <input type="text" id="name" formControlName="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required />
-      </div>
-
+      <!-- Password -->
       <div class="mb-5">
         <label for="password" class="block mb-2 text-sm font-medium">Your password</label>
-        <input type="password" id="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="password" required />
+        <input type="password" id="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" required />
+      </div>
+
+      <!-- Password Confirmation -->
+      <div class="mb-5">
+        <label for="passwordConfirm" class="block mb-2 text-sm font-medium">Confirm password</label>
+        <input type="password" id="passwordConfirm" formControlName="passwordConfirm" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Confirm password" required />
       </div>
 
       <button type="submit" class="text-white bg-mainGreen hover:bg-hoverGreen focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-400 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Register</button>
