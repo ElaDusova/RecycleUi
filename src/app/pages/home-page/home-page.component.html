@@ -1,5 +1,21 @@
-<main>
-  <section class="flex justify-center w-full">
-    <app-product-list></app-product-list>
-  </section>
-</main>
+  <div class="text-center h-64 py-8">
+    <h1 class="text-xl font-medium text-gray-900 dark:text-white">
+      {{ title }}
+    </h1>
+  </div>
+
+<!-- Display the list of articles -->
+<section class="articles mt-4">
+  <h2 class="text-xl font-semibold mb-1">Articles</h2> <!-- Reduced margin-bottom here -->
+  <ul class="space-y-1"> <!-- Space between articles -->
+    <li *ngFor="let article of articles" class="mb-1"> <!-- Reduced margin-bottom here -->
+      <h3 class="font-bold text-lg">{{ article.heading }}</h3>
+      <p>{{ article.description }}</p>
+    </li>
+  </ul>
+</section>
+
+<!-- If no articles, show a message -->
+<section class="no-articles mt-4">
+  <p>No articles available at the moment.</p>
+</section>

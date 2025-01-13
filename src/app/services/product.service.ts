@@ -11,17 +11,27 @@ export class ProductService {
   protected readonly baseUrl = '/api/v1/Product';
   private readonly httpClient = inject(HttpClient);
 
-
-  getProducts(): Observable<ProductDetail[]>{
+  // Fetch all products
+  getProducts(): Observable<ProductDetail[]> {
     const url = this.baseUrl;
     return this.httpClient.get<ProductDetail[]>(url);
   }
-  getProduct(id: string): Observable<ProductDetail>{
-    const url = `${this.baseUrl}`;
+
+  // Fetch a single product by ID
+  getProduct(id: string): Observable<ProductDetail> {
+    const url = `${this.baseUrl}/${id}`;
     return this.httpClient.get<ProductDetail>(url);
   }
-  createProduct(data: ProductCreate) : Observable<ProductDetail>{
+
+  // Create a new product (should use POST)
+  createProduct(data: ProductCreate): Observable<ProductDetail> {
     const url = this.baseUrl;
-    return this.httpClient.get<ProductDetail>(url);
+    return this.httpClient.post<ProductDetail>(url, data);  // Changed to POST
+  }
+
+  // Search for products by EAN
+  searchProductsByEAN(ean: string): Observable<ProductDetail[]> {
+    const url = `${this.baseUrl}/search?ean=${ean}`;  // Adjust API endpoint to support EAN search
+    return this.httpClient.get<ProductDetail[]>(url);  // Return an observable of ProductDetail array
   }
 }

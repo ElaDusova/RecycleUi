@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { catchError, switchMap } from 'rxjs';
@@ -29,12 +29,11 @@ export class RegisterPageComponent {
     email: new FormControl('', { nonNullable: true}),
     password: new FormControl('', { nonNullable: true}),
     username: new FormControl('', { nonNullable: true}),
-    passwordConfirm: new FormControl('', { nonNullable: true}),
+    passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     lastname: new FormControl('', { nonNullable: true}),
     firstname: new FormControl('', { nonNullable: true}),
     dateofbirth: new FormControl('', { nonNullable: true}),
   },
-  { validators: passwordMatchValidator() }
 );
 
 

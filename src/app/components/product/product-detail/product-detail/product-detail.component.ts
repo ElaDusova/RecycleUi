@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProductDetail } from '../../../models/product/product-detail.interface';
+import { ProductDetail } from '../../../../models/product/product-detail.interface';
 
 @Component({
   selector: 'app-product-detail',
