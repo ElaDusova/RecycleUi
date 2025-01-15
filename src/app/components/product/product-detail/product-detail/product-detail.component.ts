@@ -9,5 +9,5 @@ import { ProductDetail } from '../../../../models/product/product-detail.interfa
   styleUrl: './product-detail.component.scss'
 })
 export class ProductDetailComponent {
-  @Input() item!: ProductDetail;
+  @Input() product!: ProductDetail;
 }

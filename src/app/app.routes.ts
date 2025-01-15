@@ -12,27 +12,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ContainerPageComponent } from './pages/container-page/container-page.component';
 import { ProductSearchComponent } from './pages/product-search/product-search.component';
 import { ArticleDetailResolver } from './resolvers/article-detail-resolver';
-// import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+import { ArticleListResolver } from './resolvers/article-list-resolver';
+import { ArticleDetailPageComponent } from './pages/article-detail-page/article-detail-page.component';
+import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
+import { ForgottenPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
+import { AppComponent } from './app.component';
+
 
 export const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
     children: [
-      {   path: 'home', component: HomePageComponent, title: 'Home', },
+      { path: 'home', component: HomePageComponent, title: 'Home', resolve: { articles: ArticleListResolver } }, // Use resolver here
       { path: 'register', component: RegisterPageComponent, title: 'Registration' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
-      { path: 'not-found',component: NotFoundPageComponent,title: 'Not Found ',},
+      { path: 'forgottenpassword', component: ForgottenPasswordPageComponent, title: 'Forgotten Password' },
       { path: 'container', component: ContainerPageComponent, title: 'Containers', },
+      { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
       { path: 'product-search', component: ProductSearchComponent, title: 'Product Search', },
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: productDetailResolver },},
-      { path: 'article/detail/:articleId',component: ProductDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
-            ],
-  },
-  { path: '**', redirectTo: '/not-found' },
- // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route is matched
-];
-@NgModule({
-})
-export class AppRoutingModule { }
+      { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
 
+            ],
+ },
+ { path: '**',component: NotFoundPageComponent,title: 'Not Found ',},
+
+];

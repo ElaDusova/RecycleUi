@@ -1,39 +1,102 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <!-- Container Box with Shadow and Padding -->
-  <div class="bg-white shadow-lg rounded-lg p-8 w-full sm:max-w-sm">
-    <!-- Title: Centered "LOG IN" -->
-    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Log In</h2>
+<main>
+  <section class="min-h-screen flex items-center justify-center bg-gray-100">
+    <!-- Container Box with Shadow and Padding -->
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full sm:max-w-sm">
+      <!-- Title: Centered "LOG IN" -->
+      <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Log In</h2>
 
-    <!-- Form -->
-    <form class="space-y-6" action="#" method="POST">
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-900">Email address</label>
-        <div class="mt-2">
-          <input type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm" placeholder="name@mail.com" required>
+      <!-- Form -->
+      <form [formGroup]="formular" (ngSubmit)="onSubmit()" class="space-y-6" novalidate>
+        <!-- General Error Message -->
+        <div
+          [class.hidden]="!errorMessage"
+          class="mb-5 p-4 text-sm text-red-600 bg-red-100 border border-red-400 rounded-lg"
+        >
+          {{ errorMessage }}
         </div>
-      </div>
 
-      <div>
-        <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium text-gray-900">Password</label>
-          <div class="text-sm">
-            <a href="#" class="font-semibold text-mainGreen hover:text-hoverGreen">Forgot password?</a>
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-900">Your email</label>
+          <div class="mt-2">
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="name@mail.com"
+            />
+            <small
+              [class.hidden]="!hasError('email', 'required')"
+              class="text-red-600"
+            >
+              Email is required.
+            </small>
+            <small
+              [class.hidden]="!hasError('email', 'email')"
+              class="text-red-600"
+            >
+              Enter a valid email address.
+            </small>
           </div>
         </div>
-        <div class="mt-2">
-          <input type="password" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm" placeholder="password" required>
+
+        <!-- Password Input -->
+        <div>
+          <div class="flex items-center justify-between">
+            <label for="password" class="block text-sm font-medium text-gray-900">Your password</label>
+            <div class="text-sm">
+              <a
+                routerLink="/forgottenpassword"
+                class="font-semibold text-mainGreen hover:text-hoverGreen"
+              >
+                Forgot password?
+              </a>
+            </div>
+          </div>
+          <div class="mt-2">
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="password"
+            />
+            <small
+              [class.hidden]="!hasError('password', 'required')"
+              class="text-red-600"
+            >
+              Password is required.
+            </small>
+            <small
+              [class.hidden]="!hasError('password', 'minlength')"
+              class="text-red-600"
+            >
+              Password must contain at least 6 characters.
+            </small>
+          </div>
         </div>
-      </div>
 
-      <p class="text-center text-sm text-gray-600 mb-4">Don't have an account yet? <a href="/register" class="font-semibold text-mainGreen hover:text-hoverGreen">Register here!</a></p>
+        <p class="text-center text-sm text-gray-600 mb-4">
+          Don't have an account yet?
+          <a
+            routerLink="/register"
+            class="font-semibold text-mainGreen hover:text-hoverGreen"
+          >
+            Register here!
+          </a>
+        </p>
 
-      <div>
-        <button
-          type="submit"
-          class="flex w-full justify-center rounded-md bg-mainGreen px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-hoverGreen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          Log In
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+        <div>
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="flex w-full justify-center rounded-md bg-mainGreen px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-hoverGreen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            {{ isLoading ? 'Loading...' : 'Log In' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>

@@ -3,6 +3,6 @@ export interface ArticleDetail {
   heading: string;
   authorsName: string;
   annotation: string;
-  description: string;
+  text: string;
   picturePath: string | null;
 }

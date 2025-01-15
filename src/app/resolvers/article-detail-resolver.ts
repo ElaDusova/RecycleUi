@@ -8,22 +8,22 @@ import { ArticleDetail } from '../models/article/article-detail.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class ArticleDetailResolver implements Resolve<ArticleDetail[] | undefined> {
+export class ArticleDetailResolver implements Resolve<ArticleDetail | undefined> {
   constructor(private articleService: ArticleService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ArticleDetail[] | undefined> {
-    const articleId = route.paramMap.get('articleId');
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ArticleDetail | undefined> {
+    const articleId = route.paramMap.get('articleId');  // Retrieve article ID from URL
 
     if (!articleId) {
-      console.error('Article ID was not found');
-      return of(undefined);
+      console.error('Article ID not found');
+      return of(undefined);  // Return undefined if no article ID is provided
     }
 
-    return this.articleService.getArticles().pipe(
+    return this.articleService.getArticleById(articleId).pipe(
       catchError((err) => {
-        console.log(err);
-        this.router.navigate(['']);
-        return of(undefined);
+        console.error('Error fetching article:', err);  // Log error
+        this.router.navigate(['/']);  // Redirect to homepage if error occurs
+        return of(undefined);  // Return undefined if there is an error
       })
     );
   }

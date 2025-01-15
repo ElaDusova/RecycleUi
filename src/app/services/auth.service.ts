@@ -24,7 +24,9 @@ import { RegisterModel } from '../models/register.interface';
 
     login(data: LoginModel): Observable<any> {
       return this.httpClient
-        .post<any>(`${this.baseUrl}/Login`, data)
+        .post<any>(`${this.baseUrl}/Login`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
         .pipe(tap(() => this.isLoggedInSubject.next(true)));
     }
 

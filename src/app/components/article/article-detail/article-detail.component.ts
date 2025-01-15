@@ -10,5 +10,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './article-detail.component.scss'
 })
 export class ArticleDetailComponent {
-  @Input() item!: ArticleDetail;
+  @Input() article!: ArticleDetail;
 }
