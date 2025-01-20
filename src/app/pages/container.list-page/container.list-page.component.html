@@ -1,0 +1,32 @@
+<div class="bg-white py-24 sm:py-12">
+  <div class="mx-auto max-w-5xl px-6 lg:px-8">
+    <!-- Containers Section Title -->
+    <div class="mx-auto max-w-2xl lg:mx-0">
+      <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Containers</h2>
+      <p class="mt-2 text-lg/8 text-gray-600">Explore the available recycling containers.</p>
+    </div>
+
+    <!-- Containers Grid -->
+    <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+      <!-- Loop Through Containers -->
+      <a *ngFor="let container of containers"
+        [routerLink]="['/container/detail', container.id]"
+        class="flex max-w-xl flex-col items-center justify-center border border-gray-300 p-6 rounded-lg hover:shadow-lg transition-all">
+        <div class="group relative flex flex-col items-center">
+          <img *ngIf="container.picturePath" [src]="container.picturePath" alt="{{ container.name }}" class="w-24 h-24 rounded-lg mb-4" />
+          <div class="w-24 h-24 mb-4 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500" *ngIf="!container.picturePath">
+            No Image
+          </div>
+          <h3 class="text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600 text-center">
+            {{ container.name }}
+          </h3>
+        </div>
+      </a>
+    </div>
+
+    <!-- No Containers Message -->
+    <section class="no-containers mt-4 text-center" *ngIf="!containers || containers.length === 0">
+      <p class="text-gray-500">No containers available at the moment.</p>
+    </section>
+  </div>
+</div>

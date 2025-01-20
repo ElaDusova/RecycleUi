@@ -1,0 +1,41 @@
+<div class="bg-white py-24 sm:py-12">
+  <div class="mx-auto max-w-5xl px-6 lg:px-8">
+    <!-- Container Title and Description -->
+    <div class="mx-auto max-w-2xl lg:mx-0">
+      <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+        {{ container.name }}
+      </h2>
+      <div>
+        <img
+          *ngIf="container?.picturePath"
+          [src]="container.picturePath"
+          alt="{{ container.name }}"
+          class=""
+        />
+        <div *ngIf="!container?.picturePath" class="w-40 h-40 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+          No Image
+        </div>
+      </div>
+
+      <p class="mt-2 text-lg text-gray-600">{{ container.description }}</p>
+    </div>
+
+    <!-- Container Image and Can Type -->
+    <div class="mt-8">
+      <div class="flex flex-col sm:flex-row items-center gap-x-4">
+        <!-- Container Image -->
+
+        <!-- Container Details -->
+        <div class="text-sm">
+          <p class="font-semibold text-gray-900 text-lg">Type</p>
+          <p class="text-gray-600 capitalize">{{ container.canType }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Container Message -->
+    <section *ngIf="!container" class="mt-10 text-center">
+      <p class="text-gray-500 text-lg">Container not found.</p>
+    </section>
+  </div>
+</div>

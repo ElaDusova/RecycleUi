@@ -12,5 +12,4 @@ import { ArticleDetailComponent } from "../../components/article/article-detail/
 })
 export class ArticleDetailPageComponent {
   readonly article = input.required<ArticleDetail>();
-
  }

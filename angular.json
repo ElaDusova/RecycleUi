@@ -26,8 +26,8 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/recykluj.png",
-              "src/assets"
+                "public",
+                "public/favicon.png"
             ],
             "styles": [
               "src/styles.scss"
