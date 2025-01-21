@@ -5,4 +5,5 @@ export interface ArticleDetail {
   annotation: string;
   text: string;
   picturePath: string | null;
+  createdAt: string;
 }

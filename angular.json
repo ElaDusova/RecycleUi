@@ -26,9 +26,11 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-                "public",
-                "public/favicon.png"
-            ],
+              {
+              "glob": "**/*",
+              "input": "src/assets"
+              }
+          ],
             "styles": [
               "src/styles.scss"
             ],

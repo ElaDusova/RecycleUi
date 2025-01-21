@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginModel } from '../models/login.interface';
 import { tap } from 'rxjs/operators';
 import { RegisterModel } from '../models/register.interface';
-
+import { AUTH_TOKEN } from '../contexts/token.context';
 
 @Injectable({
     providedIn: 'root',
@@ -14,6 +14,7 @@ import { RegisterModel } from '../models/register.interface';
     private baseUrl = '/api/v1/Auth';
     private readonly router = inject(Router);
     private readonly httpClient = inject(HttpClient);
+    private readonly token = inject(AUTH_TOKEN);
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
@@ -27,8 +28,16 @@ import { RegisterModel } from '../models/register.interface';
         .post<any>(`${this.baseUrl}/Login`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
-        .pipe(tap(() => this.isLoggedInSubject.next(true)));
-    }
+        .pipe(tap((response) => {
+          const token = response.token;
+          console.log(token);
+          this.token.set(token);
+
+          this.router.navigate(['/home']);
+          this.isLoggedInSubject.next(true)
+        }
+        ));
+      }
 
     logout(): void {
       this.httpClient

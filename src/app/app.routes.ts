@@ -16,6 +16,7 @@ import { ForgottenPasswordPageComponent } from './pages/forgotten-password-page/
 import { ContainerDetailPageComponent } from './pages/container.detail-page/container.detail-page.component';
 import {ContainerListResolver} from './resolvers/container-list-resolver';
 import {ContainerDetailResolver} from './resolvers/container-detail-resolver';
+import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.component';
 
 export const routes: Routes = [
   {
@@ -25,13 +26,14 @@ export const routes: Routes = [
       { path: 'home', component: HomePageComponent, title: 'Home', resolve: { articles: ArticleListResolver } }, // Use resolver here
       { path: 'register', component: RegisterPageComponent, title: 'Registration' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
+      { path: 'logout', component: LogoutPageComponent, title: 'Logout' },
       { path: 'forgottenpassword', component: ForgottenPasswordPageComponent, title: 'Forgotten Password' },
       { path: 'container', component: ContainerListPageComponent, title: 'Containers', resolve: { containers: ContainerListResolver } },
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
       { path: 'product-search', component: ProductSearchComponent, title: 'Product Search', },
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: productDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
-      {path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
+      { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
 
             ],
  },
