@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LoginModel } from '../models/login.interface';
 import { tap } from 'rxjs/operators';
 import { RegisterModel } from '../models/register.interface';
-import { AUTH_TOKEN } from '../contexts/token.context';
+import { AUTH_TOKEN } from '../components/contexts/token.context';
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +17,7 @@ import { AUTH_TOKEN } from '../contexts/token.context';
     private readonly token = inject(AUTH_TOKEN);
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
+    constructor(private http: HttpClient) {}
 
     register(data: RegisterModel): Observable<any> {
       return this.httpClient
@@ -53,5 +54,7 @@ import { AUTH_TOKEN } from '../contexts/token.context';
       this.isLoggedInSubject.subscribe(status => isAuthenticated = status).unsubscribe();
       return isAuthenticated;
     }
-
+    sendResetPasswordEmail(email: string): Observable<void> {
+      return this.http.post<void>(`${this.baseUrl}/ForgotPassword`, { email });
   }
+}

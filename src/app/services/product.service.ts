@@ -31,7 +31,6 @@ export class ProductService {
 
   // Search for products by EAN
   searchProductsByEAN(ean: string): Observable<ProductDetail[]> {
-    const url = `${this.baseUrl}/search?ean=${ean}`;  // Adjust API endpoint to support EAN search
-    return this.httpClient.get<ProductDetail[]>(url);  // Return an observable of ProductDetail array
+    return this.httpClient.get<ProductDetail[]>(`api/v1/Product/search?ean=${ean}`);
   }
-}
+  }

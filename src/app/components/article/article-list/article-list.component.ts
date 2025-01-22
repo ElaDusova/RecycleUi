@@ -67,12 +67,6 @@ import { Observable } from 'rxjs';
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.css']
 })
-export class ArticleListComponent implements OnInit {
-  articles$!: Observable<ArticleDetail[]>;
+export class ArticleListComponent {
 
-  constructor(private articleService: ArticleService) {}
-
-  ngOnInit(): void {
-    this.articles$ = this.articleService.getArticles();
-  }
 }

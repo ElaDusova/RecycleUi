@@ -10,7 +10,7 @@
     <!-- Article Image and Author Info -->
     <div class="mt-8">
       <div class="flex items-center gap-x-4">
-        <img *ngIf="article?.picturePath" [src]="article.picturePath" alt="Article Image" class="w-16 h-16 rounded-full" />
+        <img *ngIf="article.picturePath" [src]="article.picturePath" alt="Article Image" class="w-16 h-16 rounded-full" />
         <div class="text-sm/6">
           <p class="font-semibold text-gray-900">Author Name</p>
           <p class="text-gray-600">{{ article.authorsName }}</p>

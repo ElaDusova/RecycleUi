@@ -3,11 +3,11 @@ import { DefaultComponent } from './layout/default/default.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NotFoundPageComponent } from './pages/errors/not-found-page/not-found-page/not-found-page.component';
 import { ProductDetailPageComponent } from './pages/product-detail-page/product-detail-page/product-detail-page.component';
-import { productDetailResolver } from './resolvers/product-detail-resolver';
+import { ProductDetailResolver } from './resolvers/product-detail-resolver';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { ContainerListPageComponent } from './pages/container.list-page/container.list-page.component';
-import { ProductSearchComponent } from './pages/product-search/product-search.component';
+import { ProductSearchPageComponent } from './pages/product-search/product-search.component';
 import { ArticleDetailResolver } from './resolvers/article-detail-resolver';
 import { ArticleListResolver } from './resolvers/article-list-resolver';
 import { ArticleDetailPageComponent } from './pages/article-detail-page/article-detail-page.component';
@@ -17,6 +17,7 @@ import { ContainerDetailPageComponent } from './pages/container.detail-page/cont
 import {ContainerListResolver} from './resolvers/container-list-resolver';
 import {ContainerDetailResolver} from './resolvers/container-detail-resolver';
 import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.component';
+import { SettingsPageComponent } from './pages/user-pages/settings-page/settings-page.component';
 
 export const routes: Routes = [
   {
@@ -30,8 +31,9 @@ export const routes: Routes = [
       { path: 'forgottenpassword', component: ForgottenPasswordPageComponent, title: 'Forgotten Password' },
       { path: 'container', component: ContainerListPageComponent, title: 'Containers', resolve: { containers: ContainerListResolver } },
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
-      { path: 'product-search', component: ProductSearchComponent, title: 'Product Search', },
-      { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: productDetailResolver },},
+      { path: 'settings', component: SettingsPageComponent, title: 'Settings', },
+      { path: 'product-search', component: ProductSearchPageComponent, title: 'Product Search', },
+      { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
 

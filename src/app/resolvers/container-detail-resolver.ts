@@ -16,7 +16,7 @@ export class ContainerDetailResolver implements Resolve<ContainerDetail | undefi
 
     if (!containerId) {
       console.error('Container ID not found');
-      return of(undefined);  // Return undefined if no article ID is provided
+      return of(undefined);  // Return undefined if no container ID is provided
     }
 
     return this.containerService.getContainerById(containerId).pipe(
