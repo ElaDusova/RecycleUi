@@ -1,7 +1,7 @@
 /*
   @license
-	Rollup.js v4.26.0
-	Wed, 13 Nov 2024 06:44:29 GMT - commit ae1d14b7855ff6568a6697d37271a5eb4d8e2d3e
+	Rollup.js v4.30.1
+	Tue, 07 Jan 2025 10:35:22 GMT - commit 94917087deb9103fbf605c68670ceb3e71a67bf7
 
 	https://github.com/rollup/rollup
 
@@ -18,7 +18,6 @@ require('node:url');
 require('./shared/rollup.js');
 require('./shared/parseAst.js');
 const loadConfigFile_js = require('./shared/loadConfigFile.js');
-require('tty');
 require('path');
 require('./native.js');
 require('node:perf_hooks');
