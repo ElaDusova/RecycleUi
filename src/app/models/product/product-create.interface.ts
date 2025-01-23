@@ -3,4 +3,5 @@ export interface ProductCreate {
     ean: string;
     description: string;
     picturePath: string | null;
+    // productParts: ProductPartCreate[];
 }

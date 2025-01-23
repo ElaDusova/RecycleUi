@@ -6,8 +6,9 @@ import { ProductDetailPageComponent } from './pages/product-detail-page/product-
 import { ProductDetailResolver } from './resolvers/product-detail-resolver';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
-import { ContainerListPageComponent } from './pages/container.list-page/container.list-page.component';
+import { ContainerListPageComponent } from './pages/container-list-page/container-list-page/container-list-page.component';
 import { ProductSearchPageComponent } from './pages/product-search/product-search.component';
+import { ProductAddPageComponent } from './pages/product-add-page/product-add-page.component';
 import { ArticleDetailResolver } from './resolvers/article-detail-resolver';
 import { ArticleListResolver } from './resolvers/article-list-resolver';
 import { ArticleDetailPageComponent } from './pages/article-detail-page/article-detail-page.component';
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
       { path: 'settings', component: SettingsPageComponent, title: 'Settings', },
       { path: 'product-search', component: ProductSearchPageComponent, title: 'Product Search', },
+      { path: 'product-add', component: ProductAddPageComponent, title: 'Product Add', },
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},

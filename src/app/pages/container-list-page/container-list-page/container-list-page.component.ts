@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContainerService } from '../../services/container.service';
-import { ContainerView } from '../../models/container/container-view.interface';
+import { ContainerView } from '../../../models/container/container-view.interface';
 import { RouterModule } from '@angular/router';
+import { ContainerService } from '../../../services/container.service';
 
 @Component({
   selector: 'app-container-page',
   imports: [CommonModule, RouterModule],
-  templateUrl: './container.list-page.component.html',
-  styleUrl: './container.list-page.component.scss'
+  templateUrl: './container-list-page.component.html',
+  styleUrl: './container-list-page.component.scss'
 })
 export class ContainerListPageComponent implements OnInit {
   containers: ContainerView[] = [];
