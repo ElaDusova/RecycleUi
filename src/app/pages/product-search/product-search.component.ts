@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, } from '@angular/core';
+import { Component, Input, OnInit,Inject } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ProductDetail } from '../../models/product/product-detail.interface';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,7 @@ export class ProductSearchPageComponent implements OnInit {
   filteredProducts: ProductDetail[] = []; // Filtered products to display
   searchQuery: string = ''; // User's search input (EAN or name)
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService, private router: Router,) {}
 
   ngOnInit(): void {
     // Load all products initially

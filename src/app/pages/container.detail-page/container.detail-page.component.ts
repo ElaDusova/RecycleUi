@@ -5,6 +5,7 @@ import { ContainerDetailComponent } from "../../components/container/container-d
 
 @Component({
   selector: 'app-container.detail-page',
+  standalone: true,
   imports: [CommonModule, ContainerDetailComponent],
   templateUrl: './container.detail-page.component.html',
   styleUrl: './container.detail-page.component.scss'

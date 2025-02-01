@@ -18,21 +18,21 @@
             (click)="toggleMenu()"
           >
             <span class="sr-only">Open user menu</span>
-            <img class="w-8 h-8 rounded-full" alt="user photo" />
+            <img class="w-8 h-8 rounded-full" alt="User Profile" />
           </button>
 
           <!-- Dropdown Menu -->
           <div
             *ngIf="isMenuOpen"
-            class="absolute right-0 z-50 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+            class="absolute right-0 z-50 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 transition-all duration-300"
           >
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="user-menu-button">
               <li>
                 <a
-                  routerLink="/settings"
+                  routerLink="/useraccount"
                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                  Settings
+                  User Account
                 </a>
               </li>
               <li>
@@ -47,7 +47,6 @@
           </div>
         </div>
       </ng-container>
-
     </div>
 
     <!-- Navigation Links -->
@@ -61,7 +60,7 @@
         <li>
           <a
             routerLink="/home"
-            class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+            class="nav-link"
             aria-current="page"
           >
             Home
@@ -70,7 +69,7 @@
         <li>
           <a
             routerLink="/container"
-            class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+            class="nav-link"
             aria-current="page"
           >
             Containers
@@ -79,7 +78,7 @@
         <li>
           <a
             routerLink="/product-search"
-            class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+            class="nav-link"
           >
             Product Search
           </a>
@@ -87,7 +86,7 @@
         <li>
           <a
             routerLink="/aboutUs"
-            class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+            class="nav-link"
             aria-current="page"
           >
             About Us
@@ -96,7 +95,7 @@
         <li>
           <a
           routerLink="/login"
-          class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+          class="nav-link"
           aria-current="page"
         >
           Log In
@@ -105,7 +104,7 @@
         <li>
         <a
           routerLink="/register"
-          class="block py-2 px-3 text-black text-1xl rounded hover:text-white md:p-0 transition-colors duration-300"
+          class="nav-link"
         >
           Register
         </a>

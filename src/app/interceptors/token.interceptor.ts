@@ -1,21 +1,39 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AUTH_TOKEN } from '../components/contexts/token.context';
+import { catchError, switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+
   if (req.url.includes('/login')) {
     return next(req);
   }
 
-  const token = inject(AUTH_TOKEN);
+  const token = localStorage.getItem("accessToken");
 
-  // edit request
-  console.log(token());
   req = req.clone({
-    // bring token from sessionStorage and add as header
     setHeaders: {
-      Authorization: `Bearer ${token()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
-  return next(req);
-};
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401 && !req.url.includes('/Auth/Refresh')) {
+        return authService.refreshToken().pipe(
+          switchMap((newAccessToken) => {
+            const clonedRequest = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newAccessToken}`
+              }
+            });
+            return next(clonedRequest);
+          })
+        );
+      }
+
+      return throwError(() => error);
+    })
+  )
+}

@@ -6,9 +6,10 @@ import { ContainerService } from '../../../services/container.service';
 
 @Component({
   selector: 'app-container-page',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './container-list-page.component.html',
-  styleUrl: './container-list-page.component.scss'
+  styleUrls: ['./container-list-page.component.scss'], // Fixed property name
 })
 export class ContainerListPageComponent implements OnInit {
   containers: ContainerView[] = [];

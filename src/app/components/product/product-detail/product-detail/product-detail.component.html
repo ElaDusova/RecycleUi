@@ -1,31 +1,31 @@
-<div class="bg-white py-24 sm:py-12">
-  <div class="mx-auto max-w-5xl px-6 lg:px-8">
+<div class="product-container">
+  <div class="content-wrapper">
     <!-- Product Title and Description -->
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+    <div class="product-info">
+      <h2 class="product-title">
         {{ product.name }}
       </h2>
-      <p class="mt-2 text-lg text-gray-600">{{ product.description }}</p>
+      <p class="product-description">{{ product.description }}</p>
     </div>
 
     <!-- Product Image and Info -->
-    <div class="mt-8">
-      <div class="flex items-center gap-x-4">
+    <div class="product-details">
+      <div class="product-image-wrapper">
         <!-- Product Image -->
         <img
           *ngIf="product?.picturePath"
           [src]="product.picturePath"
           alt="Product Image"
-          class="w-32 h-32 rounded-lg"
+          class="product-image"
         />
-        <div *ngIf="!product?.picturePath" class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+        <div *ngIf="!product?.picturePath" class="no-image">
           No Image
         </div>
-        <div class="text-sm/6">
-          <p class="font-semibold text-gray-900">EAN</p>
-          <p class="text-gray-600">{{ product.ean }}</p>
-          <p class="mt-2 font-semibold text-gray-900">Verified</p>
-          <p class="text-gray-600">
+        <div class="product-meta">
+          <p class="meta-label">EAN</p>
+          <p class="meta-value">{{ product.ean }}</p>
+          <p class="meta-label">Verified</p>
+          <p class="meta-value">
             {{ product.isVerified ? 'Yes' : 'No' }}
           </p>
         </div>
@@ -33,8 +33,8 @@
     </div>
 
     <!-- No Product Message -->
-    <section *ngIf="!product" class="mt-4 text-center">
-      <p class="text-gray-500">Product not found.</p>
+    <section *ngIf="!product" class="no-product">
+      <p>Product not found.</p>
     </section>
   </div>
 </div>

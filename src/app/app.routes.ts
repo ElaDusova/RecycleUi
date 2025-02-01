@@ -18,7 +18,7 @@ import { ContainerDetailPageComponent } from './pages/container.detail-page/cont
 import {ContainerListResolver} from './resolvers/container-list-resolver';
 import {ContainerDetailResolver} from './resolvers/container-detail-resolver';
 import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.component';
-import { SettingsPageComponent } from './pages/user-pages/settings-page/settings-page.component';
+import { UserAccountPageComponent } from './pages/user-pages/user-account-page/user-account-page.component';
 
 export const routes: Routes = [
   {
@@ -32,13 +32,15 @@ export const routes: Routes = [
       { path: 'forgottenpassword', component: ForgottenPasswordPageComponent, title: 'Forgotten Password' },
       { path: 'container', component: ContainerListPageComponent, title: 'Containers', resolve: { containers: ContainerListResolver } },
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
-      { path: 'settings', component: SettingsPageComponent, title: 'Settings', },
+      { path: 'useraccount', component: UserAccountPageComponent, title: 'User Account', },
       { path: 'product-search', component: ProductSearchPageComponent, title: 'Product Search', },
       { path: 'product-add', component: ProductAddPageComponent, title: 'Product Add', },
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
-
+ //     { path: 'changepassword', component: ChangePasswordPageComponent, title: 'Change Password' },
+ //     { path: 'changeUsername', component: ForgottenPasswordPageComponent, title: 'Change Username' },
+ //     { path: 'changeUserPicture', component: ForgottenPasswordPageComponent, title: 'Change User Picture' },
             ],
  },
  { path: '**',component: NotFoundPageComponent,title: 'Not Found ',},

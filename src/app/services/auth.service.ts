@@ -2,9 +2,9 @@ import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoginModel } from '../models/login.interface';
-import { tap } from 'rxjs/operators';
-import { RegisterModel } from '../models/register.interface';
+import { LoginModel } from '../models/user/login.interface';
+import { tap, map } from 'rxjs/operators';
+import { RegisterModel } from '../models/user/register.interface';
 import { AUTH_TOKEN } from '../components/contexts/token.context';
 
 @Injectable({
@@ -38,6 +38,16 @@ import { AUTH_TOKEN } from '../components/contexts/token.context';
           this.isLoggedInSubject.next(true)
         }
         ));
+      }
+      refreshToken(): Observable<string> {
+        return this.httpClient
+          .post<{ token: string }>(`${this.baseUrl}/Refresh`, {}).pipe(
+            map((response) => {
+              const newAccessToken = response.token;
+              localStorage.setItem('accessToken', newAccessToken);
+              return newAccessToken;
+            })
+          );
       }
 
     logout(): void {

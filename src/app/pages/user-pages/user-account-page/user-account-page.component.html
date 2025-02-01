@@ -1,0 +1,84 @@
+<div class="bg-gray-50 min-h-screen flex items-center justify-center py-10">
+  <div class="bg-white shadow-md rounded-lg p-8 max-w-5xl w-full">
+    <!-- User Profile Section -->
+    <div class="flex flex-col items-center space-y-4">
+      <!-- User Profile Picture -->
+      <div class="relative w-24 h-24">
+        <img
+          *ngIf="user?.profilePicture"
+          [src]="user?.profilePicture"
+          alt="Profile Picture"
+          class="rounded-full w-full h-full object-cover"
+        />
+        <div
+          *ngIf="!user?.profilePicture"
+          class="bg-gray-200 rounded-full w-full h-full flex items-center justify-center text-gray-500"
+        >
+          <i class="fas fa-user text-2xl"></i>
+        </div>
+      </div>
+      <p class="text-lg font-semibold">{{ user?.username || 'Username' }}</p>
+      <button
+        class="flex items-center space-x-2 text-sm text-mainGreen hover:text-hoverGreen"
+        (click)="updateProfilePicture()"
+      >
+      <a routerLink="/change-user-picture"
+      class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition">
+    Change User Picture
+     </a>
+      </button>
+    </div>
+
+    <!-- Account Options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+      <div class="space-y-4">
+        <button
+          class="w-full bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg px-4 py-2 flex items-center space-x-2"
+          (click)="updateUsername()"
+        >
+        <a routerLink="/change-user-name"
+        class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition">
+      Change User Name
+       </a>
+        </button>
+        <button
+          class="w-full bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg px-4 py-2 flex items-center space-x-2"
+          (click)="updatePassword()"
+        >
+            <a routerLink="/change-user-password"
+            class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition">
+          Change Password
+             </a>
+        </button>
+    </div>
+
+      <!-- User Info Table -->
+      <div class="overflow-hidden shadow rounded-lg border border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <td class="px-4 py-2 font-medium text-gray-900">First Name</td>
+              <td class="px-4 py-2 text-gray-600">{{ user?.firstname || '-' }}</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 font-medium text-gray-900">Last Name</td>
+              <td class="px-4 py-2 text-gray-600">{{ user?.lastname || '-' }}</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 font-medium text-gray-900">Username</td>
+              <td class="px-4 py-2 text-gray-600">{{ user?.username || '-' }}</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 font-medium text-gray-900">Email</td>
+              <td class="px-4 py-2 text-gray-600">{{ user?.email || '-' }}</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2 font-medium text-gray-900">Date of Birth</td>
+              <td class="px-4 py-2 text-gray-600">{{ user?.dateofbirth || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.article-detail {
+  .article-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .article-content {
+    margin-top: 2.5rem;
+    font-size: 1.125rem;
+    color: #374151;
+  }
+
+  .no-article {
+    margin-top: 1rem;
+    text-align: center;
+    color: #6b7280;
+  }
+}
