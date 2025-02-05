@@ -40,7 +40,7 @@ export const routes: Routes = [
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
-      { path: 'articleadd', component: AddArticlesPageComponent, title: 'Logout' },
+      { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
       { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
 
  //     { path: 'changepassword', component: ChangePasswordPageComponent, title: 'Change Password' },

@@ -1,1 +1,84 @@
-<p>add-articles-page works!</p>
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <!-- Container Box with Shadow and Padding -->
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
+    <!-- Title: Centered "Create Article" -->
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Write us some awesome news in recycling world! (Article)</h2>
+
+    <!-- Article Creation Form -->
+    <form class="space-y-6" (ngSubmit)="createArticle()">
+      <!-- Heading Input -->
+      <div>
+        <label for="heading" class="block mb-2 text-sm font-medium text-gray-700">Article Heading</label>
+        <input type="text" id="heading" [(ngModel)]="article.heading" name="heading"
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" required />
+      </div>
+
+      <!-- Author Name & Annotation -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="authorsName" class="block mb-2 text-sm font-medium text-gray-700">Author's Name</label>
+          <input type="text" id="authorsName" [(ngModel)]="article.authorsName" name="authorsName"
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" required />
+        </div>
+        <div>
+          <label for="annotation" class="block mb-2 text-sm font-medium text-gray-700">Annotation (Short Summary)</label>
+          <input type="text" id="annotation" [(ngModel)]="article.annotation" name="annotation"
+            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" required />
+        </div>
+      </div>
+
+      <!-- Text & Picture Upload -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Text Section -->
+        <div>
+          <label for="text" class="block mb-2 text-sm font-medium text-gray-700">Text of the Article</label>
+          <textarea id="text" [(ngModel)]="article.text" name="text"
+            class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" required></textarea>
+        </div>
+
+        <!-- Picture Upload -->
+        <label class="block mb-4 text-sm font-medium text-gray-700">
+          Add Article
+          <div class="flex flex-col h-40 border border-gray-300 items-center justify-center bg-white rounded-lg p-4 my-2 relative">
+            <!-- Hidden File Input -->
+            <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
+
+            <!-- Centered Add New Button -->
+            <button
+              title="Add New"
+              class="flex items-center justify-center group cursor-pointer outline-none hover:rotate-90 duration-300"
+              (click)="triggerFileInput()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-zinc-400 fill-none group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+          </div>
+        </label>
+              </div>
+
+      <!-- Date of Creation -->
+       <label class="block mb-2 text-sm font-medium text-gray-700">Date of creation
+        <div class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 my-2">{{ currentDate }}
+        </div>
+       </label>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full text-white bg-mainGreen hover:bg-hoverGreen focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        Add Article
+      </button>
+    </form>
+  </div>
+</section>

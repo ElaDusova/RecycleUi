@@ -1,7 +1,12 @@
-<div class="container mx-auto p-4">
+<div class="container mx-auto p-4 " >
   <!-- Header -->
-  <h3 class="text-3xl font-semibold text-gray-900 text-center">VALIDATED PRODUCTS</h3>
-
+  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl mt-8 ">Validate products</h3>
+  <p class="mt-2 text-lg/8 text-gray-600">
+    Make theese products verified so users can use them!
+  </p>
+<div
+  class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+>
   <!-- Product List -->
   <div *ngIf="errorMessage" class="text-center text-red-500">{{ errorMessage }}</div>
 
@@ -9,7 +14,7 @@
     <div *ngIf="products.length > 0">
       <div
         *ngFor="let product of products"
-        class="relative bg-gray-300 rounded-lg p-4 mb-3 flex justify-between items-center shadow cursor-pointer"
+        class="relative bg-white rounded-lg p-4 mb-3 flex justify-between items-center shadow cursor-pointer"
         (click)="openEditModal(product)"
       >
         <div class="flex items-center space-x-4">
@@ -20,25 +25,51 @@
           </div>
         </div>
 
-        <!-- Delete Button -->
-        <button
-        (click)="deleteProduct(product.id); $event.stopPropagation()"
-        class="absolute top-2 right-10 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md flex items-center transition duration-300"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+        <div class="flex space-x-2">
+          <!-- Delete Button -->
+          <button
+            class="inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+            (click)="deleteProduct(product.id); $event.stopPropagation()"
+          >
+            <svg
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              fill="none"
+              class="h-5 w-5 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                stroke-width="2"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              ></path>
+            </svg>
+            Delete
+          </button>
 
-        <!-- Validation Badge -->
-        <button
-        class="absolute top-2 right-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md flex items-center transition duration-300"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-      </button>
-
+          <!-- Verify Button -->
+          <button
+            class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+            (click)="openEditModal(product)"
+          >
+            <svg
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              fill="none"
+              class="h-5 w-5 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5 13l4 4L19 7"
+                stroke-width="2"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              ></path>
+            </svg>
+            Verify
+          </button>
+        </div>
       </div>
     </div>
 

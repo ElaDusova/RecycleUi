@@ -10,13 +10,17 @@ import { ArticleDetail } from '../models/article/article-detail.interface';
 })
 export class ArticleService {
   private baseUrl = 'api/v1/Article/';
+  private readonly userBaseUrl = '/api/v1/User'; // Assuming there's an API for user info
+
 
   constructor(private http: HttpClient) {}
 
   createArticle(model: ArticleCreateModel): Observable<ArticleDetail> {
     return this.http.post<ArticleDetail>(this.baseUrl, model);
   }
-
+  getUserById(userId: string): Observable<{ displayName: string; userName: string }> {
+    return this.http.get<{ displayName: string; userName: string }>(`${this.userBaseUrl}/${userId}`);
+  }
   getArticles(): Observable<ArticleDetail[]> {
     return this.http.get<ArticleDetail[]>(this.baseUrl);
   }
