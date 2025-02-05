@@ -5,4 +5,6 @@ export interface AccountDetail {
   lastname: string;
   dateofbirth: string;
   profilePicture: string;
+  displayname: string;
+  isAdmin: boolean;
   }

@@ -28,7 +28,7 @@ export class RegisterPageComponent {
   protected formular = this.fb.group({
     email: new FormControl('', { nonNullable: true}),
     password: new FormControl('', { nonNullable: true}),
-    username: new FormControl('', { nonNullable: true}),
+    displayname: new FormControl('', { nonNullable: true}),
     passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     lastname: new FormControl('', { nonNullable: true}),
     firstname: new FormControl('', { nonNullable: true}),

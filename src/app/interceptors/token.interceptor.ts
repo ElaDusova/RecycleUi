@@ -6,7 +6,6 @@ import { AuthService } from '../services/auth.service';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-
   if (req.url.includes('/login')) {
     return next(req);
   }
@@ -32,7 +31,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
           })
         );
       }
-
       return throwError(() => error);
     })
   )

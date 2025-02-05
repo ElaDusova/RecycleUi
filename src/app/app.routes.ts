@@ -19,6 +19,8 @@ import {ContainerListResolver} from './resolvers/container-list-resolver';
 import {ContainerDetailResolver} from './resolvers/container-detail-resolver';
 import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.component';
 import { UserAccountPageComponent } from './pages/user-pages/user-account-page/user-account-page.component';
+import { AddArticlesPageComponent } from './pages/admin-accesed-pages/add-articles-page/add-articles-page.component';
+import { ValidationProductsPageComponent } from './pages/admin-accesed-pages/validation-products-page/validation-products-page.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,9 @@ export const routes: Routes = [
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
+      { path: 'articleadd', component: AddArticlesPageComponent, title: 'Logout' },
+      { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
+
  //     { path: 'changepassword', component: ChangePasswordPageComponent, title: 'Change Password' },
  //     { path: 'changeUsername', component: ForgottenPasswordPageComponent, title: 'Change Username' },
  //     { path: 'changeUserPicture', component: ForgottenPasswordPageComponent, title: 'Change User Picture' },

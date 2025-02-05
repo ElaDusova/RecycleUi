@@ -15,6 +15,7 @@ export class DefaultComponent {
 
   protected readonly authService = inject(AuthService);
   protected user$ = this.authService.isLoggedIn$;
+  isAdmin$ = this.authService.isAdmin$;
 
 logout() {
     this.authService.logout();
@@ -27,5 +28,17 @@ logout() {
 
   closeMenu(): void {
     this.isMenuOpen = false;
-}
+  }
+
+  isLoggedIn(): boolean {
+    let loggedIn = false;
+    this.authService.user$.subscribe(user => loggedIn = !!user).unsubscribe();
+    return loggedIn;
+  }
+
+  isAdmin(): boolean {
+    let isAdmin = false;
+    this.authService.user$.subscribe(user => isAdmin = user?.isAdmin ?? false).unsubscribe();
+    return isAdmin;
+  }
 }

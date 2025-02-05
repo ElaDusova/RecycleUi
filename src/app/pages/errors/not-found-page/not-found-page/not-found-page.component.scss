@@ -51,7 +51,7 @@
   transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: #047857; // hoverGreen
+    background-color: var(--hover-green);
   }
 
   &:focus {

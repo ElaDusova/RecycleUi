@@ -43,6 +43,25 @@
                   Log out
                 </a>
               </li>
+              <ng-container *ngIf="isAdmin">
+
+              <li>
+                <a
+                  routerLink="/articleadd"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Add Articles
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/validationProducts"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Validations
+                </a>
+              </li>
+              </ng-container>
             </ul>
           </div>
         </div>
