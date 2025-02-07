@@ -41,4 +41,5 @@ logout() {
     this.authService.user$.subscribe(user => isAdmin = user?.isAdmin ?? false).unsubscribe();
     return isAdmin;
   }
+
 }

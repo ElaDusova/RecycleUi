@@ -39,3 +39,4 @@ export class ProductService {
     return this.httpClient.get<ProductDetail[]>(`api/v1/Product/search?ean=${ean}`);
   }
   }
+  // through, though

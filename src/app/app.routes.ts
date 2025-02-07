@@ -9,14 +9,15 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { ContainerListPageComponent } from './pages/container-list-page/container-list-page/container-list-page.component';
 import { ProductSearchPageComponent } from './pages/product-search/product-search.component';
 import { ProductAddPageComponent } from './pages/product-add-page/product-add-page.component';
+import { ProductCreateResolver } from './resolvers/product-create-resolver';
 import { ArticleDetailResolver } from './resolvers/article-detail-resolver';
 import { ArticleListResolver } from './resolvers/article-list-resolver';
 import { ArticleDetailPageComponent } from './pages/article-detail-page/article-detail-page.component';
 import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 import { ForgottenPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
 import { ContainerDetailPageComponent } from './pages/container.detail-page/container.detail-page.component';
-import {ContainerListResolver} from './resolvers/container-list-resolver';
-import {ContainerDetailResolver} from './resolvers/container-detail-resolver';
+import { ContainerListResolver} from './resolvers/container-list-resolver';
+import { ContainerDetailResolver} from './resolvers/container-detail-resolver';
 import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.component';
 import { UserAccountPageComponent } from './pages/user-pages/user-account-page/user-account-page.component';
 import { AddArticlesPageComponent } from './pages/admin-accesed-pages/add-articles-page/add-articles-page.component';
@@ -36,7 +37,7 @@ export const routes: Routes = [
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
       { path: 'useraccount', component: UserAccountPageComponent, title: 'User Account', },
       { path: 'product-search', component: ProductSearchPageComponent, title: 'Product Search', },
-      { path: 'product-add', component: ProductAddPageComponent, title: 'Product Add', },
+      { path: 'product/create', component: ProductAddPageComponent, title: 'Product Add',resolve: { product: ProductCreateResolver }, },
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},

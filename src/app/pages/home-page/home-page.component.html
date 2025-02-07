@@ -22,54 +22,46 @@
     </div>
 
     <!-- Articles Grid -->
-    <div v
-      class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
-    >
-      <!-- Loop Through Filtered Articles -->
-      <a
-        *ngFor="let article of filteredArticles"
-        [routerLink]="['/article/detail', article?.id]"
-        class="flex max-w-xl flex-col items-start justify-between border border-gray-300 p-6 rounded-lg hover:shadow-lg transition-all"
-      >
-        <div class="group relative">
-          <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-            {{ article?.heading || 'Untitled Article' }}
-          </h3>
-          <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">
-            {{ article?.annotation || 'No description available.' }}
-          </p>
-        </div>
-        <div class="relative mt-8 flex items-center gap-x-4">
-          <!-- Article Image -->
-          <img
-            *ngIf="article?.picturePath; else noImage"
-            [src]="article.picturePath"
-            alt="Article Image"
-            class="w-16 h-16 rounded-full"
-          />
-          <ng-template #noImage>
-            <div
-              class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500"
-            >
-              No Image
+    @if(filteredArticles.length > 0) {
+      <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <!-- Loop Through Filtered Articles -->
+        @for(article of filteredArticles; track article) {
+          <a
+            routerLink="/article/detail/{{ article?.id }}"
+            class="flex max-w-xl flex-col items-start justify-between border border-gray-300 p-6 rounded-lg hover:shadow-lg transition-all"
+          >
+            <div class="group relative">
+              <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
+                {{ article?.heading || 'Untitled Article' }}
+              </h3>
+              <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">
+                {{ article?.annotation || 'No description available.' }}
+              </p>
             </div>
-          </ng-template>
-          <!-- Author Information -->
-          <div class="text-sm/6">
-            <p class="font-semibold text-gray-900">
-              {{ article?.authorsName || 'Unknown Author' }}
-            </p>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <!-- No Articles Message -->
-    <section
-      class="no-articles mt-4 text-center"
-      *ngIf="!filteredArticles || filteredArticles.length === 0"
-    >
-      <p class="text-gray-500">No articles with such name.</p>
-    </section>
+            <div class="relative mt-8 flex items-center gap-x-4">
+              <!-- Article Image -->
+              @if(article?.picturePath) {
+                <img [src]="article.picturePath" alt="Article Image" class="w-16 h-16 rounded-full" />
+              } @else {
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                  No Image
+                </div>
+              }
+              <!-- Author Information -->
+              <div class="text-sm/6">
+                <p class="font-semibold text-gray-900">
+                  {{ article?.authorsName || 'Unknown Author' }}
+                </p>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <!-- No Articles Message -->
+      <section class="no-articles mt-4 text-center">
+        <p class="text-gray-500">No articles with such name.</p>
+      </section>
+    }
   </div>
 </div>

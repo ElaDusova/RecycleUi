@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,41 +14,90 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./user-account-page.component.scss'],
 })
 export class UserAccountPageComponent implements OnInit {
-  user: AccountDetail | null = null; // Holds user data
-  isLoading = true;
+  private userService = inject(UserService);
+  private userChangesService = inject(UserChangesService);
 
-  constructor(
-    private userChangesService: UserChangesService,
-    private userAccountService: UserService
-  ) {}
+  user: any = null;
+  userInfoFields = [
+    { label: 'First Name', key: 'firstname' },
+    { label: 'Last Name', key: 'lastname' },
+    { label: 'Username', key: 'displayname' },
+    { label: 'Email', key: 'email' },
+    { label: 'Date of Birth', key: 'dateofbirth' },
+  ];
 
+  activeModal: string | null = null;
+  modalTitle: string = '';
+  modalLabel: string = '';
+  modalValue: string = '';
 
   ngOnInit(): void {
-    const userId = 'someUserId'; // Replace with actual user ID logic
+    this.fetchUser();
+  }
 
-    // Fetch user details using `UserService`
-    this.userAccountService.getUserById(userId).subscribe({
-      next: (data) => {
-        this.user = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching user data:', err);
-        this.isLoading = false;
-      },
+  fetchUser(): void {
+    this.userService.getUserById('current').subscribe({
+      next: (user) => (this.user = user),
+      error: (err) => console.error('Error fetching user:', err),
     });
   }
 
-  // Placeholder methods for actions
-  updateProfilePicture(): void {
-    console.log('Update profile picture logic here...');
+  openModal(type: string): void {
+    this.activeModal = type;
+
+    switch (type) {
+      case 'profilePicture':
+        this.modalTitle = 'Change Profile Picture';
+        this.modalLabel = 'New Profile Picture URL';
+        this.modalValue = this.user?.profilePicture || '';
+        break;
+      case 'displayname':
+        this.modalTitle = 'Change Username';
+        this.modalLabel = 'New Username';
+        this.modalValue = this.user?.displayname || '';
+        break;
+      case 'password':
+        this.modalTitle = 'Change Password';
+        this.modalLabel = 'New Password';
+        this.modalValue = '';
+        break;
+    }
   }
 
-  updateUsername(): void {
-    console.log('Update username logic here...');
+  closeModal(): void {
+    this.activeModal = null;
   }
 
-  updatePassword(): void {
-    console.log('Update password logic here...');
+  saveChanges(): void {
+    if (!this.activeModal) return;
+
+    switch (this.activeModal) {
+      case 'profilePicture':
+        this.userChangesService.updateProfilePicture(this.user.id, { profilePicture: this.modalValue }).subscribe({
+          next: () => {
+            this.user.profilePicture = this.modalValue;
+            this.closeModal();
+          },
+          error: (err) => console.error('Error updating profile picture:', err),
+        });
+        break;
+      case 'displayname':
+        this.userChangesService.updateUserName(this.user.id, { displayname: this.modalValue }).subscribe({
+          next: () => {
+            this.user.displayname = this.modalValue;
+            this.closeModal();
+          },
+          error: (err) => console.error('Error updating username:', err),
+        });
+        break;
+      case 'password':
+        this.userChangesService.updateUserPassword(this.user.id, { password: this.modalValue }).subscribe({
+          next: () => {
+            this.closeModal();
+          },
+          error: (err) => console.error('Error updating password:', err),
+        });
+        break;
+    }
   }
 }

@@ -3,34 +3,37 @@
     <!-- Article Title and Content -->
     <div class="mx-auto max-w-2xl lg:mx-0">
       <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-        {{ article.heading }}
+        @if (article) {
+          {{ article.heading }}
+        } @else {
+          <span>Article Not Found</span>
+        }
       </h2>
     </div>
 
     <!-- Article Image and Author Info -->
-    <div class="mt-8">
-      <div class="flex items-center gap-x-4">
-        <img
-          *ngIf="article.picturePath"
-          [src]="article.picturePath"
-          alt="Article Image"
-          class="article-img"
-        />
-        <div class="text-sm">
-          <p class="font-semibold text-gray-900">Author Name</p>
-          <p class="text-gray-600">{{ article.authorsName }}</p>
+    @if (article) {
+      <div class="mt-8">
+        <div class="flex items-center gap-x-4">
+          @if (article.picturePath) {
+            <img [src]="article.picturePath" alt="Article Image" class="article-img" />
+          } @else {
+            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+              No Image
+            </div>
+          }
+
+          <div class="text-sm">
+            <p class="font-semibold text-gray-900">Author Name</p>
+            <p class="text-gray-600">{{ article.authorsName }}</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Article Content -->
-    <div class="article-content">
-      <p>{{ article.text }}</p>
-    </div>
-
-    <!-- No Article Message -->
-    <section *ngIf="!article" class="no-article">
-      <p class="text-gray-500">Article not found.</p>
-    </section>
+      <!-- Article Content -->
+      <div class="article-content">
+        <p>{{ article.text }}</p>
+      </div>
+    }
   </div>
 </div>

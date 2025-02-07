@@ -1,1 +1,73 @@
-<p>product-create works!</p>
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
+    <!-- Title -->
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">
+      Add a New Product
+    </h2>
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="mb-5 p-4 text-sm text-red-600 bg-red-100 border border-red-400 rounded-lg">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Product Creation Form -->
+    <form class="space-y-6" (ngSubmit)="onSubmit()">
+      <!-- Product Name & EAN -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Product Name</label>
+          <input type="text" id="name" [(ngModel)]="product.name" name="name"
+            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+            required />
+        </div>
+        <div>
+          <label for="ean" class="block mb-2 text-sm font-medium text-gray-700">EAN Code</label>
+          <input type="text" id="ean" [(ngModel)]="product.ean" name="ean"
+            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+            required />
+        </div>
+      </div>
+
+      <!-- Description & Picture Upload -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Description -->
+        <div>
+          <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
+          <textarea id="description" [(ngModel)]="product.description" name="description"
+            class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+            required></textarea>
+        </div>
+
+        <!-- Picture Upload -->
+        <label class="block mb-4 text-sm font-medium text-gray-700">
+          Add Picture
+          <div class="flex flex-col h-40 border border-gray-300 items-center justify-center bg-white rounded-lg p-4 my-2 relative">
+            <!-- Hidden File Input -->
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" class="hidden">
+
+            <!-- Centered Add New Button -->
+            <button type="button"
+              class="flex items-center justify-center group cursor-pointer outline-none hover:rotate-90 duration-300"
+              (click)="triggerFileInput()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24"
+                class="stroke-zinc-400 fill-none group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+          </div>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full text-white bg-mainGreen hover:bg-hoverGreen focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        Create Product
+      </button>
+    </form>
+  </div>
+</section>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input , inject} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { ProductDetail } from '../../../models/product/product-detail.interface';
 import { CommonModule } from '@angular/common';
@@ -9,17 +9,17 @@ import { JsonPatchDocument } from '../../../models/JSON/JsonPatchDocument';
 
 @Component({
   selector: 'app-validation-products-articles-page',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './validation-products-page.component.html',
   styleUrl: './validation-products-page.component.scss'
 })
-export class ValidationProductsPageComponent
-implements OnInit {
+export class ValidationProductsPageComponent implements OnInit {
+
   private productService = inject(ProductService);
 
   products$: Observable<ProductDetail[]> = of([]);
   selectedProduct: ProductDetail | null = null;
-  loading = true;
   errorMessage: string | null = null;
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ implements OnInit {
   }
 
   openEditModal(product: ProductDetail): void {
-    this.selectedProduct = { ...product }; // Clone to avoid modifying the list directly
+    this.selectedProduct = { ...product }; // Clone the object to avoid direct modification
   }
 
   closeModal(): void {

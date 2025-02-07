@@ -9,28 +9,26 @@
     </div>
 
     <!-- Containers Grid -->
-    <div class="container-grid">
-      <a
-        *ngFor="let container of containers"
-        [routerLink]="['/container/detail', container.id]"
-        class="container-card"
-      >
-        <div class="group relative flex flex-col items-center">
-          <img
-            *ngIf="container.picturePath"
-            [src]="container.picturePath"
-            alt="{{ container.name }}"
-            class="container-image"
-          />
-          <div class="no-image" *ngIf="!container.picturePath">No Image</div>
-          <h3 class="container-title">{{ container.name }}</h3>
-        </div>
-      </a>
-    </div>
-
-    <!-- No Containers Message -->
-    <section class="no-containers" *ngIf="!containers || containers.length === 0">
-      <p>No containers available at the moment.</p>
-    </section>
+    @if(containers && containers.length > 0) {
+      <div class="container-grid">
+        @for(container of containers; track container) {
+          <a routerLink="/container/detail/{{ container.id }}" class="container-card">
+            <div class="group relative flex flex-col items-center">
+              @if(container.picturePath) {
+                <img src="{{ container.picturePath }}" alt="{{ container.name }}" class="container-image" />
+              } @else {
+                <div class="no-image">No Image</div>
+              }
+              <h3 class="container-title">{{ container.name }}</h3>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <!-- No Containers Message -->
+      <section class="no-containers">
+        <p>No containers available at the moment.</p>
+      </section>
+    }
   </div>
 </div>

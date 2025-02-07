@@ -3,38 +3,36 @@
     <!-- Product Title and Description -->
     <div class="product-info">
       <h2 class="product-title">
-        {{ product.name }}
+        @if (product) {
+          {{ product.name }}
+        } @else {
+          <span>Product Not Found</span>
+        }
       </h2>
-      <p class="product-description">{{ product.description }}</p>
+      @if (product) {
+        <p class="product-description">{{ product.description }}</p>
+      }
     </div>
 
     <!-- Product Image and Info -->
-    <div class="product-details">
-      <div class="product-image-wrapper">
-        <!-- Product Image -->
-        <img
-          *ngIf="product?.picturePath"
-          [src]="product.picturePath"
-          alt="Product Image"
-          class="product-image"
-        />
-        <div *ngIf="!product?.picturePath" class="no-image">
-          No Image
-        </div>
-        <div class="product-meta">
-          <p class="meta-label">EAN</p>
-          <p class="meta-value">{{ product.ean }}</p>
-          <p class="meta-label">Verified</p>
-          <p class="meta-value">
-            {{ product.isVerified ? 'Yes' : 'No' }}
-          </p>
+    @if (product) {
+      <div class="product-details">
+        <div class="product-image-wrapper">
+          <!-- Product Image -->
+          @if (product.picturePath) {
+            <img [src]="product.picturePath" alt="Product Image" class="product-image" />
+          } @else {
+            <div class="no-image">No Image</div>
+          }
+
+          <div class="product-meta">
+            <p class="meta-label">EAN</p>
+            <p class="meta-value">{{ product.ean }}</p>
+            <p class="meta-label">Verified</p>
+            <p class="meta-value">{{ product.isVerified ? 'Yes' : 'No' }}</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- No Product Message -->
-    <section *ngIf="!product" class="no-product">
-      <p>Product not found.</p>
-    </section>
+    }
   </div>
 </div>

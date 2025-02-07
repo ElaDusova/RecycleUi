@@ -1,122 +1,81 @@
-<div class="container mx-auto p-4 " >
+<div class="container mx-auto p-4">
   <!-- Header -->
-  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl mt-8 ">Validate products</h3>
-  <p class="mt-2 text-lg/8 text-gray-600">
-    Make theese products verified so users can use them!
-  </p>
-<div
-  class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
->
-  <!-- Product List -->
-  <div *ngIf="errorMessage" class="text-center text-red-500">{{ errorMessage }}</div>
+  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl mt-8">
+    Validate Products
+  </h3>
+  <p class="mt-2 text-lg text-gray-600">Make these products verified so users can use them!</p>
 
-  <ng-container *ngIf="products$ | async as products">
-    <div *ngIf="products.length > 0">
-      <div
-        *ngFor="let product of products"
-        class="relative bg-white rounded-lg p-4 mb-3 flex justify-between items-center shadow cursor-pointer"
-        (click)="openEditModal(product)"
-      >
-        <div class="flex items-center space-x-4">
-          <img [src]="product.picturePath" alt="{{ product.name }}" class="w-12 h-12 object-cover rounded">
-          <div>
-            <p class="text-gray-700 font-semibold">{{ product.name }}</p>
-            <p class="text-gray-500 text-sm">EAN: {{ product.ean }}</p>
-          </div>
-        </div>
+  @if(errorMessage) {
+    <div class="text-center text-red-500">{{ errorMessage }}</div>
+  }
 
-        <div class="flex space-x-2">
-          <!-- Delete Button -->
-          <button
-            class="inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-            (click)="deleteProduct(product.id); $event.stopPropagation()"
-          >
-            <svg
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              fill="none"
-              class="h-5 w-5 mr-2"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                stroke-width="2"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-              ></path>
-            </svg>
-            Delete
-          </button>
-
-          <!-- Verify Button -->
-          <button
-            class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+  @if(products$ | async; as products) {
+    @if(products.length > 0) {
+      <div class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        @for(product of products; track product) {
+          <div
+            class="relative bg-white rounded-lg p-4 mb-3 flex justify-between items-center shadow cursor-pointer"
             (click)="openEditModal(product)"
           >
-            <svg
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              fill="none"
-              class="h-5 w-5 mr-2"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 13l4 4L19 7"
-                stroke-width="2"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-              ></path>
-            </svg>
-            Verify
-          </button>
+            <div class="flex items-center space-x-4">
+              <img src="{{ product.picturePath }}" alt="{{ product.name }}" class="w-12 h-12 object-cover rounded" />
+              <div>
+                <p class="text-gray-700 font-semibold">{{ product.name }}</p>
+                <p class="text-gray-500 text-sm">EAN: {{ product.ean }}</p>
+              </div>
+            </div>
+
+            <div class="flex space-x-2">
+              <!-- Delete Button -->
+              <button
+                class="inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                (click)="deleteProduct(product.id); $event.stopPropagation()"
+              >
+                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
+                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+                </svg>
+                Delete
+              </button>
+
+              <!-- Verify Button -->
+              <button
+                class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+                (click)="openEditModal(product)"
+              >
+                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
+                  <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+                </svg>
+                Verify
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center text-gray-500">No products need validation.</div>
+    }
+  }
+
+  <!-- Edit Modal -->
+  @if(selectedProduct) {
+    <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+      <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Edit Product</h3>
+
+        <label class="block text-sm text-gray-600">Product Name</label>
+        <input type="text" [(ngModel)]="selectedProduct.name" class="w-full p-2 border rounded mb-3" />
+
+        <label class="block text-sm text-gray-600">EAN</label>
+        <input type="text" [(ngModel)]="selectedProduct.ean" class="w-full p-2 border rounded mb-3" />
+
+        <label class="block text-sm text-gray-600">Description</label>
+        <textarea [(ngModel)]="selectedProduct.description" class="w-full p-2 border rounded mb-3"></textarea>
+
+        <div class="flex justify-between mt-4">
+          <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeModal()">Cancel</button>
+          <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="saveChanges()">Save</button>
         </div>
       </div>
     </div>
-
-    <div *ngIf="!loading && products.length === 0" class="text-center text-gray-500">
-      No products need validation.
-    </div>
-  </ng-container>
-
-  <!-- Edit Modal -->
-  <div *ngIf="selectedProduct" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-    <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Edit Product</h3>
-
-      <label class="block text-sm text-gray-600">Product Name</label>
-      <input
-        type="text"
-        [(ngModel)]="selectedProduct.name"
-        class="w-full p-2 border rounded mb-3"
-      />
-
-      <label class="block text-sm text-gray-600">EAN</label>
-      <input
-        type="text"
-        [(ngModel)]="selectedProduct.ean"
-        class="w-full p-2 border rounded mb-3"
-      />
-
-      <label class="block text-sm text-gray-600">Description</label>
-      <textarea
-        [(ngModel)]="selectedProduct.description"
-        class="w-full p-2 border rounded mb-3"
-      ></textarea>
-
-      <div class="flex justify-between mt-4">
-        <button
-          class="bg-gray-500 text-white px-4 py-2 rounded"
-          (click)="closeModal()"
-        >
-          Cancel
-        </button>
-        <button
-          class="bg-blue-500 text-white px-4 py-2 rounded"
-          (click)="saveChanges()"
-        >
-          Save
-        </button>
-      </div>
-    </div>
-  </div>
+  }
 </div>
