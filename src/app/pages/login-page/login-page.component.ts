@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LoginModel } from '../../models/user/login.interface';
 
 @Component({
   selector: 'app-login-page',
@@ -60,6 +61,18 @@ export class LoginPageComponent {
       },
     });
   }
+  loginUser(credentials: LoginModel): void {
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        localStorage.setItem('userId', response.userId); // Store user ID
+        this.router.navigate(['/dashboard']); // Redirect after login
+      },
+      error: (err) => {
+        console.error('Login failed:', err);
+      }
+    });
+  }
+
 
   protected hasError(controlName: string, errorType: string): boolean {
     const control = this.formular.get(controlName);

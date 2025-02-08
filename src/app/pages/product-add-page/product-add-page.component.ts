@@ -22,7 +22,8 @@ export class ProductAddPageComponent {
     name: '',
     ean: '',
     description: '',
-    picturePath: ''
+    picturePath: '',
+    partIds: []
   });
 
   onProductCreated(newProduct: ProductCreate): void {

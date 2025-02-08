@@ -18,6 +18,7 @@ export class ProductCreateResolver implements Resolve<ProductCreate> {
       ean: '',
       description: '',
       picturePath: null,
+      partIds: []
     };
 
     return of(newProduct); // Return the empty object to the form

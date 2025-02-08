@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AccountDetail } from '../models/user/account-detail.interface';
@@ -7,15 +7,11 @@ import { AccountDetail } from '../models/user/account-detail.interface';
   providedIn: 'root'
 })
 export class  UserService {
-  private baseUrl = 'api/v1/User/';
+  private readonly baseUrl = '/api/v1/User';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
-
-  getUserById(id: string): Observable<AccountDetail> {
-    return this.http.get<AccountDetail>(`${this.baseUrl}${id}`);
+  getUserById(userId: string): Observable<AccountDetail> {
+    return this.http.get<AccountDetail>(`${this.baseUrl}/${userId}`);
   }
 
-  deleteUser(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}${id}`);
-  }
 }

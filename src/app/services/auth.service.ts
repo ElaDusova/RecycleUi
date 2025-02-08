@@ -1,5 +1,5 @@
 import { AccountDetail } from './../models/user/account-detail.interface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ReplaySubject, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ import { map, tap } from 'rxjs/operators';
     private readonly router = inject(Router);
     private readonly httpClient = inject(HttpClient);
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
+
+    private readonly userUrl = '/api/v1/User';
 
     private userSubject = new BehaviorSubject<AccountDetail | null>(null);
     user$ = this.userSubject.asObservable();
@@ -57,14 +59,13 @@ import { map, tap } from 'rxjs/operators';
       })
     );
   }
+  getCurrentUser(): Observable<AccountDetail> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
 
-      fetchUserDetails(): void {
-        this.httpClient.get<AccountDetail>(`${this.baseUrl}/UserDetails`).subscribe(user => {
-          this.userSubject.next(user);
-          this.isLoggedInSubject.next(!!user); // Update logged-in status
-        });
-      }
-
+    return this.httpClient.get<AccountDetail>(`${this.userUrl}/current`, { headers });
+  }
   logout(): void {
     this.httpClient
       .post(`${this.baseUrl}/Logout`, {})

@@ -1,10 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AccountDetail } from '../../../models/user/account-detail.interface';
 import { UserChangesService } from '../../../services/userChanges.service';
 import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-account',
@@ -15,89 +16,41 @@ import { UserService } from '../../../services/user.service';
 })
 export class UserAccountPageComponent implements OnInit {
   private userService = inject(UserService);
-  private userChangesService = inject(UserChangesService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  user: any = null;
-  userInfoFields = [
-    { label: 'First Name', key: 'firstname' },
-    { label: 'Last Name', key: 'lastname' },
-    { label: 'Username', key: 'displayname' },
-    { label: 'Email', key: 'email' },
-    { label: 'Date of Birth', key: 'dateofbirth' },
-  ];
-
-  activeModal: string | null = null;
-  modalTitle: string = '';
-  modalLabel: string = '';
-  modalValue: string = '';
+  user: AccountDetail | null = null;
 
   ngOnInit(): void {
     this.fetchUser();
   }
 
   fetchUser(): void {
-    this.userService.getUserById('current').subscribe({
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.user = user;
+        localStorage.setItem('userId', user.id); // Store userId for future requests
+      },
+      error: (err) => console.error('Error fetching current user:', err),
+    });
+  }
+
+  loadUser(userId: string): void {
+    this.userService.getUserById(userId).subscribe({
       next: (user) => (this.user = user),
       error: (err) => console.error('Error fetching user:', err),
     });
   }
 
-  openModal(type: string): void {
-    this.activeModal = type;
-
-    switch (type) {
-      case 'profilePicture':
-        this.modalTitle = 'Change Profile Picture';
-        this.modalLabel = 'New Profile Picture URL';
-        this.modalValue = this.user?.profilePicture || '';
-        break;
-      case 'displayname':
-        this.modalTitle = 'Change Username';
-        this.modalLabel = 'New Username';
-        this.modalValue = this.user?.displayname || '';
-        break;
-      case 'password':
-        this.modalTitle = 'Change Password';
-        this.modalLabel = 'New Password';
-        this.modalValue = '';
-        break;
-    }
+  getLoggedInUserId(): string | null {
+    return localStorage.getItem('userId') || null;
   }
 
-  closeModal(): void {
-    this.activeModal = null;
+  navigateToChangePassword(): void {
+    this.router.navigate(['/user/change-password']);
   }
 
-  saveChanges(): void {
-    if (!this.activeModal) return;
-
-    switch (this.activeModal) {
-      case 'profilePicture':
-        this.userChangesService.updateProfilePicture(this.user.id, { profilePicture: this.modalValue }).subscribe({
-          next: () => {
-            this.user.profilePicture = this.modalValue;
-            this.closeModal();
-          },
-          error: (err) => console.error('Error updating profile picture:', err),
-        });
-        break;
-      case 'displayname':
-        this.userChangesService.updateUserName(this.user.id, { displayname: this.modalValue }).subscribe({
-          next: () => {
-            this.user.displayname = this.modalValue;
-            this.closeModal();
-          },
-          error: (err) => console.error('Error updating username:', err),
-        });
-        break;
-      case 'password':
-        this.userChangesService.updateUserPassword(this.user.id, { password: this.modalValue }).subscribe({
-          next: () => {
-            this.closeModal();
-          },
-          error: (err) => console.error('Error updating password:', err),
-        });
-        break;
-    }
+  navigateToChangeUsername(): void {
+    this.router.navigate(['/user/change-username']);
   }
 }

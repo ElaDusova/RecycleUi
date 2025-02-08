@@ -1,37 +1,43 @@
 <div class="product-container">
   <div class="content-wrapper">
-    <!-- Product Title and Description -->
-    <div class="product-info">
-      <h2 class="product-title">
-        @if (product) {
-          {{ product.name }}
-        } @else {
-          <span>Product Not Found</span>
-        }
-      </h2>
+    <!-- Product Title -->
+    <h2 class="product-title">
       @if (product) {
-        <p class="product-description">{{ product.description }}</p>
+        {{ product.name }}
+      } @else {
+        <span>Product Not Found</span>
       }
-    </div>
+    </h2>
 
-    <!-- Product Image and Info -->
+    <!-- Product Properties -->
     @if (product) {
       <div class="product-details">
+        <p><strong>EAN:</strong> {{ product.ean }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        <p><strong>Verified:</strong> {{ product.isVerified ? '✔ Verified' : '❌ Not Verified' }}</p>
+
+        <!-- Product Image -->
         <div class="product-image-wrapper">
-          <!-- Product Image -->
           @if (product.picturePath) {
             <img [src]="product.picturePath" alt="Product Image" class="product-image" />
           } @else {
-            <div class="no-image">No Image</div>
+            <div class="no-image">No Image Available</div>
           }
-
-          <div class="product-meta">
-            <p class="meta-label">EAN</p>
-            <p class="meta-value">{{ product.ean }}</p>
-            <p class="meta-label">Verified</p>
-            <p class="meta-value">{{ product.isVerified ? 'Yes' : 'No' }}</p>
-          </div>
         </div>
+
+        <!-- Product Parts (Simple List) -->
+        @if (product.parts.length > 0) {
+          <div class="product-parts">
+            <h3 class="parts-title">Product Parts</h3>
+            <ul class="parts-list">
+              @for (part of product.parts; track part.id) {
+                <li class="part-item">{{ part.name }}</li>
+              }
+            </ul>
+          </div>
+        } @else {
+          <p class="no-parts">No parts associated with this product.</p>
+        }
       </div>
     }
   </div>

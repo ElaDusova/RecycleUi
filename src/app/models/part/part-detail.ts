@@ -5,6 +5,7 @@ export interface PartDetail {
     picturePath: string | null;
     partType: PartType;
     isVerified: boolean;
+    partMaterials: string[];
 }
 export enum PartType {
   wrapping = 'wrapping',

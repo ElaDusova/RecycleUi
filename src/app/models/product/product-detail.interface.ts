@@ -1,3 +1,5 @@
+import { PartSimple } from "../part/part-simple.interface";
+
 export interface ProductDetail {
     id: string;
     name: string;
@@ -5,4 +7,5 @@ export interface ProductDetail {
     description: string;
     picturePath: string;
     isVerified: boolean;
+    parts: PartSimple[];
 }
