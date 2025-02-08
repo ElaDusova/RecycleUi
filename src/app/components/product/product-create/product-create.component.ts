@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
   imports: [FormsModule, CommonModule],
+  standalone: true
 })
 export class ProductCreateComponent implements OnInit {
 

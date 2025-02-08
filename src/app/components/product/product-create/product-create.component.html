@@ -7,12 +7,12 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Product Name</label>
-          <input type="text" id="name" [(ngModel)]="product.name" name="name"
-            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
-        </div>
+          <input type="text" [(ngModel)]="product.name" [ngModelOptions]="{standalone: true}"
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+                </div>
         <div>
           <label for="ean" class="block mb-2 text-sm font-medium text-gray-700">EAN Code</label>
-          <input type="text" id="ean" [(ngModel)]="product.ean" name="ean"
+          <input type="text" id="ean" [(ngModel)]="product.ean" name="ean" [ngModelOptions]="{standalone: true}"
             class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
         </div>
       </div>
@@ -20,7 +20,7 @@
       <!-- Description -->
       <div>
         <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description" [(ngModel)]="product.description" name="description"
+        <textarea id="description" [(ngModel)]="product.description" name="description" [ngModelOptions]="{standalone: true}"
           class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
       </div>
               <!-- Picture Upload -->
@@ -58,13 +58,17 @@
         </div>
 
         <!-- Search Input & Dropdown -->
-        <div class="flex gap-2">
-          <input type="text" [(ngModel)]="searchQuery" (input)="filterParts()" (focus)="toggleDropdown()"
+        <div class="flex flex-wrap gap-2 mb-4">
+          <input type="text" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" (input)="filterParts()" (focus)="toggleDropdown()"
             placeholder="Search parts..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
-          <button type="button" class="px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
-            (click)="openModal()">
-            Add Part
-          </button>
+        </div>
+        <div class= "flex gap-2">
+          <button type="button" class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+          aria-placeholder="Add Part"
+          (click)="openModal()">
+          Add Part
+        </button>
+
         </div>
 
         @if (dropdownOpen) {
@@ -81,8 +85,10 @@
       </div>
 
       <!-- Submit Button -->
+      <label class="block mb-2 text-sm font-semibold text-center text-gray-700">Are you ready to share it with the recycling world?
+      </label>
       <button type="submit"
-        class="w-full text-white rounded-lg bg-mainGreen hover:bg-hoverGreen rounded-lg text-gray-900 text-sm rounded-lg p-2.5">
+        class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen">
         Create Product
       </button>
     </form>
@@ -98,17 +104,17 @@
 
     <!-- Part Name -->
     <label class="block text-sm font-medium text-gray-700">Part Name</label>
-    <input type="text" [(ngModel)]="newPart.name" name="partName"
+    <input type="text" [(ngModel)]="newPart.name" name="partName" [ngModelOptions]="{standalone: true}"
       class="w-full p-2 border border-gray-300 rounded-lg mb-4" />
 
     <!-- Part Description -->
     <label class="block text-sm font-medium text-gray-700">Description</label>
-    <textarea [(ngModel)]="newPart.description" name="partDescription"
+    <textarea [(ngModel)]="newPart.description" name="partDescription" [ngModelOptions]="{standalone: true}"
       class="w-full p-2 border border-gray-300 rounded-lg mb-4"></textarea>
 
     <!-- Part Type Dropdown -->
     <label class="block text-sm font-medium text-gray-700">Type</label>
-    <select [(ngModel)]="newPart.partType" name="partType"
+    <select [(ngModel)]="newPart.partType" name="partType" [ngModelOptions]="{standalone: true}"
       class="w-full p-2 border border-gray-300 rounded-lg mb-4">
       @for (type of availablePartTypes; track type) {
         <option [value]="type">{{ type }}</option>
@@ -118,7 +124,7 @@
     <!-- Materials Selection -->
     <label class="block text-sm font-medium text-gray-700">Materials</label>
     <div class="relative">
-      <input type="text" [(ngModel)]="materialSearchQuery" (input)="filterMaterials()" (focus)="toggleMaterialDropdown()"
+      <input type="text" [(ngModel)]="materialSearchQuery" [ngModelOptions]="{standalone: true}" (input)="filterMaterials()" (focus)="toggleMaterialDropdown()"
         placeholder="Search materials..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
       @if (materialDropdownOpen) {
         <div class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
