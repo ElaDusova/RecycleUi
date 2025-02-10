@@ -22,12 +22,14 @@ import { LogoutPageComponent } from './pages/user-pages/logout-page/logout-page.
 import { UserAccountPageComponent } from './pages/user-pages/user-account-page/user-account-page.component';
 import { AddArticlesPageComponent } from './pages/admin-accesed-pages/add-articles-page/add-articles-page.component';
 import { ValidationProductsPageComponent } from './pages/admin-accesed-pages/validation-products-page/validation-products-page.component';
+import { ContainerAddPageComponent } from './pages/admin-accesed-pages/container-add-page/container-add-page.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent, title: 'Home', resolve: { articles: ArticleListResolver } }, // Use resolver here
       { path: 'register', component: RegisterPageComponent, title: 'Registration' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
@@ -43,6 +45,8 @@ export const routes: Routes = [
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
       { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
       { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
+      { path: 'containerCreate', component: ContainerAddPageComponent, title: 'Create a Container' },
+
 
  //     { path: 'changepassword', component: ChangePasswordPageComponent, title: 'Change Password' },
  //     { path: 'changeUsername', component: ForgottenPasswordPageComponent, title: 'Change Username' },

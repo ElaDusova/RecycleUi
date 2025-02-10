@@ -38,5 +38,10 @@ export class ProductService {
   searchProductsByEAN(ean: string): Observable<ProductDetail[]> {
     return this.httpClient.get<ProductDetail[]>(`api/v1/Product/search?ean=${ean}`);
   }
+  verifyProduct(id: string): Observable<ProductDetail> {
+    const patchData = [{ op: 'replace', path: '/isVerified', value: true }];
+    return this.httpClient.patch<ProductDetail>(`${this.baseUrl}/${id}`, patchData);
   }
+  }
+
   // through, though

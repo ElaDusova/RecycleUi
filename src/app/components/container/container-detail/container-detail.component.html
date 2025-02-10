@@ -1,39 +1,35 @@
 <div class="container-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <!-- Container Title and Description -->
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-        {{ container.name }}
-      </h2>
-      <div class="container-image">
-        <img
-          *ngIf="container?.picturePath"
-          [src]="container.picturePath"
-          alt="{{ container.name }}"
-          class="container-img"
-        />
-        <div *ngIf="!container?.picturePath" class="no-image">
-          No Image
-        </div>
-      </div>
+    <div class="flex flex-col lg:flex-row items-start gap-8">
 
-      <p class="mt-2 text-lg text-gray-600">{{ container.description }}</p>
-    </div>
+      <!-- Left Side: Container Title and Description -->
+      <div class="lg:w-3/4">
+        <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-12">
+          {{ container.name }}
+        </h2>
+        <p class="mt-2 text-lg text-gray-600">{{ container.description }}</p>
 
-    <!-- Container Image and Can Type -->
-    <div class="mt-8">
-      <div class="flex flex-col sm:flex-row items-center gap-x-4">
-        <!-- Container Details -->
-        <div class="text-sm">
+        <!-- Container Type -->
+        <div class="mt-8">
           <p class="font-semibold text-gray-900 text-lg">Type</p>
           <p class="text-gray-600 capitalize">{{ container.canType }}</p>
         </div>
       </div>
-    </div>
 
-    <!-- No Container Message -->
-    <section *ngIf="!container" class="mt-10 text-center">
-      <p class="text-gray-500 text-lg">Container not found.</p>
-    </section>
+      <!-- Right Side: Image -->
+      <div class="lg:w-1/4 flex justify-end py-12">
+        @if (container.picturePath) {
+          <img [src]="container.picturePath"
+            alt="{{ container.name }}"
+            class="rounded-lg shadow-lg w-full max-w-xs object-cover"
+          />
+        } @else {
+          <div class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500">
+            No Image
+          </div>
+        }
+      </div>
+
+    </div>
   </div>
 </div>

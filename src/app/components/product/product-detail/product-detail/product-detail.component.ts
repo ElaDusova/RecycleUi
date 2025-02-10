@@ -11,4 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class ProductDetailComponent {
   @Input() product!: ProductDetail;
+  protected hasParts: boolean = false;
+
+  ngOnInit(): void {
+    if (this.product && this.product.parts) {
+      this.hasParts = this.product.parts.length > 0;
+    }
+  }
 }

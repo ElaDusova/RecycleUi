@@ -26,39 +26,40 @@ export class RegisterPageComponent {
   protected readonly router = inject(Router);
 
   protected formular = this.fb.group({
-    email: new FormControl('', { nonNullable: true}),
-    password: new FormControl('', { nonNullable: true}),
-    displayname: new FormControl('', { nonNullable: true}),
+    firstname: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    lastname: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    dateofbirth: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
     passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    lastname: new FormControl('', { nonNullable: true}),
-    firstname: new FormControl('', { nonNullable: true}),
-    dateofbirth: new FormControl('', { nonNullable: true}),
-  },
-);
+  }, { validators: passwordMatchValidator });
+
 
 
   onSubmit(): void {
+    if (this.formular.invalid) {
+      return; // Pokud je formulář neplatný, zastavíme odeslání
+    }
+
     const data = this.formular.getRawValue();
-console.log(data);
+    console.log(data);
+
     this.authService.register(data).pipe(
       catchError((error) => {
-        // Handle error here
         console.error('Registration error', error);
         return [];
       })
     ).subscribe({
       next: () => {
-        // Handle successful registration
         console.log('Registration successful');
-        this.router.navigate(['/login']); // Redirect to login page
-
+        this.router.navigate(['/login']); // Přesměrování po úspěšné registraci
         this.formular.reset();
-
       },
       error: (error) => {
-        // Handle registration error
         console.error('Registration failed', error);
-      }    });
+      }
+    });
   }
 
 }

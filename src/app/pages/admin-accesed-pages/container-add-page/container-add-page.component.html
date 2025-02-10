@@ -1,0 +1,86 @@
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Add a New Container</h2>
+
+    <!-- Success Message -->
+    @if (successMessage()) {
+      <div class="mb-4 text-green-600 font-medium text-center">{{ successMessage() }}</div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage()) {
+      <div class="mb-4 text-red-600 font-medium text-center">{{ errorMessage() }}</div>
+    }
+
+    <!-- Add Container Button -->
+    <button type="button" class="px-4 py-2 bg-mainGreen text-white rounded-lg hover:bg-hoverGreen"
+      (click)="openModal()">
+      + Add New Container
+    </button>
+
+    <!-- Modal for Adding a New Container -->
+    <div id="modal-container"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity"
+      [class.hidden]="!openModal">
+
+      <div class="bg-white p-6 w-96 rounded-lg shadow-lg">
+        <h3 class="text-xl font-bold mb-4">Add New Container</h3>
+
+        <!-- Container Name -->
+        <label class="block text-sm font-medium text-gray-700">Container Name</label>
+        <input type="text" [(ngModel)]="newContainer.name" name="containerName" [ngModelOptions]="{standalone: true}"
+          class="w-full p-2 border border-gray-300 rounded-lg mb-4" required />
+
+        <!-- Description -->
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea [(ngModel)]="newContainer.description" name="containerDescription" [ngModelOptions]="{standalone: true}"
+          class="w-full p-2 border border-gray-300 rounded-lg mb-4"></textarea>
+
+        <!-- CanType Dropdown -->
+        <label class="block text-sm font-medium text-gray-700">Type</label>
+        <select [(ngModel)]="newContainer.canType" name="canType" [ngModelOptions]="{standalone: true}"
+          class="w-full p-2 border border-gray-300 rounded-lg mb-4">
+          @for ( type of availableCanTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+
+        <!-- Picture Upload -->
+        <label class="block mb-4 text-sm font-medium text-gray-700">
+          Add Picture
+          <div class="flex flex-col h-40 border border-gray-300 items-center justify-center bg-white rounded-lg p-4 my-2 relative">
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" class="hidden">
+            <button type="button"
+              class="flex items-center justify-center group cursor-pointer outline-none hover:rotate-90 duration-300"
+              (click)="triggerFileInput()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24"
+                class="stroke-zinc-400 fill-none group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+          </div>
+        </label>
+
+<!-- Submit Button -->
+<button type="button" class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+  [disabled]="isSubmitting()"
+  (click)="addContainer()">
+  @if (isSubmitting()) {
+    <span>Creating...</span>
+  } @else {
+    <span>Create Container</span>
+  }
+</button>
+
+        <!-- Close Button -->
+        <button class="w-full px-4 py-2 bg-gray-400 text-white rounded-lg mt-2 hover:bg-gray-500"
+          (click)="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

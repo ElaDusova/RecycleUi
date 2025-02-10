@@ -2,7 +2,7 @@ export interface ContainerCreate{
   id: string;
   name: string;
   description: string;
-  canType: CanType;
+  canType: string;
   picturePath: string | null;
 }
 
