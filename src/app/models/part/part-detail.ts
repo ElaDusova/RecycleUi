@@ -3,11 +3,10 @@ export interface PartDetail {
     name: string;
     description: string;
     picturePath: string | null;
-    partType: PartType;
+    type: PartType;
     isVerified: boolean;
     partMaterials: string[];
 }
-export enum PartType {
-  wrapping = 'wrapping',
-  part = 'part'
-  }
+export type PartType =
+  | 'Wrapping'
+  | 'Part';

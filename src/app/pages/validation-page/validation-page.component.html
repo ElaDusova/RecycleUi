@@ -1,0 +1,26 @@
+<section class="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
+    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Email Confirmation</h1>
+
+    @if (isLoading) {
+      <div class="mt-4">
+        <p class="text-gray-600 dark:text-gray-400">Validating your email...</p>
+        <div class="loader"></div>
+      </div>
+    }
+
+    @if (isSuccess === true) {
+      <div class="mt-4">
+        <p class="text-green-600 dark:text-green-400 font-semibold">✅ Email confirmed successfully!</p>
+        <p class="text-gray-500 dark:text-gray-400">Redirecting to login...</p>
+      </div>
+    }
+
+    @if (isSuccess === false) {
+      <div class="mt-4">
+        <p class="text-red-600 dark:text-red-400 font-semibold">❌ Email confirmation failed!</p>
+        <p class="text-gray-500 dark:text-gray-400">Invalid or expired token.</p>
+      </div>
+    }
+  </div>
+</section>

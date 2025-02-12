@@ -2,11 +2,10 @@ export interface PartCreate {
   name: string;
   description: string;
   picturePath: string | null;
-  partType: string;
+  type: PartType;
   isVerified: boolean;
   partMaterials: { materialId: string }[];
 }
-export enum PartType {
-wrapping = 'wrapping',
-part = 'part'
-}
+export type PartType =
+  | 'Wrapping'
+  | 'Part';

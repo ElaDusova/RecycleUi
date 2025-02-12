@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, OnInit, HostListener } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { ProductCreate } from '../../../models/product/product-create.interface';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { MaterialSimple } from '../../../models/material/material-simple';
 import { PartCreate } from '../../../models/part/part-create';
 import { PartDetail } from '../../../models/part/part-detail';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-product-create',
@@ -42,12 +42,13 @@ export class ProductCreateComponent implements OnInit {
 
   protected dropdownOpen: boolean = false;
   protected modalOpen: boolean = false;
+  constructor(private location: Location) {}
 
   protected newPart: PartCreate = {
     name: '',
     description: '',
     picturePath: null,
-    partType: '',
+    type: 'Wrapping',
     isVerified: false,
     partMaterials: []
   };
@@ -56,11 +57,22 @@ export class ProductCreateComponent implements OnInit {
   private partService = inject(PartService);
   private materialService = inject(MaterialService);
   private router = inject(Router);
+  private elementRef = inject(ElementRef);
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
+  @HostListener('document:click', ['$event'])
+  closeDropdownOnOutsideClick(event: Event): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.materialDropdownOpen = false;
+    }
+  }
   ngOnInit(): void {
     this.fetchParts();
     this.fetchMaterials();
+  }
+
+  goBack(): void {
+    this.location.back(); // Navigate to the previous page in history
   }
 
   fetchParts(): void {
@@ -88,7 +100,7 @@ export class ProductCreateComponent implements OnInit {
   }
 
   toggleMaterialDropdown(): void {
-    this.materialDropdownOpen = !this.materialDropdownOpen;
+    this.materialDropdownOpen = true;
   }
 
   filterMaterials(): void {
@@ -101,6 +113,7 @@ export class ProductCreateComponent implements OnInit {
     if (!this.selectedMaterials.some(m => m.id === material.id)) {
       this.selectedMaterials.push(material); // ✅ Store full object, not just string
       this.newPart.partMaterials.push({ materialId: material.id });
+      this.materialDropdownOpen = false;
     }
   }
 
@@ -115,7 +128,7 @@ export class ProductCreateComponent implements OnInit {
 
   closeModal(): void {
     this.modalOpen = false;
-    this.newPart = { name: '', description: '', picturePath: null, partType: '', isVerified: false, partMaterials: [] };
+    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', isVerified: false, partMaterials: [] };
     this.selectedMaterials = [];
   }
 
@@ -126,7 +139,7 @@ export class ProductCreateComponent implements OnInit {
       name: this.newPart.name,
       description: this.newPart.description || "Auto-created part",
       picturePath: this.newPart.picturePath || null,
-      partType: this.newPart.partType || "default",
+      type: this.newPart.type || "default",
       isVerified: false,
       partMaterials: this.selectedMaterials.map(material => ({ materialId: material.id })) // ✅ Correct type
     };
@@ -144,7 +157,7 @@ export class ProductCreateComponent implements OnInit {
         name: createdPart.name,
         description: createdPart.description,
         picturePath: createdPart.picturePath,
-        partType: createdPart.partType,
+        type: createdPart.type,
         isVerified: createdPart.isVerified,
         partMaterials: this.selectedMaterials.map(material => material.id) // ✅ Convert to string[]
       };

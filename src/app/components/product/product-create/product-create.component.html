@@ -62,8 +62,10 @@
           <input type="text" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" (input)="filterParts()" (focus)="toggleDropdown()"
             placeholder="Search parts..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
         </div>
+
+        <label class="block mb-2 text-sm font-medium text-gray-700">Didn't find your part? Create it!</label>
         <div class= "flex gap-2">
-          <button type="button" class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+          <button type="button" class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
           aria-placeholder="Add Part"
           (click)="openModal()">
           Add Part
@@ -85,12 +87,17 @@
       </div>
 
       <!-- Submit Button -->
-      <label class="block mb-2 text-sm font-semibold text-center text-gray-700">Are you ready to share it with the recycling world?
+      <label class="block mb-2 text-1xl font-semibold text-center text-gray-700">Are you ready to share it with the recycling world?
       </label>
       <button type="submit"
         class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen">
         Create Product
       </button>
+      <button
+      (click)="goBack()"
+      class="block text-center w-full justify-center rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500">
+      Cancel
+    </button>
     </form>
   </div>
 </section>
@@ -114,13 +121,26 @@
 
     <!-- Part Type Dropdown -->
     <label class="block text-sm font-medium text-gray-700">Type</label>
-    <select [(ngModel)]="newPart.partType" name="partType" [ngModelOptions]="{standalone: true}"
+    <select [(ngModel)]="newPart.type" name="partType" [ngModelOptions]="{standalone: true}"
       class="w-full p-2 border border-gray-300 rounded-lg mb-4">
       @for (type of availablePartTypes; track type) {
         <option [value]="type">{{ type }}</option>
       }
     </select>
-
+    <!-- Selected Materials -->
+    @if (selectedMaterials.length > 0) {
+      <div class="mt-4">
+        <h3 class="font-semibold text-lg">Selected Materials</h3>
+        <ul>
+          @for (material of selectedMaterials; track material.id) {
+            <li class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
+              {{ material.name }}
+              <button (click)="removeMaterial(material)" class="text-red-600">x</button>
+            </li>
+          }
+        </ul>
+      </div>
+    }
     <!-- Materials Selection -->
     <label class="block text-sm font-medium text-gray-700">Materials</label>
     <div class="relative">
@@ -138,21 +158,6 @@
         </div>
       }
     </div>
-
-    <!-- Selected Materials -->
-    @if (selectedMaterials.length > 0) {
-      <div class="mt-4">
-        <h3 class="font-semibold text-lg">Selected Materials</h3>
-        <ul>
-          @for (material of selectedMaterials; track material.id) {
-            <li class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
-              {{ material.name }}
-              <button (click)="removeMaterial(material)" class="text-red-600">x</button>
-            </li>
-          }
-        </ul>
-      </div>
-    }
 
     <!-- Part Image Upload -->
               <!-- Picture Upload -->

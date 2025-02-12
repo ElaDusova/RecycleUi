@@ -85,4 +85,7 @@ import { map, tap } from 'rxjs/operators';
     sendResetPasswordEmail(email: string): Observable<void> {
       return this.httpClient.post<void>(`${this.baseUrl}/ForgotPassword`, { email });
   }
+  validateToken(token: string, email: string): Observable<any> {
+    return this.httpClient.post('/api/v1/Auth/ValidateToken', { token, email });
+  }
 }

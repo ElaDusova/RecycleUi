@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { catchError, switchMap } from 'rxjs';
+import { catchError } from 'rxjs';
 import { passwordMatchValidator } from '../../validators/password-match.validator';
 
 @Component({
@@ -20,9 +20,7 @@ import { passwordMatchValidator } from '../../validators/password-match.validato
 export class RegisterPageComponent {
 
   protected readonly fb = inject(FormBuilder);
-
   protected readonly authService = inject(AuthService);
-
   protected readonly router = inject(Router);
 
   protected formular = this.fb.group({
@@ -35,31 +33,36 @@ export class RegisterPageComponent {
     passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   }, { validators: passwordMatchValidator });
 
-
+  protected isSubmitting = false;
+  protected successMessage: string | null = null;
+  protected errorMessage: string | null = null;
 
   onSubmit(): void {
     if (this.formular.invalid) {
-      return; // Pokud je formulář neplatný, zastavíme odeslání
+      return;
     }
 
+    this.isSubmitting = true;
     const data = this.formular.getRawValue();
-    console.log(data);
 
     this.authService.register(data).pipe(
       catchError((error) => {
         console.error('Registration error', error);
+        this.errorMessage = 'Registration failed. Please try again.';
+        this.isSubmitting = false;
         return [];
       })
     ).subscribe({
       next: () => {
-        console.log('Registration successful');
-        this.router.navigate(['/login']); // Přesměrování po úspěšné registraci
+        this.successMessage = 'Registration successful! Please check your email to confirm your account.';
+        this.isSubmitting = false;
         this.formular.reset();
       },
       error: (error) => {
         console.error('Registration failed', error);
+        this.errorMessage = 'Registration failed. Please try again.';
+        this.isSubmitting = false;
       }
     });
   }
-
 }
