@@ -33,7 +33,8 @@
 
 
     <!-- Submit Button -->
-    <button type="button"
+    <div class = "flex gap-2">
+      <button type="button"
       class="w-full px-5 py-2 text-white bg-mainGreen hover:bg-hoverGreen rounded-lg transition-transform duration-200 active:scale-95"
       [disabled]="isSubmitting()" (click)="addMaterial()">
       @if (isSubmitting()) {
@@ -41,6 +42,15 @@
       } @else {
         <span>Create Material</span>
       }
+      </button>
+    </div>
+    <div class="flex gap-2">
+      <button
+      (click)="goBack()"
+      class="w-full px-4 py-2 bg-gray-300 text-white rounded-lg mt-2 hover:bg-gray-400">
+      Cancel
     </button>
+    </div>
+
   </div>
 </section>

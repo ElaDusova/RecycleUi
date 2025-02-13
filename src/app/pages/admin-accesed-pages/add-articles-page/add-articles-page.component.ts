@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ArticleCreateModel } from '../../../models/article/article-create.interface';
 import { ArticleService } from '../../../services/article.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-articles-page',
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 })
 export class AddArticlesPageComponent implements OnInit {
   private articleService = inject(ArticleService);
+  constructor(private location: Location) {}
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>; // File input reference
 
   article: ArticleCreateModel = {
@@ -64,5 +66,8 @@ export class AddArticlesPageComponent implements OnInit {
         this.isSubmitting = false;
       }
     });
+  }
+  goBack(): void {
+    this.location.back(); // Navigate to the previous page in history
   }
 }

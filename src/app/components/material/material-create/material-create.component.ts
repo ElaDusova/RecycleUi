@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialService } from '../../../services/material.service';
 import { lastValueFrom } from 'rxjs';
@@ -19,6 +19,8 @@ export class MaterialCreateComponent {
   protected isSubmitting = signal<boolean>(false);
   protected successMessage = signal<string | null>(null);
   protected errorMessage = signal<string | null>(null);
+
+  constructor(private location: Location) {}
 
   protected newMaterial: MaterialCreate = {
     name: '',
@@ -45,4 +47,8 @@ export class MaterialCreateComponent {
       this.isSubmitting.set(false);
     }
   }
+  goBack(): void {
+    this.location.back(); // Navigate to the previous page in history
+  }
+
 }

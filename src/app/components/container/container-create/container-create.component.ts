@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContainerService } from '../../../services/container.service';
 import { ContainerCreate } from '../../../models/container/container-create.interface';
@@ -19,6 +19,8 @@ export class ContainerCreateComponent {
   protected isSubmitting = signal<boolean>(false);
   protected successMessage = signal<string | null>(null);
   protected errorMessage = signal<string | null>(null);
+
+  constructor(private location: Location) {}
 
   protected availableTypes: string[] = ['Plastic', 'Glass', 'Metal', 'Paper', 'Cartons', 'Electronics', 'Bio', 'CommunalTrash', 'Textile'];
 
@@ -74,4 +76,8 @@ export class ContainerCreateComponent {
       this.isSubmitting.set(false);
     }
   }
+  goBack(): void {
+    this.location.back(); // Navigate to the previous page in history
+  }
+
 }

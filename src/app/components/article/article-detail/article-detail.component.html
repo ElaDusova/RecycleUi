@@ -1,39 +1,42 @@
 <div class="article-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <!-- Article Title and Content -->
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-        @if (article) {
-          {{ article.heading }}
-        } @else {
-          <span>Article Not Found</span>
-        }
-      </h2>
-    </div>
+    <div class="flex flex-col lg:flex-row items-start gap-8">
 
-    <!-- Article Image and Author Info -->
-    @if (article) {
-      <div class="mt-8">
-        <div class="flex items-center gap-x-4">
-          @if (article.picturePath) {
-            <img [src]="article.picturePath" alt="Article Image" class="article-img" />
+      <!-- Left Side: Article Title and Content -->
+      <div class="lg:w-3/4">
+        <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-12">
+          @if (article) {
+            {{ article.heading }}
           } @else {
-            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
-              No Image
-            </div>
+            <span>Article Not Found</span>
           }
+        </h2>
 
-          <div class="text-sm">
-            <p class="font-semibold text-gray-900">Author Name</p>
-            <p class="text-gray-600">{{ article.authorsName }}</p>
-          </div>
+        <!-- Author Info -->
+        <div class="mt-8">
+          <p class="font-semibold text-gray-900 text-lg">Author</p>
+          <p class="text-gray-600">{{ article.authorsName }}</p>
         </div>
+        <div class="mt-4">
+          <p class="text-gray-600">{{ article.text }}</p>
+        </div>
+
       </div>
 
-      <!-- Article Content -->
-      <div class="article-content">
-        <p>{{ article.text }}</p>
+      <!-- Right Side: Image -->
+      <div class="lg:w-1/4 flex justify-end py-12">
+        @if (article.picturePath) {
+          <img [src]="article.picturePath"
+            alt="{{ article.heading }}"
+            class="rounded-lg shadow-lg w-full max-w-xs object-cover"
+          />
+        } @else {
+          <div class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500">
+            No Image
+          </div>
+        }
       </div>
-    }
+
+    </div>
   </div>
 </div>
