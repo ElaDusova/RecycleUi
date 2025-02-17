@@ -1,11 +1,6 @@
-export interface AccountDetail {
+export interface LoggedUser {
   id: string;
-  username: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  dateofbirth: string;
-  profilePicture: string;
-  displayname: string;
+  name: string | null;
+  isAuthenticated: boolean;
   isAdmin: boolean;
-  }
+}

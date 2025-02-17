@@ -2,10 +2,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AccountDetail } from '../../../models/user/account-detail.interface';
 import { UserChangesService } from '../../../services/userChanges.service';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
+import { LoggedUser } from '../../../models/user/account-detail.interface';
 
 @Component({
   selector: 'app-user-account',
@@ -16,41 +16,23 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class UserAccountPageComponent implements OnInit {
   private userService = inject(UserService);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-
-  user: AccountDetail | null = null;
+  user: LoggedUser | null = null;
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
-    this.fetchUser();
+    this.loadUserInfo();
   }
 
-  fetchUser(): void {
-    this.authService.getCurrentUser().subscribe({
+  loadUserInfo(): void {
+    this.userService.getUserInfo().subscribe({
       next: (user) => {
         this.user = user;
-        localStorage.setItem('userId', user.id); // Store userId for future requests
+        console.log('User info:', user);
       },
-      error: (err) => console.error('Error fetching current user:', err),
+      error: (err) => {
+        console.error('Error fetching user:', err);
+        this.errorMessage = 'Failed to load user details.';
+      }
     });
-  }
-
-  loadUser(userId: string): void {
-    this.userService.getUserById(userId).subscribe({
-      next: (user) => (this.user = user),
-      error: (err) => console.error('Error fetching user:', err),
-    });
-  }
-
-  getLoggedInUserId(): string | null {
-    return localStorage.getItem('userId') || null;
-  }
-
-  navigateToChangePassword(): void {
-    this.router.navigate(['/user/change-password']);
-  }
-
-  navigateToChangeUsername(): void {
-    this.router.navigate(['/user/change-username']);
   }
 }

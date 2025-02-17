@@ -1,4 +1,3 @@
-import { AccountDetail } from './../models/user/account-detail.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ReplaySubject, Observable, BehaviorSubject } from 'rxjs';
@@ -6,6 +5,7 @@ import { Router } from '@angular/router';
 import { LoginModel } from '../models/user/login.interface';
 import { RegisterModel } from '../models/user/register.interface';
 import { map, tap } from 'rxjs/operators';
+import { LoggedUser } from '../models/user/account-detail.interface';
 
 
 @Injectable({
@@ -17,9 +17,8 @@ import { map, tap } from 'rxjs/operators';
     private readonly httpClient = inject(HttpClient);
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
 
-    private readonly userUrl = '/api/v1/User';
 
-    private userSubject = new BehaviorSubject<AccountDetail | null>(null);
+    private userSubject = new BehaviorSubject<LoggedUser | null>(null);
     user$ = this.userSubject.asObservable();
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
     isAdmin$ = this.user$.pipe(map(user => user?.isAdmin ?? false));
@@ -58,13 +57,6 @@ import { map, tap } from 'rxjs/operators';
         this.isLoggedInSubject.next(true);
       })
     );
-  }
-  getCurrentUser(): Observable<AccountDetail> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
-
-    return this.httpClient.get<AccountDetail>(`${this.userUrl}/current`, { headers });
   }
   logout(): void {
     this.httpClient

@@ -1,32 +1,18 @@
 <div class="container mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
-  <!-- Page Title -->
   <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">User Account</h2>
 
-  <!-- User Info Section -->
   @if (user) {
-    <div class="space-y-4">
-      <p><strong>Username:</strong> {{ user.displayname }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Full Name:</strong> {{ user.firstname }} {{ user.lastname }}</p>
-      <p><strong>Date of Birth:</strong> {{ user.dateofbirth }}</p>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex justify-between mt-6">
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        (click)="navigateToChangeUsername()"
-      >
-        Change Username
-      </button>
-      <button
-        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
-        (click)="navigateToChangePassword()"
-      >
-        Change Password
-      </button>
+    <div class="space-y-4 text-center">
+      <p><strong>ID:</strong> {{ user.id }}</p>
+      <p><strong>Username:</strong> {{ user.name }}</p>
+      <p><strong>Authenticated:</strong> {{ user.isAuthenticated ? 'Yes' : 'No' }}</p>
+      <p><strong>Admin:</strong> {{ user.isAdmin ? 'Yes' : 'No' }}</p>
     </div>
   } @else {
     <p class="text-gray-500 text-center">Loading user data...</p>
+  }
+
+  @if (errorMessage) {
+    <p class="text-red-500 text-center mt-4">{{ errorMessage }}</p>
   }
 </div>
