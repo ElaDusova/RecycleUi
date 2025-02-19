@@ -1,18 +1,81 @@
-<div class="container mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
+<div class="container mx-auto p-6 max-w-4xl bg-white shadow rounded-lg mt-6">
   <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">User Account</h2>
 
-  @if (user) {
-    <div class="space-y-4 text-center">
-      <p><strong>ID:</strong> {{ user.id }}</p>
-      <p><strong>Username:</strong> {{ user.name }}</p>
-      <p><strong>Authenticated:</strong> {{ user.isAuthenticated ? 'Yes' : 'No' }}</p>
-      <p><strong>Admin:</strong> {{ user.isAdmin ? 'Yes' : 'No' }}</p>
-    </div>
-  } @else {
-    <p class="text-gray-500 text-center">Loading user data...</p>
+  <!-- Success Message -->
+  @if (successMessage) {
+    <p class="text-green-600 text-center mb-4">{{ successMessage }}</p>
   }
 
+  <!-- Error Message -->
   @if (errorMessage) {
-    <p class="text-red-500 text-center mt-4">{{ errorMessage }}</p>
+    <p class="text-red-500 text-center mb-4">{{ errorMessage }}</p>
   }
+
+  <!-- Grid Layout: User Info (Left) & Update Fields (Right) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Left Column: User Info -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">User Information</h3>
+      @if (user) {
+        <div class="space-y-3">
+          <p><strong>Username:</strong> {{ user.userName }}</p>
+          <p><strong>First Name:</strong> {{ user.firstName }}</p>
+          <p><strong>Last Name:</strong> {{ user.lastName }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Date of Birth:</strong> {{ user.dateOfBirth }}</p>
+          <p><strong>Admin:</strong> {{ user.isAdmin ? 'Yes' : 'No' }}</p>
+        </div>
+      } @else {
+        <p class="text-gray-500 text-center">Loading user data...</p>
+      }
+    </div>
+
+    <!-- Right Column: Update Fields -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Update Information</h3>
+
+      <!-- Update Username -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">New Username</label>
+        <div class="flex items-center gap-4">
+          <input type="text" [(ngModel)]="user.userName"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+          <button class="px-4 py-2 bg-mainGreen text-white rounded-lg hover:bg-hoverGreen transition-transform duration-200 active:scale-95"
+            (click)="updateUsername()">
+            Update
+          </button>
+        </div>
+      </div>
+
+      <!-- Update Email -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">New Email</label>
+        <div class="flex items-center gap-4">
+          <input type="email" [(ngModel)]="user.email"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+          <button class="px-4 py-2 bg-mainGreen text-white rounded-lg hover:bg-hoverGreen transition-transform duration-200 active:scale-95"
+            (click)="updateEmail()">
+            Update
+          </button>
+        </div>
+      </div>
+
+      <!-- Update Password -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">Change Password</label>
+        <div class="space-y-2">
+          <input type="password" placeholder="Current Password" [(ngModel)]="oldPassword"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+          <input type="password" placeholder="New Password" [(ngModel)]="newPassword"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+          <button class="w-full px-4 py-2 bg-mainGreen text-white rounded-lg hover:bg-hoverGreen transition-transform duration-200 active:scale-95"
+            (click)="updatePassword()">
+            Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

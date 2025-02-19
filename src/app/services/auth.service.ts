@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LoginModel } from '../models/user/login.interface';
 import { RegisterModel } from '../models/user/register.interface';
 import { map, tap } from 'rxjs/operators';
-import { LoggedUser } from '../models/user/account-detail.interface';
+import { AccountDetail } from '../models/user/account-detail.interface';
 
 
 @Injectable({
@@ -18,7 +18,7 @@ import { LoggedUser } from '../models/user/account-detail.interface';
     private isLoggedInSubject = new ReplaySubject<boolean>(1);
 
 
-    private userSubject = new BehaviorSubject<LoggedUser | null>(null);
+    private userSubject = new BehaviorSubject<AccountDetail | null>(null);
     user$ = this.userSubject.asObservable();
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
     isAdmin$ = this.user$.pipe(map(user => user?.isAdmin ?? false));

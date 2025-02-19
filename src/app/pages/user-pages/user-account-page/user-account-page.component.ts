@@ -2,10 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserChangesService } from '../../../services/userChanges.service';
 import { UserService } from '../../../services/user.service';
-import { AuthService } from '../../../services/auth.service';
-import { LoggedUser } from '../../../models/user/account-detail.interface';
+import { AccountDetail } from '../../../models/user/account-detail.interface';
 
 @Component({
   selector: 'app-user-account',
@@ -16,15 +14,29 @@ import { LoggedUser } from '../../../models/user/account-detail.interface';
 })
 export class UserAccountPageComponent implements OnInit {
   private userService = inject(UserService);
-  user: LoggedUser | null = null;
+  user: AccountDetail = {
+    userName: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    dateOfBirth: '',
+    profilePictureUrl: '',
+    isAdmin: false
+  };
+
   errorMessage: string | null = null;
+  successMessage: string | null = null;
+
+  // Separate password fields
+  oldPassword: string = '';
+  newPassword: string = '';
 
   ngOnInit(): void {
     this.loadUserInfo();
   }
 
   loadUserInfo(): void {
-    this.userService.getUserInfo().subscribe({
+    this.userService.getAccountInfo().subscribe({
       next: (user) => {
         this.user = user;
         console.log('User info:', user);
@@ -33,6 +45,46 @@ export class UserAccountPageComponent implements OnInit {
         console.error('Error fetching user:', err);
         this.errorMessage = 'Failed to load user details.';
       }
+    });
+  }
+
+  private showSuccessMessage(message: string) {
+    this.successMessage = message;
+    setTimeout(() => this.successMessage = null, 3000); // Clear message after 3s
+  }
+
+  private showErrorMessage(message: string) {
+    this.errorMessage = message;
+    setTimeout(() => this.errorMessage = null, 5000); // Clear message after 5s
+  }
+
+  updateUsername() {
+    this.userService.updateUsername(this.user.userName).subscribe({
+      next: () => this.showSuccessMessage("✅ Username updated successfully!"),
+      error: (err) => this.showErrorMessage("❌ Failed to update username."),
+    });
+  }
+
+  updateEmail() {
+    this.userService.updateEmail(this.user.email).subscribe({
+      next: () => this.showSuccessMessage("✅ Email updated successfully!"),
+      error: (err) => this.showErrorMessage("❌ Failed to update email."),
+    });
+  }
+
+  updatePassword() {
+    if (!this.oldPassword || !this.newPassword) {
+      this.showErrorMessage("❌ Both passwords are required.");
+      return;
+    }
+
+    this.userService.updatePassword(this.oldPassword, this.newPassword).subscribe({
+      next: () => {
+        this.showSuccessMessage("✅ Password updated successfully!");
+        this.oldPassword = ''; // Clear fields
+        this.newPassword = '';
+      },
+      error: (err) => this.showErrorMessage("❌ Failed to update password."),
     });
   }
 }
