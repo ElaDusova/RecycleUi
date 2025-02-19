@@ -1,0 +1,32 @@
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold text-gray-900 text-center mb-6">Reset Password</h2>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+      <p class="text-green-600 text-center mb-4">{{ successMessage }}</p>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <p class="text-red-600 text-center mb-4">{{ errorMessage }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="resetPassword()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">New Password</label>
+        <input type="password" formControlName="newPassword" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <input type="password" formControlName="confirmPassword" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-mainGreen focus:border-mainGreen">
+      </div>
+
+      <button type="submit" class="w-full px-4 py-2 bg-mainGreen text-white rounded-lg hover:bg-hoverGreen"
+        [disabled]="form.invalid">
+        Reset Password
+      </button>
+    </form>
+  </div>
+</section>

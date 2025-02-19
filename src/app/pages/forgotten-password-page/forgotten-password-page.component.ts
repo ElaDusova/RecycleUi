@@ -1,50 +1,41 @@
-import { Component, inject} from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-forgotten-password-page',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  selector: 'app-forgot-password',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './forgotten-password-page.component.html',
-  styleUrl: './forgotten-password-page.component.scss'
+  styleUrls: ['./forgotten-password-page.component.scss'],
 })
-export class ForgottenPasswordPageComponent {
-  protected readonly fb = inject(FormBuilder);
-  protected readonly authService = inject(AuthService);
+export class ForgotPasswordPageComponent {
+  private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   protected form: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
   });
 
-  protected errorMessage: string | null = null;
   protected successMessage: string | null = null;
-  protected isLoading = false;
+  protected errorMessage: string | null = null;
 
-  onSubmit(): void {
-    if (this.form.invalid) {
-      this.errorMessage = 'Please enter a valid email address.';
-      return;
-    }
+  sendResetLink(): void {
+    if (this.form.invalid) return;
 
-    this.isLoading = true;
-    this.errorMessage = null;
-    this.successMessage = null;
-
-    const email = this.form.get('email')?.value;
-
-    this.authService.sendResetPasswordEmail(email).subscribe({
+    const email = this.form.value.email;
+    this.authService.requestPasswordReset(email).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.successMessage = 'A password reset email has been sent.';
-        this.form.reset();
+        this.successMessage = 'Password reset link sent! Check your email.';
+        this.errorMessage = null;
       },
       error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err?.message || 'An error occurred. Please try again.';
-      }
+        console.error('Error sending reset link:', err);
+        this.errorMessage = 'Failed to send reset link. Please try again.';
+      },
     });
   }
 }

@@ -80,4 +80,13 @@ import { AccountDetail } from '../models/user/account-detail.interface';
   validateToken(token: string, email: string): Observable<any> {
     return this.httpClient.post('/api/v1/Auth/ValidateToken', { token, email });
   }
+    // Request password reset (sends email)
+    requestPasswordReset(email: string): Observable<void> {
+      return this.httpClient.post<void>(`${this.baseUrl}/ForgotPassword`, { email });
+    }
+
+    // Reset password using token
+    resetPassword(email: string, token: string, newPassword: string): Observable<void> {
+      return this.httpClient.post<void>(`${this.baseUrl}/ResetPassword`, { email, token, newPassword });
+    }
 }
