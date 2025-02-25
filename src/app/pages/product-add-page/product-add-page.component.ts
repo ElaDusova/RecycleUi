@@ -22,6 +22,7 @@ export class ProductAddPageComponent {
     name: '',
     ean: '',
     description: '',
+    isVerified: false,
     picturePath: '',
     partIds: []
   });

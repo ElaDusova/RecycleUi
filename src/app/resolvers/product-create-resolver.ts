@@ -17,6 +17,7 @@ export class ProductCreateResolver implements Resolve<ProductCreate> {
       name: '',
       ean: '',
       description: '',
+      isVerified: false,
       picturePath: null,
       partIds: []
     };

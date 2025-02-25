@@ -8,7 +8,7 @@ import { ContainerDetailComponent } from "../../components/container/container-d
   standalone: true,
   imports: [CommonModule, ContainerDetailComponent],
   templateUrl: './container.detail-page.component.html',
-  styleUrl: './container.detail-page.component.scss'
+  styleUrls: ['./container.detail-page.component.scss']
 })
 export class ContainerDetailPageComponent {
   readonly container = input.required<ContainerDetail>();

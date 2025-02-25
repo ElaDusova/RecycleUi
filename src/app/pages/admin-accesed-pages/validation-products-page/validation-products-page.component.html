@@ -5,13 +5,17 @@
   </h3>
   <p class="mt-2 text-lg text-gray-600">Make these products verified so users can use them!</p>
 
+  <!-- Error Message -->
   @if(errorMessage) {
-    <div class="text-center text-red-500">{{ errorMessage }}</div>
+    <div class="text-center text-red-500">
+      {{ errorMessage }}
+    </div>
   }
 
+  <!-- Product List -->
   @if(products$ | async; as products) {
     @if(products.length > 0) {
-      <div class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+      <div class="mx-auto mt-10 grid grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         @for(product of products; track product) {
           <div
             class="relative bg-white rounded-lg p-4 mb-3 flex justify-between items-center shadow cursor-pointer"
@@ -39,14 +43,14 @@
 
               <!-- Verify Button -->
               <button
-                class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                (click)="openEditModal(product)"
-              >
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
-                  <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-                </svg>
-                Verify
-              </button>
+              class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+              (click)="verifyProduct()"
+            >
+              <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
+                <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+              </svg>
+              Verify
+            </button>
             </div>
           </div>
         }

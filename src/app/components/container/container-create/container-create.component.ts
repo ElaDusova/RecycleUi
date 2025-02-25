@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContainerService } from '../../../services/container.service';
@@ -11,7 +11,7 @@ import { lastValueFrom } from 'rxjs';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './container-create.component.html',
-  styleUrl: './container-create.component.scss'
+  styleUrls: ['./container-create.component.scss']
 })
 export class ContainerCreateComponent {
   protected containerService = inject(ContainerService);
@@ -23,13 +23,14 @@ export class ContainerCreateComponent {
   constructor(private location: Location) {}
 
   protected availableTypes: string[] = ['Plastic', 'Glass', 'Metal', 'Paper', 'Cartons', 'Electronics', 'Bio', 'CommunalTrash', 'Textile'];
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   protected newContainer: ContainerCreate = {
     id: '',
     name: '',
     description: '',
     picturePath: null,
-    Type: 'Plastic', // Default
+    type: 'Plastic', // Default
   };
 
   /**
@@ -56,7 +57,7 @@ export class ContainerCreateComponent {
       name: this.newContainer.name.trim(),
       description: this.newContainer.description?.trim() || "No description",
       picturePath: this.newContainer.picturePath || null,
-      Type: this.newContainer.Type,
+      type: this.newContainer.type,
     };
 
     this.isSubmitting.set(true);
@@ -78,6 +79,9 @@ export class ContainerCreateComponent {
   }
   goBack(): void {
     this.location.back(); // Navigate to the previous page in history
+  }
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click();
   }
 
 }

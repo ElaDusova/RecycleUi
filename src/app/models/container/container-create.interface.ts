@@ -1,17 +1,9 @@
-export type TrashCanType =
-  | 'Plastic'
-  | 'Glass'
-  | 'Metal'
-  | 'Paper'
-  | 'Cartons'
-  | 'Electronics'
-  | 'Bio'
-  | 'CommunalTrash'
-  | 'Textile';
+import { Type } from "./canType.model";
+
   export interface ContainerCreate {
     id: string;
     name: string;
     description: string;
-    Type: TrashCanType;
+    type: Type;
     picturePath: string | null;
   }

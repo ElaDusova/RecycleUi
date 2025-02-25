@@ -1,24 +1,24 @@
+// src/app/pages/validation-products-page/validation-products-page.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { ProductDetail } from '../../../models/product/product-detail.interface';
 import { CommonModule } from '@angular/common';
-import { catchError } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { JsonPatchDocument } from '../../../models/JSON/JsonPatchDocument';
+import { Operation } from 'fast-json-patch';
 
 @Component({
   selector: 'app-validation-products-articles-page',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './validation-products-page.component.html',
-  styleUrl: './validation-products-page.component.scss'
+  styleUrls: ['./validation-products-page.component.scss']
 })
 export class ValidationProductsPageComponent implements OnInit {
-
   private productService = inject(ProductService);
 
-  products$: Observable<ProductDetail[]> = of([]);
+  products$: BehaviorSubject<ProductDetail[]> = new BehaviorSubject<ProductDetail[]>([]);
+  products: ProductDetail[] = [];
   selectedProduct: ProductDetail | null = null;
   errorMessage: string | null = null;
 
@@ -27,14 +27,19 @@ export class ValidationProductsPageComponent implements OnInit {
   }
 
   fetchUnverifiedProducts(): void {
-    this.products$ = this.productService.getProducts().pipe(
-      catchError((err) => {
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        // Filter out verified products
+        this.products = products.filter(product => product.isVerified === false);
+        this.products$.next(this.products);
+      },
+      error: (err) => {
         console.error('Error fetching products:', err);
         this.errorMessage = 'Failed to load products';
-        return of([]);
-      })
-    );
+      }
+    });
   }
+
 
   openEditModal(product: ProductDetail): void {
     this.selectedProduct = { ...product }; // Clone the object to avoid direct modification
@@ -44,29 +49,54 @@ export class ValidationProductsPageComponent implements OnInit {
     this.selectedProduct = null;
   }
 
-  saveChanges(): void {
-    if (this.selectedProduct) {
-      const patchDocument: JsonPatchDocument[] = [
-        { op: 'replace', path: '/name', value: this.selectedProduct.name },
-        { op: 'replace', path: '/ean', value: this.selectedProduct.ean },
-        { op: 'replace', path: '/description', value: this.selectedProduct.description },
-        { op: 'replace', path: '/picturePath', value: this.selectedProduct.picturePath },
-        { op: 'replace', path: '/isVerified', value: this.selectedProduct.isVerified }
-      ];
+// validation-products-page.component.ts
 
-      this.productService.updateProduct(this.selectedProduct.id, patchDocument).subscribe({
-        next: () => {
-          this.fetchUnverifiedProducts(); // Refresh the list (removes verified items)
-          this.closeModal();
-        },
-        error: (err) => {
-          console.error('Error updating product:', err);
-          this.errorMessage = 'Failed to update product.';
-        },
-      });
-    }
+saveChanges(): void {
+  if (!this.selectedProduct) return;
+
+  // Create the JSON Patch document
+  const patch: Operation[] = [];
+
+  if (this.selectedProduct.name) {
+    patch.push({ op: 'replace', path: '/name', value: this.selectedProduct.name });
+  }
+  if (this.selectedProduct.description) {
+    patch.push({ op: 'replace', path: '/description', value: this.selectedProduct.description });
+  }
+  if (this.selectedProduct.ean) {
+    patch.push({ op: 'replace', path: '/ean', value: this.selectedProduct.ean });
   }
 
+  // Always include isVerified in the PATCH request
+  console.log('isVerified:', this.selectedProduct.isVerified);
+  // this is a method that is seting the value to true
+  patch.push({ op: 'replace', path: '/isVerified', value: true });
+
+  // Call the ProductService to send the PATCH request
+  this.productService.updateProduct(this.selectedProduct.id, patch).subscribe({
+    next: () => {
+      // Remove the verified product from the local list
+      this.products = this.products.filter(product => product.id !== this.selectedProduct?.id);
+
+      // Update the observable to trigger change detection
+      this.products$.next(this.products);
+
+      // Close the modal
+      this.closeModal();
+      console.log('PATCH Payload:', JSON.stringify(patch));
+
+    },
+    error: (err) => {
+      console.error('Error updating product:', err);
+      this.errorMessage = 'Failed to update product.';
+    }
+  });
+}
+verifyProduct(): void {
+  if (!this.selectedProduct) return;
+
+  this.saveChanges();
+}
   deleteProduct(id: string): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProduct(id).subscribe({
@@ -76,7 +106,7 @@ export class ValidationProductsPageComponent implements OnInit {
         error: (err) => {
           console.error('Error deleting product:', err);
           this.errorMessage = 'Failed to delete product.';
-        },
+        }
       });
     }
   }

@@ -3,7 +3,6 @@ import { ProductService } from '../../../services/product.service';
 import { ProductCreate } from '../../../models/product/product-create.interface';
 import { Router } from '@angular/router';
 import { PartService } from '../../../services/part.service';
-import { PartSimple } from '../../../models/part/part-simple.interface';
 import { MaterialService } from '../../../services/material.service';
 import { MaterialSimple } from '../../../models/material/material-simple';
 import { PartCreate } from '../../../models/part/part-create';
@@ -23,6 +22,7 @@ export class ProductCreateComponent implements OnInit {
     name: '',
     ean: '',
     description: '',
+    isVerified: false,
     picturePath: null,
     partIds: []
   };
@@ -49,7 +49,6 @@ export class ProductCreateComponent implements OnInit {
     description: '',
     picturePath: null,
     type: 'Wrapping',
-    isVerified: false,
     partMaterials: []
   };
 
@@ -128,7 +127,7 @@ export class ProductCreateComponent implements OnInit {
 
   closeModal(): void {
     this.modalOpen = false;
-    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', isVerified: false, partMaterials: [] };
+    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', partMaterials: [] };
     this.selectedMaterials = [];
   }
 
@@ -140,7 +139,6 @@ export class ProductCreateComponent implements OnInit {
       description: this.newPart.description || "Auto-created part",
       picturePath: this.newPart.picturePath || null,
       type: this.newPart.type || "default",
-      isVerified: false,
       partMaterials: this.selectedMaterials.map(material => ({ materialId: material.id })) // ✅ Correct type
     };
 
@@ -170,8 +168,13 @@ export class ProductCreateComponent implements OnInit {
       console.error("Error creating part:", error);
     }
   }
+  onSubmit(): void {
+    // Ensure isVerified is explicitly set to false
+    this.product.isVerified = false;
 
-      onSubmit(): void {
+    // Log the payload to see what's being sent
+    console.log('Creating Product:', this.product);
+
     this.productService.createProduct(this.product).subscribe({
       next: () => {
         this.router.navigate(['/product-search']); // Redirect after success
@@ -181,6 +184,7 @@ export class ProductCreateComponent implements OnInit {
       }
     });
   }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {

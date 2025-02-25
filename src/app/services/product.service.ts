@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductDetail } from '../models/product/product-detail.interface';
 import { ProductCreate } from '../models/product/product-create.interface';
-import { JsonPatchDocument } from '../models/JSON/JsonPatchDocument';
+import { Operation } from 'fast-json-patch';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +23,17 @@ export class ProductService {
     const url = `${this.baseUrl}/${id}`;
     return this.httpClient.get<ProductDetail>(url);
   }
-  // Create a new product (should use POST)
-  createProduct(data: ProductCreate): Observable<ProductDetail> {
-    const url = this.baseUrl;
-    return this.httpClient.post<ProductDetail>(url, data);  // Changed to POST
+// product.service.ts
+createProduct(product: ProductCreate): Observable<void> {
+  return this.httpClient.post<void>(`${this.baseUrl}`, product, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+  updateProduct(id: string, patch: Operation[]): Observable<void> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json-patch+json' });
+    return this.httpClient.patch<void>(`${this.baseUrl}/${id}`, patch, { headers });
   }
-  updateProduct(id: string, patchDocument: JsonPatchDocument[]): Observable<ProductDetail> {
-    return this.httpClient.patch<ProductDetail>(`${this.baseUrl}/${id}`, patchDocument);
-  }
-  deleteProduct(id: string): Observable<void> {
+    deleteProduct(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseUrl}/${id}`);
   }
       // Search for products by EAN
