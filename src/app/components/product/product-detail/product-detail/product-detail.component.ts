@@ -17,7 +17,5 @@ export class ProductDetailComponent {
     if (this.product && this.product.parts) {
       this.hasParts = this.product.parts.length > 0;
     }
-// tenhle kod select hahaha mapovani n ABACKENDU
-    this.product.picturePath = `http://localhost:5100${this.product.picturePath}`;
   }
 }

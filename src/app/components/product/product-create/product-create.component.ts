@@ -206,7 +206,15 @@ export class ProductCreateComponent implements OnInit {
       }
     });
   }
+  removeImage(): void {
+    this.imagePreview = null; // Remove image preview
+    this.selectedFile = null; // Reset selected file
 
+    // Reset the file input field so the same file can be selected again
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
   private createProduct(): void {
     const productPayload = { ...this.product };
 
