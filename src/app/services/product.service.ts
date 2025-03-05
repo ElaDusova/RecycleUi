@@ -14,36 +14,47 @@ export class ProductService {
 
   // Fetch all products
   getProducts(): Observable<ProductDetail[]> {
-    const url = this.baseUrl;
-    return this.httpClient.get<ProductDetail[]>(url);
+    return this.httpClient.get<ProductDetail[]>(this.baseUrl);
   }
 
   // Fetch a single product by ID
   getProduct(id: string): Observable<ProductDetail> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<ProductDetail>(url);
+    return this.httpClient.get<ProductDetail>(`${this.baseUrl}/${id}`);
   }
-// product.service.ts
-createProduct(product: ProductCreate): Observable<void> {
-  return this.httpClient.post<void>(`${this.baseUrl}`, product, {
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
+
+  createProduct(product: ProductCreate): Observable<{ id: string }> {
+    return this.httpClient.post<{ id: string }>(this.baseUrl, product, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // Upload product image separately
+  uploadProductImage(imageFile: File): Observable<{ imagePath: string }> {
+    const formData = new FormData();
+    formData.append('productImage', imageFile);
+
+    return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadProductImage/`, formData);
+  }
+
+  // Update product (patching data)
   updateProduct(id: string, patch: Operation[]): Observable<void> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json-patch+json' });
     return this.httpClient.patch<void>(`${this.baseUrl}/${id}`, patch, { headers });
   }
-    deleteProduct(id: string): Observable<void> {
+
+  // Delete product
+  deleteProduct(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseUrl}/${id}`);
   }
-      // Search for products by EAN
+
+  // Search products by EAN
   searchProductsByEAN(ean: string): Observable<ProductDetail[]> {
-    return this.httpClient.get<ProductDetail[]>(`api/v1/Product/search?ean=${ean}`);
+    return this.httpClient.get<ProductDetail[]>(`/api/v1/Product/search?ean=${ean}`);
   }
+
+  // Verify product
   verifyProduct(id: string): Observable<ProductDetail> {
     const patchData = [{ op: 'replace', path: '/isVerified', value: true }];
     return this.httpClient.patch<ProductDetail>(`${this.baseUrl}/${id}`, patchData);
   }
-  }
-
-  // through, though
+}

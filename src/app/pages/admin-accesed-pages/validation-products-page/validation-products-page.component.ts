@@ -40,7 +40,6 @@ export class ValidationProductsPageComponent implements OnInit {
     });
   }
 
-
   openEditModal(product: ProductDetail): void {
     this.selectedProduct = { ...product }; // Clone the object to avoid direct modification
   }
@@ -49,54 +48,54 @@ export class ValidationProductsPageComponent implements OnInit {
     this.selectedProduct = null;
   }
 
-// validation-products-page.component.ts
+  saveChanges(): void {
+    if (!this.selectedProduct) return;
 
-saveChanges(): void {
-  if (!this.selectedProduct) return;
+    // Create the JSON Patch document
+    const patch: Operation[] = [];
 
-  // Create the JSON Patch document
-  const patch: Operation[] = [];
-
-  if (this.selectedProduct.name) {
-    patch.push({ op: 'replace', path: '/name', value: this.selectedProduct.name });
-  }
-  if (this.selectedProduct.description) {
-    patch.push({ op: 'replace', path: '/description', value: this.selectedProduct.description });
-  }
-  if (this.selectedProduct.ean) {
-    patch.push({ op: 'replace', path: '/ean', value: this.selectedProduct.ean });
-  }
-
-  // Always include isVerified in the PATCH request
-  console.log('isVerified:', this.selectedProduct.isVerified);
-  // this is a method that is seting the value to true
-  patch.push({ op: 'replace', path: '/isVerified', value: true });
-
-  // Call the ProductService to send the PATCH request
-  this.productService.updateProduct(this.selectedProduct.id, patch).subscribe({
-    next: () => {
-      // Remove the verified product from the local list
-      this.products = this.products.filter(product => product.id !== this.selectedProduct?.id);
-
-      // Update the observable to trigger change detection
-      this.products$.next(this.products);
-
-      // Close the modal
-      this.closeModal();
-      console.log('PATCH Payload:', JSON.stringify(patch));
-
-    },
-    error: (err) => {
-      console.error('Error updating product:', err);
-      this.errorMessage = 'Failed to update product.';
+    if (this.selectedProduct.name) {
+      patch.push({ op: 'replace', path: '/name', value: this.selectedProduct.name });
     }
-  });
-}
-verifyProduct(): void {
-  if (!this.selectedProduct) return;
+    if (this.selectedProduct.description) {
+      patch.push({ op: 'replace', path: '/description', value: this.selectedProduct.description });
+    }
+    if (this.selectedProduct.ean) {
+      patch.push({ op: 'replace', path: '/ean', value: this.selectedProduct.ean });
+    }
 
-  this.saveChanges();
-}
+    // Always include isVerified in the PATCH request
+    console.log('isVerified:', this.selectedProduct.isVerified);
+
+    // Setting isVerified to true when saving changes
+    patch.push({ op: 'replace', path: '/isVerified', value: this.selectedProduct.isVerified ?? false });
+
+    // Call the ProductService to send the PATCH request
+    this.productService.updateProduct(this.selectedProduct.id, patch).subscribe({
+      next: () => {
+        // Remove the verified product from the local list
+        this.products = this.products.filter(product => product.id !== this.selectedProduct?.id);
+
+        // Update the observable to trigger change detection
+        this.products$.next(this.products);
+
+        // Close the modal
+        this.closeModal();
+        console.log('PATCH Payload:', JSON.stringify(patch));
+      },
+      error: (err) => {
+        console.error('Error updating product:', err);
+        this.errorMessage = 'Failed to update product.';
+      }
+    });
+  }
+
+  verifyProduct(product: ProductDetail): void {
+    this.openEditModal(product);
+    this.selectedProduct!.isVerified = true; // Set isVerified to true
+    this.saveChanges();
+  }
+
   deleteProduct(id: string): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProduct(id).subscribe({
@@ -109,5 +108,10 @@ verifyProduct(): void {
         }
       });
     }
+  }
+
+  // Add this method to fix trackBy error in *ngFor
+  trackByProductId(index: number, product: ProductDetail): string {
+    return product.id;
   }
 }

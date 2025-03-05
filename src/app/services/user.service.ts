@@ -41,4 +41,14 @@ export class UserService {
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
+/** ✅ Update profile picture */
+updateProfilePicture(imageFile: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('profilePicture', imageFile);
+
+  return this.httpClient.patch<void>(
+    `${this.baseUrl}/UpdateProfilePicture`,
+    formData
+  );
+}
 }

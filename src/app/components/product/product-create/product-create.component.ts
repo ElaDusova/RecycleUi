@@ -27,6 +27,14 @@ export class ProductCreateComponent implements OnInit {
     partIds: []
   };
 
+  protected newPart: PartCreate = {
+    name: '',
+    description: '',
+    picturePath: null,
+    type: 'Wrapping',
+    partMaterials: []
+  };
+
   protected availableParts: PartDetail[] = [];
   protected filteredParts: PartDetail[] = [];
   protected selectedParts: PartDetail[] = [];
@@ -42,22 +50,18 @@ export class ProductCreateComponent implements OnInit {
 
   protected dropdownOpen: boolean = false;
   protected modalOpen: boolean = false;
-  constructor(private location: Location) {}
 
-  protected newPart: PartCreate = {
-    name: '',
-    description: '',
-    picturePath: null,
-    type: 'Wrapping',
-    partMaterials: []
-  };
+  selectedFile: File | null = null;
+  isUploading: boolean = false;
+  imagePreview: string | null = null;
 
-  private productService = inject(ProductService);
+  constructor(private location: Location, private productService: ProductService, private router: Router) {}
+
   private partService = inject(PartService);
   private materialService = inject(MaterialService);
-  private router = inject(Router);
   private elementRef = inject(ElementRef);
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
 
   @HostListener('document:click', ['$event'])
   closeDropdownOnOutsideClick(event: Event): void {
@@ -65,13 +69,14 @@ export class ProductCreateComponent implements OnInit {
       this.materialDropdownOpen = false;
     }
   }
+
   ngOnInit(): void {
     this.fetchParts();
     this.fetchMaterials();
   }
 
   goBack(): void {
-    this.location.back(); // Navigate to the previous page in history
+    this.location.back();
   }
 
   fetchParts(): void {
@@ -110,7 +115,7 @@ export class ProductCreateComponent implements OnInit {
 
   selectMaterial(material: MaterialSimple): void {
     if (!this.selectedMaterials.some(m => m.id === material.id)) {
-      this.selectedMaterials.push(material); // ✅ Store full object, not just string
+      this.selectedMaterials.push(material);
       this.newPart.partMaterials.push({ materialId: material.id });
       this.materialDropdownOpen = false;
     }
@@ -139,7 +144,7 @@ export class ProductCreateComponent implements OnInit {
       description: this.newPart.description || "Auto-created part",
       picturePath: this.newPart.picturePath || null,
       type: this.newPart.type || "default",
-      partMaterials: this.selectedMaterials.map(material => ({ materialId: material.id })) // ✅ Correct type
+      partMaterials: this.selectedMaterials.map(material => ({ materialId: material.id }))
     };
 
     try {
@@ -157,7 +162,8 @@ export class ProductCreateComponent implements OnInit {
         picturePath: createdPart.picturePath,
         type: createdPart.type,
         isVerified: createdPart.isVerified,
-        partMaterials: this.selectedMaterials.map(material => material.id) // ✅ Convert to string[]
+        trashCans: [],
+        partMaterials: this.selectedMaterials.map(material => material.id)
       };
 
       this.availableParts.push(newPartDetail);
@@ -168,19 +174,51 @@ export class ProductCreateComponent implements OnInit {
       console.error("Error creating part:", error);
     }
   }
+
   onSubmit(): void {
-    // Ensure isVerified is explicitly set to false
     this.product.isVerified = false;
 
-    // Log the payload to see what's being sent
-    console.log('Creating Product:', this.product);
+    if (this.selectedFile) {
+      this.uploadImage();
+    } else {
+      this.createProduct();
+    }
+  }
 
-    this.productService.createProduct(this.product).subscribe({
-      next: () => {
-        this.router.navigate(['/product-search']); // Redirect after success
+  uploadImage(): void {
+    if (!this.selectedFile) {
+      console.error('No file selected for upload.');
+      return;
+    }
+
+    this.isUploading = true;
+
+    this.productService.uploadProductImage(this.selectedFile).subscribe({
+      next: (uploadResponse) => {
+        console.log('Product image uploaded successfully:', uploadResponse.imagePath);
+        this.product.picturePath = uploadResponse.imagePath;
+        this.isUploading = false;
+        this.createProduct();
       },
       error: (error) => {
-        console.error('Error creating product:', error);
+        console.error('Error uploading product image:', error);
+        this.isUploading = false;
+      }
+    });
+  }
+
+  private createProduct(): void {
+    const productPayload = { ...this.product };
+
+    console.log('Creating Product:', productPayload);
+
+    this.productService.createProduct(productPayload).subscribe({
+      next: (response) => {
+        console.log('Product created successfully:', response);
+        this.router.navigate(['/product-search']);
+      },
+      error: (error) => {
+        console.error('Error creating product:', error.error);
       }
     });
   }
@@ -188,44 +226,46 @@ export class ProductCreateComponent implements OnInit {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      console.log('Selected file:', file.name);
-      this.product.picturePath = URL.createObjectURL(file);
-    }
-  }
-
-  triggerPartFileInput(): void {
-    this.fileInput.nativeElement.click();
-  }
-  onPartImageSelected(event: any): void {
-    const file = event.target.files[0]; // Get the selected file
-    if (file) {
+      this.selectedFile = file;
       const reader = new FileReader();
-
       reader.onload = () => {
-        this.newPart.picturePath = reader.result as string; // Store the image as a base64 string
+        this.imagePreview = reader.result as string;
       };
-
-      reader.readAsDataURL(file); // Convert the file to base64
+      reader.readAsDataURL(file);
     }
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.fileInput) {
+      console.error('fileInput is not available after view initialization.');
+    }
+  }
+
+  triggerFileInput(): void {
+    if (!this.fileInput || !this.fileInput.nativeElement) {
+      console.error("File input is not initialized yet.");
+      return;
+    }
+    this.fileInput.nativeElement.click();
   }
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
   }
+
   selectPart(part: PartDetail): void {
     if (!this.selectedParts.some(p => p.id === part.id)) {
       this.selectedParts.push(part);
       this.product.partIds.push(part.id);
     }
   }
+
   removePart(part: PartDetail): void {
     this.selectedParts = this.selectedParts.filter(p => p.id !== part.id);
     this.product.partIds = this.product.partIds.filter(id => id !== part.id);
   }
+
   filterParts(): void {
     const query = this.searchQuery.toLowerCase().trim();
     this.filteredParts = this.availableParts.filter(part => part.name.toLowerCase().includes(query));
-  }
-  triggerFileInput(): void {
-    this.fileInput.nativeElement.click();
   }
 }

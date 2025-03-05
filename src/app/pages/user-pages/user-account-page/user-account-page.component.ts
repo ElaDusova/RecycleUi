@@ -30,6 +30,9 @@ export class UserAccountPageComponent implements OnInit {
   // Separate password fields
   oldPassword: string = '';
   newPassword: string = '';
+  selectedFile: File | null = null;
+  profilePictureUrl: string = '';
+
 
   ngOnInit(): void {
     this.loadUserInfo();
@@ -85,6 +88,27 @@ export class UserAccountPageComponent implements OnInit {
         this.newPassword = '';
       },
       error: (err) => this.showErrorMessage("❌ Failed to update password."),
+    });
+  }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpdateProfilePicture() {
+    if (!this.selectedFile) {
+      console.error('No file selected.');
+      return;
+    }
+
+    this.userService.updateProfilePicture(this.selectedFile).subscribe({
+      next: (response) => {
+        console.log('Profile picture updated successfully.', response);
+        // Optionally update the UI with the new image URL
+        this.profilePictureUrl = response.url;
+      },
+      error: (error) => {
+        console.error('Failed to update profile picture.', error);
+      }
     });
   }
 }

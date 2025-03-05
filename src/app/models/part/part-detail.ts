@@ -5,8 +5,14 @@ export interface PartDetail {
     picturePath: string | null;
     type: PartType;
     isVerified: boolean;
+    trashCans: IdNameModel[];
     partMaterials: string[];
-}
-export type PartType =
+  }
+
+  export interface IdNameModel {
+    id: string;
+    name: string;
+  }
+  export type PartType =
   | 'Wrapping'
   | 'Part';

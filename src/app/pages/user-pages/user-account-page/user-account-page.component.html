@@ -75,6 +75,11 @@
           </button>
         </div>
       </div>
+      <input type="file" (change)="onFileSelected($event)">
+<button (click)="onUpdateProfilePicture()">Update Profile Picture</button>
+
+<img *ngIf="profilePictureUrl" [src]="'https://your-backend-url/uploads/' + profilePictureUrl" alt="Profile Picture">
+
     </div>
 
   </div>

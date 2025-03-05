@@ -23,10 +23,22 @@ import { AccountDetail } from '../models/user/account-detail.interface';
     isLoggedIn$ = this.isLoggedInSubject.asObservable();
     isAdmin$ = this.user$.pipe(map(user => user?.isAdmin ?? false));
 
-    constructor(){
+    constructor() {
       const token = localStorage.getItem('accessToken');
       if (token) {
         this.isLoggedInSubject.next(true);  // User is authenticated
+
+        // Load user details if token is present
+        this.getUserDetails().subscribe({
+          next: (user) => {
+            this.userSubject.next(user);
+          },
+          error: (error) => {
+            console.error('Error loading user details:', error);
+            // If there's an error (e.g., token expired), log the user out
+            this.logout();
+          }
+        });
       } else {
         this.isLoggedInSubject.next(false);  // User is not authenticated
       }
@@ -47,34 +59,52 @@ import { AccountDetail } from '../models/user/account-detail.interface';
         );
     }
 
-  login(data: LoginModel): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/Login`, data).pipe(
-      tap((response) => {
-        const token = response.token;
-        localStorage.setItem('accessToken', token);
+    login(data: LoginModel): Observable<any> {
+      return this.httpClient.post<any>(`${this.baseUrl}/Login`, data).pipe(
+        tap((response) => {
+          const token = response.token;
+          localStorage.setItem('accessToken', token);
 
-        this.router.navigate(['/home']);
-        this.isLoggedInSubject.next(true);
-      })
-    );
-  }
-  logout(): void {
-    this.httpClient
-      .post(`${this.baseUrl}/Logout`, {})
-      .subscribe(() => {
-        localStorage.removeItem('accessToken');
-        this.isLoggedInSubject.next(false);
-        this.router.navigate(['/login']);
+          this.isLoggedInSubject.next(true);
+
+          // Load user details after successful login
+          this.getUserDetails().subscribe();
+
+          this.router.navigate(['/home']);
+        })
+      );
+    }
+    logout(): void {
+      this.httpClient.post(`${this.baseUrl}/Logout`, {}).subscribe({
+        next: () => {
+          localStorage.removeItem('accessToken');
+          this.isLoggedInSubject.next(false);  // <-- This ensures isLoggedIn is set to false
+          this.userSubject.next(null);  // <-- This clears the user data
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error during logout:', error);
+        }
       });
-  }
-  isAuthenticated(): boolean {
+    }
+      isAuthenticated(): boolean {
     let isAuthenticated = false;
     this.isLoggedInSubject
       .subscribe((status) => (isAuthenticated = status))
       .unsubscribe();
     return isAuthenticated;
   }
-    sendResetPasswordEmail(email: string): Observable<void> {
+  getUserDetails(): Observable<AccountDetail> {
+    const token = localStorage.getItem('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.httpClient.get<AccountDetail>('/api/v1/User/UserInfo', { headers }).pipe(
+      tap((user) => {
+       this.userSubject.next(user);
+      })
+    );
+  }
+      sendResetPasswordEmail(email: string): Observable<void> {
       return this.httpClient.post<void>(`${this.baseUrl}/ForgotPassword`, { email });
   }
   validateToken(token: string, email: string): Observable<any> {

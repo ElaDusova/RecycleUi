@@ -1,6 +1,6 @@
 <div class="container mx-auto p-4">
   <!-- Header -->
-  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl mt-8">
+  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
     Validate Products
   </h3>
   <p class="mt-2 text-lg text-gray-600">Make these products verified so users can use them!</p>
@@ -44,8 +44,8 @@
               <!-- Verify Button -->
               <button
               class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-              (click)="verifyProduct()"
-            >
+              (click)="verifyProduct(product); $event.stopPropagation()">
+              >
               <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
                 <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
               </svg>
