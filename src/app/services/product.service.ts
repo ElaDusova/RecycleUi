@@ -28,19 +28,19 @@ export class ProductService {
     });
   }
 
-  // Upload product image separately
-  uploadProductImage(imageFile: File): Observable<{ imagePath: string }> {
-    const formData = new FormData();
-    formData.append('productImage', imageFile);
+// Upload product image separately
+uploadProductImage(imageFile: File): Observable<{ imagePath: string }> {
+  const formData = new FormData();
+  formData.append('productImage', imageFile);
 
-    return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadProductImage/`, formData);
-  }
+  return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadProductImage/`, formData);
+}
 
-  // Update product (patching data)
-  updateProduct(id: string, patch: Operation[]): Observable<void> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json-patch+json' });
-    return this.httpClient.patch<void>(`${this.baseUrl}/${id}`, patch, { headers });
-  }
+// Update product (patching data)
+updateProduct(id: string, patch: Operation[]): Observable<{ message: string }> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json-patch+json' });
+  return this.httpClient.patch<{ message: string }>(`${this.baseUrl}/${id}`, patch, { headers });
+}
 
   // Delete product
   deleteProduct(id: string): Observable<void> {

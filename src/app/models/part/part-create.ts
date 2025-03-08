@@ -3,7 +3,7 @@ export interface PartCreate {
   description: string;
   picturePath: string | null;
   type: PartType;
-  partMaterials: { materialId: string }[];
+  materialId: string;
 }
 export type PartType =
   | 'Wrapping'

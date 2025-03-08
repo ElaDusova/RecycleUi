@@ -1,6 +1,4 @@
-import { MaterialSimple } from "./part-simple.interface";
-
-export interface PartDetail {
+export interface PartUpdate {
     id: string;
     name: string;
     description: string;
@@ -8,7 +6,7 @@ export interface PartDetail {
     type: PartType;
     isVerified: boolean;
     trashCans: IdNameModel[];
-    material: MaterialSimple;
+    materialId: string;
   }
 
   export interface IdNameModel {

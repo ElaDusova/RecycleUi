@@ -1,85 +1,116 @@
-<div class="container mx-auto p-4">
-  <!-- Header -->
-  <h3 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-    Validate Products
-  </h3>
-  <p class="mt-2 text-lg text-gray-600">Make these products verified so users can use them!</p>
+<section class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+  <!-- Unverified Products List -->
+  <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-4">Unverified Products</h2>
 
-  <!-- Error Message -->
-  @if(errorMessage) {
-    <div class="text-center text-red-500">
-      {{ errorMessage }}
-    </div>
-  }
+    @if (products.length > 0) {
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border border-gray-300 p-2">Name</th>
+            <th class="border border-gray-300 p-2">EAN</th>
+            <th class="border border-gray-300 p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products; track product.id) {
+            <tr class="border border-gray-300">
+              <td class="p-2">{{ product.name }}</td>
+              <td class="p-2">{{ product.ean }}</td>
+              <td class="p-2 flex gap-2">
+                <button class="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  (click)="verifyProduct(product)">Verify</button>
+                <button class="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                  (click)="deleteProduct(product.id)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="text-center text-gray-500 mt-4">No unverified products found.</p>
+    }
+  </div>
 
-  <!-- Product List -->
-  @if(products$ | async; as products) {
-    @if(products.length > 0) {
-      <div class="mx-auto mt-10 grid grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-        @for(product of products; track product) {
-          <div
-            class="relative bg-white rounded-lg p-4 mb-3 shadow cursor-pointer flex flex-col items-center justify-between w-full max-w-xs"
-            (click)="openEditModal(product)"
-          >
-            <!-- Product Info (Image + Name + EAN) -->
-            <div class="flex flex-col items-center text-center">
-              <img src="{{ product.picturePath }}" alt="{{ product.name }}" class="w-16 h-16 object-cover rounded mb-2" />
-              <p class="text-gray-700 font-semibold break-words w-full max-w-[200px]">{{ product.name }}</p>
-              <p class="text-gray-500 text-sm">EAN: {{ product.ean }}</p>
-            </div>
+  <!-- Verification Form -->
+  @if (selectedProduct) {
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl mt-6">
+      <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Verify & Update Product</h2>
 
-            <!-- Buttons Section (Centered in Container) -->
-            <div class="flex space-x-2 mt-4">
-              <!-- Delete Button -->
-              <button
-                class="inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                (click)="deleteProduct(product.id); $event.stopPropagation()"
-              >
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
-                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-                </svg>
-                Delete
-              </button>
-
-              <!-- Verify Button -->
-              <button
-                class="inline-flex items-center px-4 py-2 bg-mainGreen transition ease-in-out delay-75 hover:bg-hoverGreen text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                (click)="verifyProduct(product); $event.stopPropagation()">
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-5 w-5 mr-2">
-                  <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-                </svg>
-                Verify
-              </button>
-            </div>
+      <form class="space-y-6">
+        <!-- Name & EAN -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Product Name</label>
+            <input type="text" [(ngModel)]="selectedProduct.name" name="productName"
+              class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
           </div>
-        }
-      </div>
-    }
-  }
-  @else {
-      <div class="text-center text-gray-500">No products need validation.</div>
-    }
-
-  <!-- Edit Modal -->
-  @if(selectedProduct) {
-    <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-      <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Edit Product</h3>
-
-        <label class="block text-sm text-gray-600">Product Name</label>
-        <input type="text" [(ngModel)]="selectedProduct.name" class="w-full p-2 border rounded mb-3" />
-
-        <label class="block text-sm text-gray-600">EAN</label>
-        <input type="text" [(ngModel)]="selectedProduct.ean" class="w-full p-2 border rounded mb-3" />
-
-        <label class="block text-sm text-gray-600">Description</label>
-        <textarea [(ngModel)]="selectedProduct.description" class="w-full p-2 border rounded mb-3"></textarea>
-
-        <div class="flex justify-between mt-4">
-          <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeModal()">Cancel</button>
-          <button class="bg-mainGreen text-white px-4 py-2 rounded" (click)="saveChanges()">Save</button>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">EAN Code</label>
+            <input type="text" [(ngModel)]="selectedProduct.ean" name="productEan"
+              class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+          </div>
         </div>
-      </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea [(ngModel)]="selectedProduct.description" name="productDescription"
+            class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Upload Product Image</label>
+          @if (imagePreview) {
+            <div class="mb-2 flex flex-col items-center">
+              <img [src]="imagePreview" alt="Image Preview" class="h-32 w-32 object-cover rounded-lg mb-2">
+              <button type="button" class="px-3 py-1 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600"
+                (click)="removeImage()">Remove Image</button>
+            </div>
+          }
+          <div class="flex flex-col items-center justify-center border border-gray-300 bg-white rounded-lg p-4 my-2">
+            <input #fileInput type="file" (change)="onFileSelected($event)" class="hidden">
+            <button type="button"
+              class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+              (click)="triggerFileInput()">Select Image</button>
+          </div>
+        </div>
+
+        <!-- Parts Selection -->
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700">Select Product Parts</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            @for (part of selectedParts; track part.id) {
+              <span class="bg-mainGreen text-white px-3 py-1 rounded-lg flex items-center">
+                {{ part.name }}
+                <button type="button" (click)="removePart(part)" class="ml-2 text-sm text-red-500">x</button>
+              </span>
+            }
+          </div>
+          <input type="text" [(ngModel)]="searchQuery" name="searchParts" (input)="filterParts()" (focus)="toggleDropdown()"
+            placeholder="Search parts..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+          @if (dropdownOpen) {
+            <div class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+              <ul class="max-h-40 overflow-auto">
+                @for (part of filteredParts; track part.id) {
+                  <li class="p-2 cursor-pointer hover:bg-gray-200" (click)="selectPart(convertToPartUpdate(part))">
+                    {{ part.name }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <!-- Save & Cancel Buttons -->
+        <div class="flex justify-between">
+          <button type="button" class="px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+            (click)="saveChanges()">Update Product</button>
+          <button type="button" class="px-12 py-2 text-white rounded-lg bg-gray-500 hover:bg-gray-600"
+            (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
     </div>
   }
-</div>
+</section>

@@ -7,7 +7,7 @@ import { MaterialService } from '../../../services/material.service';
 import { MaterialSimple } from '../../../models/material/material-simple';
 import { PartCreate } from '../../../models/part/part-create';
 import { PartDetail } from '../../../models/part/part-detail';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, Validators } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 
 @Component({
@@ -27,12 +27,13 @@ export class ProductCreateComponent implements OnInit {
     partIds: []
   };
 
+  // ✅ Only one Material per Part
   protected newPart: PartCreate = {
     name: '',
     description: '',
     picturePath: null,
     type: 'Wrapping',
-    partMaterials: []
+    materialId: '', // ✅ Single MaterialId instead of partMaterials array
   };
 
   protected availableParts: PartDetail[] = [];
@@ -42,7 +43,7 @@ export class ProductCreateComponent implements OnInit {
 
   protected availableMaterials: MaterialSimple[] = [];
   protected filteredMaterials: MaterialSimple[] = [];
-  protected selectedMaterials: MaterialSimple[] = [];
+  protected selectedMaterial: MaterialSimple | null = null; // ✅ Only one Material is needed
   protected materialSearchQuery: string = '';
   protected materialDropdownOpen: boolean = false;
 
@@ -113,17 +114,17 @@ export class ProductCreateComponent implements OnInit {
     );
   }
 
+  // ✅ Select only one Material
   selectMaterial(material: MaterialSimple): void {
-    if (!this.selectedMaterials.some(m => m.id === material.id)) {
-      this.selectedMaterials.push(material);
-      this.newPart.partMaterials.push({ materialId: material.id });
-      this.materialDropdownOpen = false;
-    }
+    this.selectedMaterial = material; // ✅ Store the selected material
+    this.newPart.materialId = material.id; // ✅ Assign single materialId
+    this.materialDropdownOpen = false;
   }
 
-  removeMaterial(material: MaterialSimple): void {
-    this.selectedMaterials = this.selectedMaterials.filter(m => m.id !== material.id);
-    this.newPart.partMaterials = this.newPart.partMaterials.filter(m => m.materialId !== material.id);
+  // ✅ Remove selected Material
+  removeMaterial(): void {
+    this.selectedMaterial = null;
+    this.newPart.materialId = ''; // ✅ Reset MaterialId
   }
 
   openModal(): void {
@@ -132,19 +133,23 @@ export class ProductCreateComponent implements OnInit {
 
   closeModal(): void {
     this.modalOpen = false;
-    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', partMaterials: [] };
-    this.selectedMaterials = [];
+    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', materialId: '' }; // ✅ Reset correctly
+    this.selectedMaterial = null; // ✅ Reset selected material
   }
 
+  // ✅ Fix: Ensure we send only `materialId`
   async addPart() {
-    if (!this.newPart.name.trim()) return;
+    if (!this.newPart.name.trim() || !this.newPart.materialId) {
+      console.error("Error: Name and Material are required.");
+      return;
+    }
 
     const partToCreate: PartCreate = {
       name: this.newPart.name,
       description: this.newPart.description || "Auto-created part",
       picturePath: this.newPart.picturePath || null,
       type: this.newPart.type || "default",
-      partMaterials: this.selectedMaterials.map(material => ({ materialId: material.id }))
+      materialId: this.newPart.materialId // ✅ Send only one MaterialId
     };
 
     try {
@@ -163,13 +168,10 @@ export class ProductCreateComponent implements OnInit {
         type: createdPart.type,
         isVerified: createdPart.isVerified,
         trashCans: [],
-        partMaterials: this.selectedMaterials.map(material => material.id)
+        material: createdPart.material
       };
 
-      this.availableParts.push(newPartDetail);
-      this.selectedParts.push(newPartDetail);
-      this.product.partIds.push(newPartDetail.id);
-      this.closeModal();
+      console.log("Part created successfully", newPartDetail);
     } catch (error) {
       console.error("Error creating part:", error);
     }
@@ -206,15 +208,15 @@ export class ProductCreateComponent implements OnInit {
       }
     });
   }
-  removeImage(): void {
-    this.imagePreview = null; // Remove image preview
-    this.selectedFile = null; // Reset selected file
 
-    // Reset the file input field so the same file can be selected again
+  removeImage(): void {
+    this.imagePreview = null;
+    this.selectedFile = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
   }
+
   private createProduct(): void {
     const productPayload = { ...this.product };
 
@@ -240,12 +242,6 @@ export class ProductCreateComponent implements OnInit {
         this.imagePreview = reader.result as string;
       };
       reader.readAsDataURL(file);
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.fileInput) {
-      console.error('fileInput is not available after view initialization.');
     }
   }
 

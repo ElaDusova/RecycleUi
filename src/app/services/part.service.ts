@@ -33,7 +33,6 @@ export class PartService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json-patch+json' })
     });
   }
-
   // Delete a part
   deletePart(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

@@ -7,12 +7,12 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="block mb-2 text-sm font-medium text-gray-700">Product Name</label>
-          <input type="text" [(ngModel)]="product.name" [ngModelOptions]="{standalone: true}"
+          <input type="text" [(ngModel)]="product.name" name="productName" [ngModelOptions]="{standalone: true}"
             class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
         </div>
         <div>
           <label class="block mb-2 text-sm font-medium text-gray-700">EAN Code</label>
-          <input type="text" [(ngModel)]="product.ean" [ngModelOptions]="{standalone: true}"
+          <input type="text" [(ngModel)]="product.ean" name="productEan" [ngModelOptions]="{standalone: true}"
             class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
         </div>
       </div>
@@ -20,7 +20,7 @@
       <!-- Description -->
       <div>
         <label class="block mb-2 text-sm font-medium text-gray-700">Description</label>
-        <textarea [(ngModel)]="product.description" [ngModelOptions]="{standalone: true}"
+        <textarea [(ngModel)]="product.description" name="productDescription" [ngModelOptions]="{standalone: true}"
           class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
       </div>
 
@@ -32,7 +32,6 @@
         @if (imagePreview) {
           <div class="mb-2 flex flex-col items-center">
             <img [src]="imagePreview" alt="Image Preview" class="h-32 w-32 object-cover rounded-lg mb-2">
-            <!-- Remove Image Button -->
             <button type="button" class="px-3 py-1 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600"
               (click)="removeImage()">Remove Image</button>
           </div>
@@ -40,8 +39,7 @@
 
         <div class="flex flex-col items-center justify-center border border-gray-300 bg-white rounded-lg p-4 my-2">
           <input #fileInput type="file" (change)="onFileSelected($event)" class="hidden">
-          <button type="button"
-            class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+          <button type="button" class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
             (click)="triggerFileInput()">Select Image</button>
         </div>
       </div>
@@ -58,17 +56,14 @@
           }
         </div>
 
-        <div class="flex flex-wrap gap-2 mb-4">
-          <input type="text" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" (input)="filterParts()" (focus)="toggleDropdown()"
-            placeholder="Search parts..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
-        </div>
+        <input type="text" [(ngModel)]="searchQuery" name="searchParts" [ngModelOptions]="{standalone: true}"
+          (input)="filterParts()" (focus)="toggleDropdown()" placeholder="Search parts..."
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
 
         <label class="block mb-2 text-sm font-medium text-gray-700">Didn't find your part? Create it!</label>
         <div class="flex gap-2">
           <button type="button" class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
-            (click)="openModal()">
-            Add Part
-          </button>
+            (click)="openModal()">Add Part</button>
         </div>
 
         @if (dropdownOpen) {
@@ -85,8 +80,7 @@
       </div>
 
       <!-- Create Product Button -->
-      <button type="submit"
-        class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen">
+      <button type="submit" class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen">
         Create Product
       </button>
 
@@ -115,10 +109,11 @@
     <textarea [(ngModel)]="newPart.description" name="partDescription" [ngModelOptions]="{standalone: true}"
       class="w-full p-2 border border-gray-300 rounded-lg mb-4"></textarea>
 
-    <!-- Materials Selection (Inside Modal Now) -->
+    <!-- Materials Selection -->
     <label class="block text-sm font-medium text-gray-700">Search Materials</label>
-    <input type="text" [(ngModel)]="materialSearchQuery" [ngModelOptions]="{standalone: true}" (input)="filterMaterials()"
-      placeholder="Search materials..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+    <input type="text" [(ngModel)]="materialSearchQuery" name="searchMaterial" [ngModelOptions]="{standalone: true}"
+      (input)="filterMaterials()" placeholder="Search materials..."
+      class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
 
     @if (filteredMaterials.length > 0) {
       <div class="mt-4">
@@ -133,31 +128,23 @@
       </div>
     }
 
-    <!-- Selected Materials -->
-    @if (selectedMaterials.length > 0) {
+    <!-- Selected Material -->
+    @if (selectedMaterial) {
       <div class="mt-4">
-        <h3 class="font-semibold text-lg">Selected Materials</h3>
-        <ul>
-          @for (material of selectedMaterials; track material.id) {
-            <li class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
-              {{ material.name }}
-              <button (click)="removeMaterial(material)" class="text-red-600">x</button>
-            </li>
-          }
-        </ul>
+        <h3 class="font-semibold text-lg">Selected Material</h3>
+        <div class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
+          {{ selectedMaterial.name }}
+          <button (click)="removeMaterial()" class="text-red-600">x</button>
+        </div>
       </div>
     }
 
     <!-- Add Part Button -->
     <button class="w-full px-4 py-3 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
-      (click)="addPart()">
-      Add Part
-    </button>
+      (click)="addPart()">Add Part</button>
 
     <!-- Close Button -->
     <button class="w-full px-4 py-2 bg-gray-400 text-white rounded-lg mt-2 hover:bg-gray-500"
-      (click)="closeModal()">
-      Cancel
-    </button>
+      (click)="closeModal()">Cancel</button>
   </div>
 </div>

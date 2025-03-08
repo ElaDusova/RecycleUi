@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContainerCreate } from '../models/container/container-create.interface';
 import { ContainerDetail } from '../models/container/container-detail.interface';
 import { ContainerView } from '../models/container/container-view.interface';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -12,25 +12,30 @@ import { ContainerView } from '../models/container/container-view.interface';
 export class ContainerService {
     private baseUrl = 'api/v1/TrashCan/';
 
-    constructor(private http: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
 
     createContainer(model: ContainerCreate): Observable<ContainerDetail> {
-      return this.http.post<ContainerDetail>(this.baseUrl, model);
+      return this.httpClient.post<ContainerDetail>(this.baseUrl, model);
     }
 
     getContainers(): Observable<ContainerView[]> {
-      return this.http.get<ContainerView[]>(this.baseUrl);
+      return this.httpClient.get<ContainerView[]>(this.baseUrl);
     }
 
     getContainerById(id: string): Observable<ContainerDetail> {
-      return this.http.get<ContainerDetail>(`${this.baseUrl}${id}`);
+      return this.httpClient.get<ContainerDetail>(`${this.baseUrl}${id}`);
     }
 
     updateContainer(id: string, patch: any): Observable<ContainerDetail> {
-      return this.http.patch<ContainerDetail>(`${this.baseUrl}${id}`, patch);
+      return this.httpClient.patch<ContainerDetail>(`${this.baseUrl}${id}`, patch);
     }
+    uploadProductImage(imageFile: File): Observable<{ imagePath: string }> {
+      const formData = new FormData();
+      formData.append('containerImage', imageFile);
 
+      return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadProductImage/`, formData);
+    }
     deleteContainer(id: string): Observable<void> {
-      return this.http.delete<void>(`${this.baseUrl}${id}`);
+      return this.httpClient.delete<void>(`${this.baseUrl}${id}`);
     }
   }
