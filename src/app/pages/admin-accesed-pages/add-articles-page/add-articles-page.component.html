@@ -18,13 +18,8 @@
           class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
       </div>
 
-      <!-- Author Name & Annotation -->
+      <!-- Annotation -->
       <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block mb-2 text-sm font-medium text-gray-700">Author's Name</label>
-          <input type="text" [(ngModel)]="article.authorsName" name="authorsName"
-            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
-        </div>
         <div>
           <label class="block mb-2 text-sm font-medium text-gray-700">Annotation (Short Summary)</label>
           <input type="text" [(ngModel)]="article.annotation" name="annotation"
@@ -32,9 +27,9 @@
         </div>
       </div>
 
-      <!-- Article Content -->
+      <!-- Article Text -->
       <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Article Content</label>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Article Text</label>
         <textarea [(ngModel)]="article.text" name="text"
           class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
       </div>

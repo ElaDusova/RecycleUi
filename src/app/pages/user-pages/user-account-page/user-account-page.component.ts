@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { AccountDetail } from '../../../models/user/account-detail.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-account',
@@ -14,6 +15,8 @@ import { AccountDetail } from '../../../models/user/account-detail.interface';
 })
 export class UserAccountPageComponent implements OnInit {
   private userService = inject(UserService);
+  private http = inject(HttpClient);
+
   user: AccountDetail = {
     userName: '',
     firstName: '',
@@ -23,19 +26,21 @@ export class UserAccountPageComponent implements OnInit {
     profilePictureUrl: '',
     isAdmin: false
   };
-
+  isModalOpen = false;
+  imagePreview: string | null = null;
+  selectedFile: File | null = null;
+  profilePictureUrl: string | null = null;
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
   // Separate password fields
   oldPassword: string = '';
   newPassword: string = '';
-  selectedFile: File | null = null;
-  profilePictureUrl: string = '';
 
 
   ngOnInit(): void {
     this.loadUserInfo();
+    this.fetchProfilePicture();
   }
 
   loadUserInfo(): void {
@@ -50,7 +55,13 @@ export class UserAccountPageComponent implements OnInit {
       }
     });
   }
-
+  fetchProfilePicture(): void {
+    this.http.get<{ profilePicture: string }>('/api/v1/User/ProfilePicture')
+      .subscribe({
+        next: (response) => this.profilePictureUrl = response.profilePicture,
+        error: (err) => console.error('Error fetching profile picture:', err)
+      });
+  }
   private showSuccessMessage(message: string) {
     this.successMessage = message;
     setTimeout(() => this.successMessage = null, 3000); // Clear message after 3s
@@ -60,7 +71,24 @@ export class UserAccountPageComponent implements OnInit {
     this.errorMessage = message;
     setTimeout(() => this.errorMessage = null, 5000); // Clear message after 5s
   }
+  openModal(): void {
+    this.isModalOpen = true;
+  }
 
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.imagePreview = null;
+    this.selectedFile = null;
+  }
+
+  triggerFileInput(): void {
+    const fileInput = document.querySelector<HTMLInputElement>('#fileInput');
+    if (fileInput) fileInput.click();
+  }
+  removeImage(): void {
+    this.imagePreview = null;
+    this.selectedFile = null;
+  }
   updateUsername() {
     this.userService.updateUsername(this.user.userName).subscribe({
       next: () => this.showSuccessMessage("✅ Username updated successfully!"),
@@ -90,25 +118,33 @@ export class UserAccountPageComponent implements OnInit {
       error: (err) => this.showErrorMessage("❌ Failed to update password."),
     });
   }
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedFile = target.files[0];
+
+      // Generate a preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
 
-  onUpdateProfilePicture() {
-    if (!this.selectedFile) {
-      console.error('No file selected.');
-      return;
-    }
+  onUpdateProfilePicture(): void {
+    if (!this.selectedFile) return;
 
-    this.userService.updateProfilePicture(this.selectedFile).subscribe({
-      next: (response) => {
-        console.log('Profile picture updated successfully.', response);
-        // Optionally update the UI with the new image URL
-        this.profilePictureUrl = response.url;
-      },
-      error: (error) => {
-        console.error('Failed to update profile picture.', error);
-      }
-    });
+    const formData = new FormData();
+    formData.append('profileImage', this.selectedFile);
+
+    this.http.post<{ profilePicture: string }>('/api/v1/User/UploadProfilePicture', formData)
+      .subscribe({
+        next: (response) => {
+          this.profilePictureUrl = response.profilePicture;
+          this.closeModal();
+        },
+        error: (err) => console.error('Error updating profile picture:', err)
+      });
   }
 }

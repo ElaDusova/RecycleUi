@@ -46,9 +46,7 @@ updateProfilePicture(imageFile: File): Observable<any> {
   const formData = new FormData();
   formData.append('profilePicture', imageFile);
 
-  return this.httpClient.patch<void>(
-    `${this.baseUrl}/UpdateProfilePicture`,
-    formData
-  );
+  return this.httpClient.patch<{ imagePath: string }>(
+    `${this.baseUrl}/UpdateProfilePicture`,formData);
 }
 }

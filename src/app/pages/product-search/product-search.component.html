@@ -1,19 +1,22 @@
 <div class="bg-gray-50 min-h-screen py-10 px-6">
   <!-- Search Bar -->
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl ">
+    <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
       Products
     </h2>
     <p class="mt-2 text-lg/8 text-gray-600">
       Let's see where we can throw this one!
     </p>
-    <input
-      type="text"
-      placeholder="Search by Name or EAN..."
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange()"
-      class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-    />
+    <!-- Search Bar -->
+    <div class="my-4">
+      <input
+        type="text"
+        placeholder="Search by Name or EAN..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
     <button>
       <a routerLink="/product/create"
         class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition my-4">
