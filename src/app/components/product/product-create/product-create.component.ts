@@ -27,13 +27,12 @@ export class ProductCreateComponent implements OnInit {
     partIds: []
   };
 
-  // ✅ Only one Material per Part
   protected newPart: PartCreate = {
     name: '',
     description: '',
     picturePath: null,
     type: 'Wrapping',
-    materialId: '', // ✅ Single MaterialId instead of partMaterials array
+    materialId: '',
   };
 
   protected availableParts: PartDetail[] = [];
@@ -43,7 +42,7 @@ export class ProductCreateComponent implements OnInit {
 
   protected availableMaterials: MaterialSimple[] = [];
   protected filteredMaterials: MaterialSimple[] = [];
-  protected selectedMaterial: MaterialSimple | null = null; // ✅ Only one Material is needed
+  protected selectedMaterial: MaterialSimple | null = null;
   protected materialSearchQuery: string = '';
   protected materialDropdownOpen: boolean = false;
 
@@ -121,7 +120,6 @@ export class ProductCreateComponent implements OnInit {
     this.materialDropdownOpen = false;
   }
 
-  // ✅ Remove selected Material
   removeMaterial(): void {
     this.selectedMaterial = null;
     this.newPart.materialId = ''; // ✅ Reset MaterialId
@@ -133,8 +131,8 @@ export class ProductCreateComponent implements OnInit {
 
   closeModal(): void {
     this.modalOpen = false;
-    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', materialId: '' }; // ✅ Reset correctly
-    this.selectedMaterial = null; // ✅ Reset selected material
+    this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', materialId: '' };
+    this.selectedMaterial = null;
   }
 
   // ✅ Fix: Ensure we send only `materialId`

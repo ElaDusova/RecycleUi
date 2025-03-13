@@ -31,10 +31,10 @@
       <div class="mt-4">
         <h3 class="font-semibold text-lg">Selected Containers</h3>
         <ul>
-          @for (container of newMaterial.trashCanIds; track container.containerId) {
+          @for (containerId of newMaterial.trashCanIds; track containerId) {
             <li class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
-              {{ getContainerName(container.containerId) }}  <!-- Use function to get name -->
-              <button (click)="removeContainer(container.containerId)" class="text-red-600">x</button>
+              {{ getContainerName(containerId) }}  <!-- Use function to get name -->
+              <button (click)="removeContainer(containerId)" class="text-red-600">x</button>
             </li>
                       }
         </ul>

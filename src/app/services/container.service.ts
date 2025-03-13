@@ -29,13 +29,13 @@ export class ContainerService {
     updateContainer(id: string, patch: any): Observable<ContainerDetail> {
       return this.httpClient.patch<ContainerDetail>(`${this.baseUrl}${id}`, patch);
     }
-    uploadProductImage(imageFile: File): Observable<{ imagePath: string }> {
+    uploadContainerImage(imageFile: File): Observable<{ imagePath: string }> {
       const formData = new FormData();
-      formData.append('containerImage', imageFile);
+      formData.append('trashCanImage', imageFile);
 
-      return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadProductImage/`, formData);
+      return this.httpClient.post<{ imagePath: string }>(`${this.baseUrl}/UploadTrashCanImage/`, formData);
     }
-    deleteContainer(id: string): Observable<void> {
+        deleteContainer(id: string): Observable<void> {
       return this.httpClient.delete<void>(`${this.baseUrl}${id}`);
     }
   }

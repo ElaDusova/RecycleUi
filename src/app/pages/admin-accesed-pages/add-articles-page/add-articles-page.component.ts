@@ -3,6 +3,7 @@ import { ArticleCreateModel } from '../../../models/article/article-create.inter
 import { ArticleService } from '../../../services/article.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-articles-page',
@@ -10,8 +11,11 @@ import { CommonModule, Location } from '@angular/common';
   imports: [FormsModule, CommonModule]
 })
 export class AddArticlesPageComponent implements OnInit {
-  private articleService = inject(ArticleService);
-  constructor(private location: Location) {}
+  constructor(private location: Location, private articleService: ArticleService, private router: Router) {}
+
+  selectedFile: File | null = null;
+  isUploading: boolean = false;
+  imagePreview: string | null = null;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>; // File input reference
 
@@ -32,7 +36,45 @@ export class AddArticlesPageComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.getLoggedInUserId(); // Get user ID from local storage/session
   }
+    onSubmit(): void {
+    this.article;
 
+    if (this.selectedFile) {
+      this.uploadImage();
+    } else {
+      this.createArticle();
+    }
+  }
+  uploadImage(): void {
+    if (!this.selectedFile) {
+      console.error('No file selected for upload.');
+      return;
+    }
+
+    this.isUploading = true;
+    const formData = new FormData();
+    formData.append('trashCanImage', this.selectedFile);
+
+    this.articleService.uploadArticleImage(this.selectedFile).subscribe({
+      next: (uploadResponse) => {
+        console.log('Article image uploaded successfully:', uploadResponse.imagePath);
+        this.article.picturePath = uploadResponse.imagePath;
+        this.isUploading = false;
+        this.createArticle();
+      },
+      error: (error) => {
+        console.error('Error uploading article image:', error);
+        this.isUploading = false;
+      }
+    });
+  }
+  removeImage(): void {
+    this.imagePreview = null;
+    this.selectedFile = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
   getLoggedInUserId(): string {
     return localStorage.getItem('userId') || ''; // Assuming user ID is stored after login
   }
@@ -40,8 +82,12 @@ export class AddArticlesPageComponent implements OnInit {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      console.log('Selected file:', file.name);
-      this.article.picturePath = URL.createObjectURL(file);
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -49,21 +95,18 @@ export class AddArticlesPageComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-  createArticle(): void {
-    this.isSubmitting = true;
+  private createArticle(): void {
+    const articlePayload = { ...this.article };
 
-    this.articleService.createArticle(this.article).subscribe({
-      next: () => {
-        this.successMessage = 'Article created successfully!';
-        this.errorMessage = null;
-        this.article = { heading: '', authorsName: this.article.authorsName, annotation: '', text: '', picturePath: null };
+    console.log('Creating Container:', articlePayload);
+
+    this.articleService.createArticle(articlePayload).subscribe({
+      next: (response) => {
+        console.log('Article created successfully:', response);
+        this.router.navigate(['/home']);
       },
-      error: (err) => {
-        console.error('Error creating article:', err);
-        this.errorMessage = err.error?.errors ? Object.values(err.error.errors).join(', ') : 'Failed to create article.';
-      },
-      complete: () => {
-        this.isSubmitting = false;
+      error: (error) => {
+        console.error('Error creating article:', error.error);
       }
     });
   }

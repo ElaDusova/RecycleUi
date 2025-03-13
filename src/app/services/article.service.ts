@@ -32,7 +32,13 @@ export class ArticleService {
   updateArticle(id: string, patch: any): Observable<ArticleDetail> {
     return this.http.patch<ArticleDetail>(`${this.baseUrl}${id}`, patch);
   }
+// Upload product image separately
+  uploadArticleImage(imageFile: File): Observable<{ imagePath: string }> {
+    const formData = new FormData();
+    formData.append('articleImage', imageFile);
 
+    return this.http.post<{ imagePath: string }>(`${this.baseUrl}/UploadArticleImage/`, formData);
+  }
   deleteArticle(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}${id}`);
   }

@@ -59,18 +59,20 @@ export class MaterialCreateComponent implements OnInit {
   }
 
   selectContainer(container: ContainerSimple) {
-if (!this.newMaterial.trashCanIds.some(c => c.containerId === container.id)) {
+if (!this.newMaterial.trashCanIds.some(c => c === container.id)) {
       this.newMaterial.trashCanIds.push(container.id as any);
     }
   }
 
   removeContainer(containerId: string) {
     this.newMaterial.trashCanIds = this.newMaterial.trashCanIds.filter(
-      c => c.containerId !== containerId
+      c => c !== containerId
     );
   }
     getContainerName(containerId: string): string {
+    console.log(containerId);
     const container = this.availableContainers.find(c => c.id === containerId);
+    console.log(container);
     return container ? container.name : 'Unknown';
   }
 

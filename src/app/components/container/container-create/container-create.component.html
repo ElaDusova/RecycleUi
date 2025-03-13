@@ -2,69 +2,62 @@
   <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
     <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Add a New Container</h2>
 
-    @if (successMessage()) {
-      <div class="mb-4 text-green-600 font-medium text-center">{{ successMessage() }}</div>
-    }
+    <form class="space-y-6" (submit)="onSubmit()">
+      <!-- Container Name -->
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Container Name</label>
+        <input type="text" [(ngModel)]="newContainer.name" name="containerName" [ngModelOptions]="{standalone: true}"
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+      </div>
 
-    @if (errorMessage()) {
-      <div class="mb-4 text-red-600 font-medium text-center">{{ errorMessage() }}</div>
-    }
+      <!-- Description -->
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Description</label>
+        <textarea [(ngModel)]="newContainer.description" name="containerDescription" [ngModelOptions]="{standalone: true}"
+          class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
+      </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Container Name</label>
-      <input type="text" [(ngModel)]="newContainer.name" class="w-full p-2 border border-gray-300 rounded-lg mb-4" required />
-    </div>
+      <!-- Image Upload Section -->
+      <div class="mb-4">
+        <label class="block mb-2 text-sm font-medium text-gray-700">Upload Container Image</label>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Description</label>
-      <textarea [(ngModel)]="newContainer.description" class="w-full p-2 border border-gray-300 rounded-lg mb-4"></textarea>
-    </div>
-
-        <!-- Picture Upload -->
-        <label class="block mb-4 text-sm font-medium text-gray-700">
-          Add Picture
-          <div class="flex flex-col h-40 border border-gray-300 items-center justify-center bg-white rounded-lg p-4 my-2 relative">
-            <!-- Hidden File Input -->
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" class="hidden">
-
-            <!-- Centered Add New Button -->
-            <button type="button"
-              class="flex items-center justify-center group cursor-pointer outline-none hover:rotate-90 duration-300"
-              (click)="triggerFileInput()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24"
-                class="stroke-zinc-400 fill-none group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
-                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                  stroke-width="1.5"></path>
-                <path d="M8 12H16" stroke-width="1.5"></path>
-                <path d="M12 16V8" stroke-width="1.5"></path>
-              </svg>
-            </button>
+        <!-- Image Preview -->
+        @if (imagePreview) {
+          <div class="mb-2 flex flex-col items-center">
+            <img [src]="imagePreview" alt="Image Preview" class="h-32 w-32 object-cover rounded-lg mb-2">
+            <button type="button" class="px-3 py-1 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600"
+              (click)="removeImage()">Remove Image</button>
           </div>
-        </label>
+        }
 
-    <label for="type" class="block text-sm font-medium text-gray-700">Select Container Type</label>
-    <select [(ngModel)]="newContainer.type" class="w-full border rounded-lg p-2">
-      @for (type of availableTypes; track type) {
-        <option [value]="type">{{ type }}</option>
-      }
-    </select>
+        <div class="flex flex-col items-center justify-center border border-gray-300 bg-white rounded-lg p-4 my-2">
+          <input #fileInput type="file" (change)="onFileSelected($event)" class="hidden">
+          <button type="button" class="w-1/3 px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+            (click)="triggerFileInput()">Select Image</button>
+        </div>
+      </div>
 
-    <button type="button" class="w-full px-5 py-2 text-white bg-mainGreen hover:bg-hoverGreen rounded-lg mt-4"
-      [disabled]="isSubmitting()" (click)="addContainer()">
-      @if (isSubmitting()) {
-        <span>Creating...</span>
-      } @else {
-        <span>Create Container</span>
-      }
-    </button>
-    <div class="flex gap-2">
-      <button
-      (click)="goBack()"
-      class="w-full px-4 py-2 bg-gray-300 text-white rounded-lg mt-2 hover:bg-gray-400">
-      Cancel
-    </button>
+      <!-- Container Type Selection -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Select Container Type</label>
+        <select [(ngModel)]="newContainer.type" name="containerType" [ngModelOptions]="{standalone: true}"
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+          @for (type of availableTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
 
-    </div>
+      <!-- Create Container Button -->
+      <button type="submit" class="w-full px-12 py-2 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen">
+        Create Container
+      </button>
 
+      <!-- Cancel Button -->
+      <button (click)="goBack()"
+        class="block text-center w-full rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-300">
+        Cancel
+      </button>
+    </form>
   </div>
 </section>
