@@ -32,6 +32,7 @@ export class UserAccountPageComponent implements OnInit {
   profilePictureUrl: string | null = null;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  isUploading: boolean = false;
 
   // Separate password fields
   oldPassword: string = '';
@@ -131,20 +132,29 @@ export class UserAccountPageComponent implements OnInit {
       reader.readAsDataURL(this.selectedFile);
     }
   }
+  uploadProfilePicture(): void {
+    if (!this.selectedFile) {
+      console.error('No file selected for upload.');
+      return;
+    }
 
-  onUpdateProfilePicture(): void {
-    if (!this.selectedFile) return;
-
+    this.isUploading = true;
     const formData = new FormData();
-    formData.append('profileImage', this.selectedFile);
+    formData.append('profilePicture', this.selectedFile); // Ensure the backend expects 'profilePicture'
 
-    this.http.post<{ profilePicture: string }>('/api/v1/User/UploadProfilePicture', formData)
-      .subscribe({
-        next: (response) => {
-          this.profilePictureUrl = response.profilePicture;
-          this.closeModal();
-        },
-        error: (err) => console.error('Error updating profile picture:', err)
-      });
+    this.userService.updateProfilePicture(this.selectedFile).subscribe({
+      next: (uploadResponse) => {
+        console.log('Profile picture uploaded successfully:', uploadResponse.imagePath);
+
+        // Update the profile picture preview
+        this.profilePictureUrl = `https://your-backend-url/uploads/${uploadResponse.imagePath}`;
+
+        this.isUploading = false;
+      },
+      error: (error) => {
+        console.error('Error uploading profile picture:', error);
+        this.isUploading = false;
+      }
+    });
   }
-}
+  }

@@ -14,9 +14,12 @@ export class UtilitiesAddPageComponent {
 
   navigateTo(page: string): void {
     if (page === 'container') {
-      this.router.navigate(['/create-container']); // Change to your actual route
+      this.router.navigate(['/create-container']);
     } else if (page === 'material') {
-      this.router.navigate(['/create-material']); // Change to your actual route
+      this.router.navigate(['/create-material']);
+    } else if (page === 'part') {
+      this.router.navigate(['/create-part']);
     }
   }
+
 }

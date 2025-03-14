@@ -27,6 +27,7 @@ import { MaterialCreateComponent } from './components/material/material-create/m
 import { ContainerCreateComponent } from './components/container/container-create/container-create.component';
 import { ResetPasswordPageComponent } from './pages/reset-passowrd-page/reset-passowrd-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
+import { PartCreateComponent } from './components/product/part-create/part-create/part-create.component';
 
 export const routes: Routes = [
   {
@@ -52,6 +53,7 @@ export const routes: Routes = [
       { path: 'confirm', component: ValidationPageComponent, title: 'Email Validation'},
       { path: 'create-container', component: ContainerCreateComponent },
       { path: 'create-material', component: MaterialCreateComponent },
+      { path: 'create-part', component: PartCreateComponent },
       { path: 'forgottenpassword', component: ForgotPasswordPageComponent },
       { path: 'reset-password', component: ResetPasswordPageComponent },
 

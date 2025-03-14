@@ -14,23 +14,50 @@
         <!-- Product Verification Status -->
         <div class="flex items-center gap-3 mt-2">
           <p class="text-lg font-semibold" [class.text-green-600]="product.isVerified" [class.text-red-500]="!product.isVerified">
-            {{ product.isVerified ? ' Verified' : '❌ Not Verified' }}
+            {{ product.isVerified ? '✅ Verified' : '❌ Not Verified' }}
           </p>
         </div>
 
         <!-- Product Description -->
         <p class="mt-4 text-lg text-gray-600">{{ product.description }}</p>
 
-        <!-- Product Parts -->
+        <!-- Product Parts Table -->
         <div class="mt-8">
           <h3 class="text-xl font-semibold text-gray-900">Product Parts</h3>
 
-          @if (hasParts) {
-            <ul class="mt-2 list-disc list-inside text-gray-600">
-              @for (part of product.parts; track part.id) {
-                <li class="mt-1">{{ part.name }}</li>
-              }
-            </ul>
+          @if (product.parts && product.parts.length > 0) {
+            <div class="overflow-x-auto mt-4">
+              <table class="w-full text-left border-collapse border border-gray-300">
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">Part Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Material Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Container Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (part of product.parts; track part.id) {
+                    <tr>
+                      <td class="border border-gray-300 px-4 py-2">{{ part.name }}</td>
+                      <td class="border border-gray-300 px-4 py-2">
+                        {{ part.material.name || 'N/A' }}
+                      </td>
+                      <td class="border border-gray-300 px-4 py-2">
+                        @if (part.material.trashCans && part.material.trashCans.length > 0) {
+                          <ul>
+                            @for (trashCan of part.material.trashCans; track trashCan.id) {
+                              <li>{{ trashCan.name }}</li>
+                            }
+                          </ul>
+                        } @else {
+                          <span class="text-gray-500">No Container Assigned</span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
           } @else {
             <p class="mt-2 text-gray-500">No parts assigned to this product.</p>
           }

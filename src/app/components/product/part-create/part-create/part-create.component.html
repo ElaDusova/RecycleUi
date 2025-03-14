@@ -1,0 +1,77 @@
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-6 w-1/2 rounded-lg shadow-lg">
+    <h3 class="text-xl font-bold mb-4">Add New Part</h3>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+      <div class="mb-4 text-green-600 font-medium text-center">
+        {{ successMessage }}
+      </div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="mb-4 text-red-600 font-medium text-center">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- Part Name -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Part Name</label>
+      <input type="text" [(ngModel)]="newPart.name" name="partName" [ngModelOptions]="{standalone: true}"
+        class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-mainGreen" required />
+    </div>
+
+    <!-- Part Description -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Description</label>
+      <textarea [(ngModel)]="newPart.description" name="partDescription" [ngModelOptions]="{standalone: true}"
+        class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-mainGreen"></textarea>
+    </div>
+
+    <!-- Materials Selection -->
+    <div>
+      <label for="materialSelection" class="block text-sm font-medium text-gray-700">Search Materials</label>
+      <div class="relative">
+        <input type="text" [(ngModel)]="materialSearchQuery" name="searchMaterial" [ngModelOptions]="{standalone: true}"
+          (input)="filterMaterials()" placeholder="Search materials..."
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+
+        @if (filteredMaterials.length > 0) {
+          <div class="mt-4">
+            <h3 class="block text-sm font-medium text-gray-700">Available Materials</h3>
+            <ul class="max-h-40 overflow-auto border border-gray-300 rounded-lg p-2 bg-white">
+              @for (material of filteredMaterials; track material.id) {
+                <li class="p-2 cursor-pointer hover:bg-gray-200 border-b border-gray-300" (click)="selectMaterial(material)">
+                  {{ material.name }}
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Selected Material -->
+    @if (selectedMaterial) {
+      <div class="mt-4 mb-4">
+        <h3 class="block text-sm font-medium text-gray-700">Selected Material</h3>
+        <div class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
+          {{ selectedMaterial.name }}
+          <button (click)="removeMaterial()" class="text-red-600">x</button>
+        </div>
+      </div>
+    }
+
+    <!-- Add Part Button -->
+    <button class="w-full px-4 py-2 mb-4 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+      (click)="addPart()">Add Part</button>
+
+    <!-- Cancel Button -->
+    <button (click)="goBack()"
+    class="block text-center w-full rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-300">
+      Cancel
+    </button>
+  </div>
+</section>
