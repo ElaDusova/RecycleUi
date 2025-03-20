@@ -50,6 +50,13 @@ export class DefaultComponent implements OnInit {
     this.isMenuOpen = false;
   }
 
+  getProfilePictureUrl(): string {
+    return this.hasProfilePicture() ? this.user!.profilePictureUrl : 'assets/defaultUserPicture.png';
+  }
+
+  hasProfilePicture(): boolean {
+    return !!this.user?.profilePictureUrl && this.user.profilePictureUrl.trim() !== '';
+  }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const targetElement = event.target as HTMLElement;

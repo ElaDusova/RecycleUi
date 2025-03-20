@@ -91,7 +91,7 @@ export class ValidationProductsPageComponent implements OnInit {
             description: product.description,
             isVerified: product.isVerified,
             picturePath: product.picturePath,
-            partIds: product.parts ? product.parts.map(part => part.id) : []
+            partIds: product.parts ? product.parts.map(part => part.id) : [],
           }) as ProductUpdate);
         this.products$.next(this.products);
       },
