@@ -1,11 +1,11 @@
 import { Component, ElementRef, inject, ViewChild, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
-import { PartCreate } from '../../../../models/part/part-create';
-import { PartDetail } from '../../../../models/part/part-detail';
-import { MaterialSimple } from '../../../../models/part/part-simple.interface';
-import { PartService } from '../../../../services/part.service';
-import { MaterialService } from '../../../../services/material.service';
+import { PartCreate } from '../../../models/part/part-create';
+import { PartDetail } from '../../../models/part/part-detail';
+import { MaterialSimple } from '../../../models/part/part-simple.interface';
+import { PartService } from '../../../services/part.service';
+import { MaterialService } from '../../../services/material.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -34,9 +34,9 @@ export class LoginPageComponent {
   protected isLoading = false; // Loading state
   protected submitted = false; // Tracks if the form was submitted
 
-  // Method to handle form submission
+  // Method to handle subbmiting the form
   onSubmit(): void {
-    this.submitted = true; // Mark form as submitted
+    this.submitted = true;
 
     if (this.formular.invalid) {
       this.errorMessage = 'Please fill in the form correctly.';
@@ -56,8 +56,19 @@ export class LoginPageComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error?.message || 'Invalid email or password. Please try again.';
-        console.error(error);
+
+        // Custom error message based on status code
+        if (error.status === 400) {
+          this.errorMessage = 'Invalid email or password. Please try again.';
+        } else if (error.status === 401) {
+          this.errorMessage = 'Unauthorized. Please check your credentials.';
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error. Please try again later.';
+        } else {
+          this.errorMessage = 'An unexpected error occurred. Please try again.';
+        }
+
+        console.error('Login failed:', error);
       },
     });
   }

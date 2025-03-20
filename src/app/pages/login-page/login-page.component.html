@@ -49,20 +49,30 @@
           </div>
           <div class="mt-2">
             <input
-              type="password"
-              id="password"
-              formControlName="password"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="password"
+                type="password"
+                id="password"
+                formControlName="password"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Enter your password"
             />
-            @if(hasError('password', 'required')) {
-              <small class="text-red-600">Password is required.</small>
+
+            @if (hasError("password", "required")) {
+                <small class="text-red-600">Password is required.</small>
             }
-            @if(hasError('password', 'minlength')) {
-              <small class="text-red-600">Password must contain at least 6 characters.</small>
+
+            @if (hasError("password", "minlength")) {
+                <small class="text-red-600">Password must contain at least 6 characters.</small>
             }
-          </div>
+
+            @if (hasError("password", "incorrect")) {
+                <small class="text-red-600">Incorrect password. Please try again.</small>
+            }
+
+            @if (hasError("password", "serverError")) {
+                <small class="text-red-600">Something went wrong. Please try again later.</small>
+            }
         </div>
+                </div>
 
         <p class="text-center text-sm text-gray-600 mb-4">
           Don't have an account yet?

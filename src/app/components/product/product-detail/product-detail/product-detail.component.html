@@ -1,20 +1,27 @@
 <div class="product-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
     <div class="flex flex-col lg:flex-row items-start gap-8">
-
       <!-- Left Side: Product Title and Description -->
-      <div class="lg:w-2/3">
-        <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-10">
+      <div class="lg:w-3/4">
+        <h2
+          class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-10"
+        >
           {{ product.name }}
         </h2>
 
         <!-- EAN Code -->
-        <p class="mt-2 text-lg text-gray-500 py-1"><strong>EAN:</strong> {{ product.ean }}</p>
+        <p class="mt-2 text-lg text-gray-500 py-1">
+          <strong>EAN:</strong> {{ product.ean }}
+        </p>
 
         <!-- Product Verification Status -->
         <div class="flex items-center gap-3 mt-2">
-          <p class="text-lg font-semibold" [class.text-green-600]="product.isVerified" [class.text-red-500]="!product.isVerified">
-            {{ product.isVerified ? '✅ Verified' : '❌ Not Verified' }}
+          <p
+            class="text-lg font-semibold"
+            [class.text-green-600]="product.isVerified"
+            [class.text-red-500]="!product.isVerified"
+          >
+            {{ product.isVerified ? "✅ Verified" : "❌ Not Verified" }}
           </p>
         </div>
 
@@ -26,59 +33,68 @@
           <h3 class="text-xl font-semibold text-gray-900">Product Parts</h3>
 
           @if (product.parts && product.parts.length > 0) {
-            <div class="overflow-x-auto mt-4">
-              <table class="w-full text-left border-collapse border border-gray-300">
-                <thead>
-                  <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-4 py-2">Part Name</th>
-                    <th class="border border-gray-300 px-4 py-2">Material Name</th>
-                    <th class="border border-gray-300 px-4 py-2">Container Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (part of product.parts; track part.id) {
-                    <tr>
-                      <td class="border border-gray-300 px-4 py-2">{{ part.name }}</td>
-                      <td class="border border-gray-300 px-4 py-2">
-                        {{ part.material.name || 'N/A' }}
-                      </td>
-                      <td class="border border-gray-300 px-4 py-2">
-                        @if (part.material.trashCans && part.material.trashCans.length > 0) {
-                          <ul>
-                            @for (trashCan of part.material.trashCans; track trashCan.id) {
-                              <li>{{ trashCan.name }}</li>
-                            }
-                          </ul>
-                        } @else {
-                          <span class="text-gray-500">No Container Assigned</span>
-                        }
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto mt-4">
+            <table
+              class="w-full text-left border-collapse border border-gray-300"
+            >
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-300 px-4 py-2">Part Name</th>
+                  <th class="border border-gray-300 px-4 py-2">
+                    Material Name
+                  </th>
+                  <th class="border border-gray-300 px-4 py-2">Containers</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (part of product.parts; track part.id) {
+                <tr>
+                  <!-- ✅ Display Part Name -->
+                  <td class="border border-gray-300 px-4 py-2">
+                    {{ part.name }}
+                  </td>
+
+                  <!-- ✅ Display Material Name -->
+                  <td class="border border-gray-300 px-4 py-2">
+                    {{ part.materialName || "N/A" }}
+                  </td>
+
+                  <!-- ✅ Loop Through Material's TrashCans -->
+                  <td class="border border-gray-300 px-4 py-2">
+                    @if (part.trashCans &&
+                    part.trashCans.length > 0) {
+                    <ul>
+                      @for (trashCan of part.trashCans; track
+                      trashCan.id) {
+                      <li>{{ trashCan.name }}</li>
+                      }
+                    </ul>
+                    } @else {
+                    <span class="text-gray-500">No Containers Assigned</span>
+                    }
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
           } @else {
-            <p class="mt-2 text-gray-500">No parts assigned to this product.</p>
+          <p class="mt-2 text-gray-500">No parts assigned to this product.</p>
           }
         </div>
-
       </div>
-
-      <!-- Right Side: Product Image -->
-      <div class="lg:w-1/3 flex justify-end py-10">
-        @if (product.picturePath) {
-          <img [src]="product.picturePath"
-            alt="{{ product.name }}"
-            class="rounded-lg shadow-lg w-full max-w-xs object-cover"
-          />
-        } @else {
-          <div class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500">
-            No Image
-          </div>
-        }
+      <img [class]="product.picturePath ? '' : 'hidden'"
+          [src]="product.picturePath"
+          alt="{{ product.name }}"
+          class="rounded-lg shadow-lg w-full max-w-xs object-cover"
+        />
+      @if (!product.picturePath) {
+      <div
+        class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500"
+      >
+        No Image
       </div>
-
+      }
     </div>
   </div>
 </div>

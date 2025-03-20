@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserAccountPageComponent implements OnInit {
   private userService = inject(UserService);
   private http = inject(HttpClient);
+    @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
 
   user: AccountDetail = {
     userName: '',
@@ -83,8 +84,11 @@ export class UserAccountPageComponent implements OnInit {
   }
 
   triggerFileInput(): void {
-    const fileInput = document.querySelector<HTMLInputElement>('#fileInput');
-    if (fileInput) fileInput.click();
+    if (!this.fileInput || !this.fileInput.nativeElement) {
+      console.error("File input is not initialized yet.");
+      return;
+    }
+    this.fileInput.nativeElement.click();
   }
   removeImage(): void {
     this.imagePreview = null;
@@ -119,17 +123,14 @@ export class UserAccountPageComponent implements OnInit {
       error: (err) => this.showErrorMessage("❌ Failed to update password."),
     });
   }
-  onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      this.selectedFile = target.files[0];
-
-      // Generate a preview
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
       const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagePreview = e.target?.result as string;
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
       };
-      reader.readAsDataURL(this.selectedFile);
     }
   }
   uploadProfilePicture(): void {
@@ -147,7 +148,7 @@ export class UserAccountPageComponent implements OnInit {
         console.log('Profile picture uploaded successfully:', uploadResponse.imagePath);
 
         // Update the profile picture preview
-        this.profilePictureUrl = `https://your-backend-url/uploads/${uploadResponse.imagePath}`;
+        this.profilePictureUrl = `http://localhost:5100//Uploads/${uploadResponse.imagePath}`;
 
         this.isUploading = false;
       },

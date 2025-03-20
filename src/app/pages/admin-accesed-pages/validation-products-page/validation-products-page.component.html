@@ -18,7 +18,7 @@
               <td class="p-2">{{ product.name }}</td>
               <td class="p-2">{{ product.ean }}</td>
               <td class="p-2 flex gap-2">
-                <button class="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                <button class="px-4 py-1 bg-mainGreen text-white rounded-md hover:bg-hoverGreen "
                   (click)="verifyProduct(product)">Verify</button>
                 <button class="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                   (click)="deleteProduct(product.id)">Delete</button>
@@ -35,7 +35,7 @@
   <!-- Verification Form -->
   @if (selectedProduct) {
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl mt-6">
-      <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Verify & Update Product</h2>
+      <h2 class="text-2xl font-bold text-center text-gray-900 mb-6"> Update &  Verify Product</h2>
 
       <form class="space-y-6">
         <!-- Name & EAN -->
@@ -76,10 +76,18 @@
               (click)="triggerFileInput()">Select Image</button>
           </div>
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Product Parts</label>
+          <input type="text"
+                 [value]="(selectedProduct.partIds)"
+                 name="productParts"
+                 class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+                 readonly />
+        </div>
 
         <!-- Parts Selection -->
         <div class="relative">
-          <label class="block text-sm font-medium text-gray-700">Select Product Parts</label>
+          <label class="block mb-2 text-sm font-medium text-gray-700">Select Product Parts</label>
           <div class="flex flex-wrap gap-2 mb-2">
             @for (part of selectedParts; track part.id) {
               <span class="bg-mainGreen text-white px-3 py-1 rounded-lg flex items-center">
@@ -88,13 +96,16 @@
               </span>
             }
           </div>
-          <input type="text" [(ngModel)]="searchQuery" name="searchParts" (input)="filterParts()" (focus)="toggleDropdown()"
-            placeholder="Search parts..." class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
-          @if (dropdownOpen) {
+
+          <input type="text" [(ngModel)]="searchQuery" name="searchParts" [ngModelOptions]="{standalone: true}"
+            (input)="filterParts()" (focus)="toggleDropdown()" placeholder="Search parts..."
+            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5">
+
+          @if (partDropdownOpen) {
             <div class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
               <ul class="max-h-40 overflow-auto">
                 @for (part of filteredParts; track part.id) {
-                  <li class="p-2 cursor-pointer hover:bg-gray-200" (click)="selectPart(convertToPartUpdate(part))">
+                  <li class="p-2 cursor-pointer hover:bg-gray-200" (click)="selectPart(part)">
                     {{ part.name }}
                   </li>
                 }

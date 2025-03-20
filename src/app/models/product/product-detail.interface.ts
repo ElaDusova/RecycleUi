@@ -5,7 +5,7 @@ export interface ProductDetail {
     name: string;
     ean: string;
     description: string;
-    picturePath: string;
+    picturePath: string | null;
     isVerified: boolean;
-    parts: PartSimple[];
+    parts: any[];
 }

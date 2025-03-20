@@ -27,7 +27,7 @@ import { MaterialCreateComponent } from './components/material/material-create/m
 import { ContainerCreateComponent } from './components/container/container-create/container-create.component';
 import { ResetPasswordPageComponent } from './pages/reset-passowrd-page/reset-passowrd-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
-import { PartCreateComponent } from './components/product/part-create/part-create/part-create.component';
+import { PartCreateComponent } from './components/part/part-create/part-create.component';
 
 export const routes: Routes = [
   {

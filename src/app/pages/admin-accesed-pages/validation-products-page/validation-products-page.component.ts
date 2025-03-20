@@ -35,11 +35,12 @@ export class ValidationProductsPageComponent implements OnInit {
   materials$: BehaviorSubject<MaterialDetail[]> = new BehaviorSubject<MaterialDetail[]>([]);
 
   selectedProduct: ProductUpdate | null = null;
-  selectedParts: PartUpdate[] = [];
+  selectedParts: PartDetail[] = [];
   errorMessage: string | null = null;
 
   materialSearchQuery: string = '';
   searchQuery: string = '';
+  protected availableParts: PartDetail[] = [];
   filteredParts: PartDetail[] = [];
   allParts: PartDetail[] = [];
   protected newPart: PartCreate = {
@@ -54,7 +55,7 @@ export class ValidationProductsPageComponent implements OnInit {
   protected filteredMaterials: MaterialSimple[] = [];
   protected materialDropdownOpen: boolean = false;
   protected modalOpen: boolean = false;
-  protected dropdownOpen: boolean = false;
+  protected partDropdownOpen: boolean = false;
   constructor(private location: Location) {};
 
 
@@ -129,7 +130,7 @@ goBack(): void {
       trashCans: part.trashCans || [] // ✅ Ensure trashCans exist
     };
   }
-    selectPart(part: PartUpdate): void {
+  selectPart(part: PartDetail): void {
     if (!this.selectedParts.some(p => p.id === part.id)) {
       this.selectedParts.push(part);
       this.product.partIds.push(part.id);
@@ -218,11 +219,11 @@ trackById(index: number, item: { id: string }): string {
     this.selectedParts = [];
   }
   toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
+    this.partDropdownOpen = true;
   }
   filterParts(): void {
-    const query = this.searchQuery.toLowerCase();
-    this.parts$.next(this.parts$.value.filter(part => part.name.toLowerCase().includes(query)));
+    const query = this.searchQuery.toLowerCase().trim();
+    this.filteredParts = this.availableParts.filter(part => part.name.toLowerCase().includes(query));
   }
 
   addPart(part: PartCreate): void {
@@ -239,7 +240,7 @@ trackById(index: number, item: { id: string }): string {
     });
   }
 
-  removePart(part: PartUpdate): void {
+  removePart(part: PartDetail): void {
     this.selectedParts = this.selectedParts.filter(p => p.id !== part.id);
 
     if (this.selectedProduct) {
@@ -251,6 +252,7 @@ trackById(index: number, item: { id: string }): string {
     if (!this.selectedProduct) return;
 
     const patch: Operation[] = [];
+    this.selectedProduct.isVerified = true;
 
     if (this.selectedProduct.name) {
       patch.push({ op: 'replace', path: '/name', value: this.selectedProduct.name });
