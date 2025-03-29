@@ -6,6 +6,10 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 
+/**
+ * Page component for adding a new product.
+ * Uses `ProductCreateComponent` for form handling and communicates with `ProductService`.
+ */
 @Component({
   selector: 'app-product-add-page',
   templateUrl: './product-add-page.component.html',
@@ -27,6 +31,11 @@ export class ProductAddPageComponent {
     partIds: []
   });
 
+ /**
+   * Handles product creation and sends data to the backend.
+   * Redirects to the product search page on success.
+   * @param newProduct - The created product data.
+   */
   onProductCreated(newProduct: ProductCreate): void {
     console.log('Sending product to backend:', newProduct);
 

@@ -6,6 +6,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Ensure this import is correct
 import { FormsModule } from '@angular/forms'; // Ensure this import is correct
 
+/**
+ * Home page component displaying a list of articles.
+ * Includes a search functionality to filter articles by heading or author's name.
+ */
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -34,6 +38,10 @@ export class HomePageComponent implements OnInit {
       this.filteredArticles = [...this.articles]; // Show all articles initially
     });
   }
+    /**
+   * Filters articles based on the search query.
+   * Matches against the article heading or author's name.
+   */
     onSearchChange(): void {
     const query = this.searchQuery.toLowerCase();
     this.filteredArticles = this.articles.filter(
@@ -42,6 +50,10 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+    /**
+   * Navigates to the article detail page when an article is clicked.
+   * @param articleId - The ID of the selected article.
+   */
   // Navigate to the article detail page when an article is clicked
   viewArticleDetail(articleId: string) {
     this.router.navigate(['/article/detail', articleId]);

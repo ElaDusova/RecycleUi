@@ -8,6 +8,10 @@ import { PartService } from '../../../services/part.service';
 import { MaterialService } from '../../../services/material.service';
 import { Router } from '@angular/router';
 
+/**
+ * Component for creating a new part.
+ * Allows users to define part details, upload images, and select materials.
+ */
 @Component({
   selector: 'app-part-create',
   templateUrl: './part-create.component.html',
@@ -16,6 +20,7 @@ import { Router } from '@angular/router';
 })
 export class PartCreateComponent {
 
+    /** Stores form data for new part creation. */
   protected newPart: PartCreate = {
     name: '',
     description: '',
@@ -53,15 +58,25 @@ export class PartCreateComponent {
 
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
 
+    /**
+   * Closes dropdown when clicking outside.
+   */
   @HostListener('document:click', ['$event'])
   closeDropdownOnOutsideClick(event: Event): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.materialDropdownOpen = false;
     }
   }
+
+    /**
+   * Navigates back to the previous page.
+   */
   goBack(): void {
     this.location.back();
   }
+    /**
+   * Initializes component data.
+   */
   ngOnInit(): void {
     this.fetchParts();
     this.fetchMaterials();
@@ -100,7 +115,10 @@ export class PartCreateComponent {
       material.name.toLowerCase().includes(this.materialSearchQuery.toLowerCase())
     );
   }
-
+  /**
+   * Selects a material for the part.
+   * @param material The selected material.
+   */
   selectMaterial(material: MaterialSimple): void {
     this.selectedMaterial = material;
     this.newPart.materialId = material.id;
@@ -165,6 +183,10 @@ export class PartCreateComponent {
     this.materialSearchQuery = '';
   }
 
+    /**
+   * Handles file selection for image upload.
+   * @param event File input event.
+   */
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -197,12 +219,20 @@ export class PartCreateComponent {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
+    /**
+   * Selects a part to be added.
+   * @param part The selected part.
+   */
   selectPart(part: PartDetail): void {
     if (!this.selectedParts.some(p => p.id === part.id)) {
       this.selectedParts.push(part);
     }
   }
 
+    /**
+   * Removes a selected part.
+   * @param part The part to remove.
+   */
   removePart(part: PartDetail): void {
     this.selectedParts = this.selectedParts.filter(p => p.id !== part.id);
   }

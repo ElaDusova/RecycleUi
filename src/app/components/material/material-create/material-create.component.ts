@@ -8,6 +8,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MaterialCreate } from '../../../models/material/material-create';
 import { ContainerSimple } from '../../../models/container/container-simple.interface';
 
+/**
+ * Component for creating a new material.
+ * Allows users to define material details and associate it with containers.
+ */
 @Component({
   selector: 'app-material-add',
   standalone: true,
@@ -21,6 +25,9 @@ export class MaterialCreateComponent implements OnInit {
   protected isSubmitting = signal<boolean>(false);
   protected successMessage = signal<string | null>(null);
   protected errorMessage = signal<string | null>(null);
+    /**
+   * Predefined list of available material types.
+   */
   protected availableTypes: string[] = [
     'Plastic', 'Glass', 'Metal', 'Paper', 'Cartons',
     'Electronics', 'Bio', 'CommunalTrash', 'Textile', 'Collection Yard'
@@ -30,6 +37,9 @@ export class MaterialCreateComponent implements OnInit {
   protected containerDropdownOpen = signal<boolean>(false);
   protected containerSearchQuery = signal<string>('');
 
+    /**
+   * Stores form data for new material creation.
+   */
   protected newMaterial: MaterialCreate = {
     name: '',
     description: '',
@@ -38,6 +48,9 @@ export class MaterialCreateComponent implements OnInit {
 
   constructor(private location: Location) {}
 
+  /**
+   * Fetches available containers when the component initializes.
+   */
   async ngOnInit() {
     try {
       this.availableContainers = await lastValueFrom(this.containerService.getContainers());
@@ -47,6 +60,9 @@ export class MaterialCreateComponent implements OnInit {
     }
   }
 
+    /**
+   * Filters the container list based on the search query.
+   */
   filterContainers() {
     const query = this.containerSearchQuery().toLowerCase();
     this.filteredContainers = this.availableContainers.filter(container =>
@@ -54,21 +70,38 @@ export class MaterialCreateComponent implements OnInit {
     );
   }
 
+    /**
+   * Toggles the dropdown for container selection.
+   */
   toggleContainerDropdown() {
     this.containerDropdownOpen.set(!this.containerDropdownOpen());
   }
 
+  /**
+   * Adds a selected container to the material.
+   * @param container The container to be added.
+   */
   selectContainer(container: ContainerSimple) {
 if (!this.newMaterial.trashCanIds.some(c => c === container.id)) {
       this.newMaterial.trashCanIds.push(container.id as any);
     }
   }
 
+  /**
+   * Removes a container from the material selection.
+   * @param containerId ID of the container to remove.
+   */
   removeContainer(containerId: string) {
     this.newMaterial.trashCanIds = this.newMaterial.trashCanIds.filter(
       c => c !== containerId
     );
   }
+
+    /**
+   * Retrieves the name of a container based on its ID.
+   * @param containerId ID of the container.
+   * @returns The name of the container or 'Unknown' if not found.
+   */
     getContainerName(containerId: string): string {
     console.log(containerId);
     const container = this.availableContainers.find(c => c.id === containerId);
@@ -76,6 +109,9 @@ if (!this.newMaterial.trashCanIds.some(c => c === container.id)) {
     return container ? container.name : 'Unknown';
   }
 
+    /**
+   * Submits the new material to the backend.
+   */
   async addMaterial() {
     if (!this.newMaterial.name.trim()) {
       this.errorMessage.set("Material name is required!");
@@ -98,6 +134,9 @@ if (!this.newMaterial.trashCanIds.some(c => c === container.id)) {
     }
   }
 
+    /**
+   * Navigates back to the previous page.
+   */
   goBack(): void {
     this.location.back();
   }

@@ -5,6 +5,10 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+/**
+ * Component for searching and displaying products.
+ * Allows filtering by product name or EAN.
+ */
 @Component({
   selector: 'app-product-search',
   standalone: true,
@@ -19,6 +23,9 @@ export class ProductSearchPageComponent implements OnInit {
 
   constructor(private productService: ProductService, private router: Router) {}
 
+   /**
+   * Loads all products when the component is initialized.
+   */
   ngOnInit(): void {
     // Load all products initially
     this.productService.getProducts().subscribe({
@@ -41,6 +48,10 @@ export class ProductSearchPageComponent implements OnInit {
     );
   }
 
+    /**
+   * Navigates to the product detail page.
+   * @param productId - The ID of the selected product.
+   */
   // Navigate to Product Detail page
   viewProductDetail(productId: string): void {
     this.router.navigate(['/product/detail', productId]);

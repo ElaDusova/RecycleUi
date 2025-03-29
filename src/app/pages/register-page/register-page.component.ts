@@ -6,6 +6,10 @@ import { AuthService } from '../../services/auth.service';
 import { catchError } from 'rxjs';
 import { passwordMatchValidator } from '../../validators/password-match.validator';
 
+/**
+ * Component for user registration.
+ * Handles form validation, submission, and error handling.
+ */
 @Component({
   selector: 'app-register-page',
   standalone: true,
@@ -23,6 +27,9 @@ export class RegisterPageComponent {
   protected readonly authService = inject(AuthService);
   protected readonly router = inject(Router);
 
+    /**
+   * Registration form with validation.
+   */
   protected formular = this.fb.group({
     firstname: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     lastname: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -37,6 +44,9 @@ export class RegisterPageComponent {
   protected successMessage: string | null = null;
   protected errorMessage: string | null = null;
 
+    /**
+   * Handles form submission for user registration.
+   */
   onSubmit(): void {
     if (this.formular.invalid) {
       return;

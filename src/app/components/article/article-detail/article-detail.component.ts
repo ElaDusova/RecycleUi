@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { ArticleDetail } from '../../../models/article/article-detail.interface';
 import { CommonModule } from '@angular/common';
 
+/**
+ * Displays details of an article.
+ */
 @Component({
   selector: 'app-article-detail',
   standalone: true,
@@ -10,5 +13,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './article-detail.component.scss'
 })
 export class ArticleDetailComponent {
+    /**
+   * The article data to display.
+   */
   @Input() article!: ArticleDetail;
 }

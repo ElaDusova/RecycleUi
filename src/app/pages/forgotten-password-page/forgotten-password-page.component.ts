@@ -11,6 +11,11 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './forgotten-password-page.component.html',
   styleUrls: ['./forgotten-password-page.component.scss'],
 })
+
+/**
+ * Component for handling forgotten password requests.
+ * Allows users to enter their email and receive a password reset link.
+ */
 export class ForgotPasswordPageComponent {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
@@ -23,6 +28,10 @@ export class ForgotPasswordPageComponent {
   protected successMessage: string | null = null;
   protected errorMessage: string | null = null;
 
+    /**
+   * Sends a password reset link to the user's email.
+   * Displays success or error messages based on the result.
+   */
   sendResetLink(): void {
     if (this.form.invalid) return;
 

@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
   styleUrl: './about-us-page.component.scss'
 })
 export class AboutUsPageComponent {
-
 }

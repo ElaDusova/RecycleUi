@@ -1,3 +1,6 @@
+/**
+ * Represents user account details.
+ */
 export interface AccountDetail {
 userName: string;
 firstName: string;

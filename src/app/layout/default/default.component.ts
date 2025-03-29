@@ -4,6 +4,9 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AccountDetail } from '../../models/user/account-detail.interface';
 
+/**
+ * Default layout component handling user authentication state and navigation.
+ */
 @Component({
   selector: 'app-default',
   standalone: true,
@@ -21,12 +24,17 @@ export class DefaultComponent implements OnInit {
     });
   }
 
-
+  /**
+   * User authentication details.
+   */
   // Store user and role status in properties
   user: AccountDetail | null = null;
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
 
+    /**
+   * Initializes user authentication state on component load.
+   */
   ngOnInit(): void {
     // Subscribe to user and role observables
     this.authService.user$.subscribe(user => {
@@ -57,6 +65,11 @@ export class DefaultComponent implements OnInit {
   hasProfilePicture(): boolean {
     return !!this.user?.profilePictureUrl && this.user.profilePictureUrl.trim() !== '';
   }
+
+    /**
+   * Closes the menu when clicking outside the dropdown.
+   * @param event - The DOM event
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const targetElement = event.target as HTMLElement;

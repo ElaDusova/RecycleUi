@@ -1,3 +1,6 @@
+/**
+ * Defines the structure for creating a new Part.
+ */
 export interface PartCreate {
   name: string;
   description: string;

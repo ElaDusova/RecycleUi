@@ -10,6 +10,10 @@ import { PartDetail } from '../../../models/part/part-detail';
 import { FormsModule, Validators } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 
+/**
+ * Component for creating a new product.
+ * Supports adding parts, selecting materials, and uploading images.
+ */
 @Component({
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
@@ -113,16 +117,16 @@ export class ProductCreateComponent implements OnInit {
     );
   }
 
-  // ✅ Select only one Material
+  //  Select only one Material
   selectMaterial(material: MaterialSimple): void {
-    this.selectedMaterial = material; // ✅ Store the selected material
-    this.newPart.materialId = material.id; // ✅ Assign single materialId
+    this.selectedMaterial = material; //  Store the selected material
+    this.newPart.materialId = material.id; //  Assign single materialId
     this.materialDropdownOpen = false;
   }
 
   removeMaterial(): void {
     this.selectedMaterial = null;
-    this.newPart.materialId = ''; // ✅ Reset MaterialId
+    this.newPart.materialId = ''; // Reset MaterialId
   }
 
   openModal(): void {
@@ -135,7 +139,6 @@ export class ProductCreateComponent implements OnInit {
     this.selectedMaterial = null;
   }
 
-  // ✅ Fix: Ensure we send only `materialId`
   async addPart() {
     if (!this.newPart.name.trim() || !this.newPart.materialId) {
       console.error("Error: Name and Material are required.");
@@ -147,7 +150,7 @@ export class ProductCreateComponent implements OnInit {
       description: this.newPart.description || "Auto-created part",
       picturePath: this.newPart.picturePath || null,
       type: this.newPart.type || "default",
-      materialId: this.newPart.materialId // ✅ Send only one MaterialId
+      materialId: this.newPart.materialId
     };
 
     try {
@@ -214,7 +217,9 @@ export class ProductCreateComponent implements OnInit {
       this.fileInput.nativeElement.value = '';
     }
   }
-
+  /**
+   * Creates a new product.
+   */
   private createProduct(): void {
     const productPayload = { ...this.product };
 
@@ -231,6 +236,10 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
+    /**
+   * Handles file selection for image upload.
+   * @param event File input event.
+   */
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -253,14 +262,20 @@ export class ProductCreateComponent implements OnInit {
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
   }
-
+  /**
+   * Selects a part to be added.
+   * @param part The selected part.
+   */
   selectPart(part: PartDetail): void {
     if (!this.selectedParts.some(p => p.id === part.id)) {
       this.selectedParts.push(part);
       this.product.partIds.push(part.id);
     }
   }
-
+  /**
+   * Removes a selected part.
+   * @param part The part to remove.
+   */
   removePart(part: PartDetail): void {
     this.selectedParts = this.selectedParts.filter(p => p.id !== part.id);
     this.product.partIds = this.product.partIds.filter(id => id !== part.id);

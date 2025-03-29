@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AccountDetail } from '../models/user/account-detail.interface';
 
+/**
+ * Service for managing user-related operations.
+ * Provides methods to retrieve, update, and manage user account details.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -10,12 +14,19 @@ export class UserService {
   private baseUrl = `/api/v1/User`;
   private readonly httpClient = inject(HttpClient);
 
-  /**  Get user account details */
+  /**
+   * Retrieves the logged-in user's account details.
+   * @returns Observable containing account details.
+   */
   getAccountInfo(): Observable<AccountDetail> {
     return this.httpClient.get<AccountDetail>(`${this.baseUrl}/UserInfo`);
   }
 
-  /** Update username */
+  /**
+   * Updates the user's username.
+   * @param newUsername - The new username.
+   * @returns Observable that completes when the update is successful.
+   */
   updateUsername(newUsername: string): Observable<void> {
     return this.httpClient.patch<void>(
       `${this.baseUrl}/UpdateUsername`,
@@ -24,7 +35,11 @@ export class UserService {
     );
   }
 
-  /**  Update email */
+  /**
+   * Updates the user's email address.
+   * @param newEmail - The new email.
+   * @returns Observable that completes when the update is successful.
+   */
   updateEmail(newEmail: string): Observable<void> {
     return this.httpClient.patch<void>(
       `${this.baseUrl}/UpdateEmail`,
@@ -33,7 +48,12 @@ export class UserService {
     );
   }
 
-  /**  Update password */
+  /**
+   * Updates the user's password.
+   * @param oldPassword - The current password.
+   * @param newPassword - The new password.
+   * @returns Observable that completes when the update is successful.
+   */
   updatePassword(oldPassword: string, newPassword: string): Observable<void> {
     return this.httpClient.patch<void>(
       `${this.baseUrl}/UpdatePassword`,
@@ -41,8 +61,13 @@ export class UserService {
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
-/**  Update profile picture */
-updateProfilePicture(imageFile: File): Observable<any> {
+  /**
+   * Updates the user's profile picture.
+   * @param imageFile - The image file to upload.
+   * @returns Observable containing the uploaded image path.
+   */
+  // does not work yet, will be implemented in the future
+  updateProfilePicture(imageFile: File): Observable<any> {
   const formData = new FormData();
   formData.append('profilePicture', imageFile);
 

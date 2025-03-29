@@ -1,3 +1,6 @@
+/**
+ * Defines the structure for update of Product.
+ */
 export interface ProductUpdate {
     id: string;
     name: string;

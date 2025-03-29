@@ -1,3 +1,7 @@
+
+/**
+ * Defines the structure for creating a new Container.
+ */
 import { Type } from "./canType.model";
 
   export interface ContainerCreate {

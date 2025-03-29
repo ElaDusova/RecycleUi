@@ -4,6 +4,10 @@ import { throwError, of } from 'rxjs';
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+/**
+ * HTTP interceptor that automatically attaches the authentication token to requests.
+ * Refreshes the token if expired and retries the request.
+ */
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   // Directly access localStorage for the token
   const token = localStorage.getItem("accessToken");

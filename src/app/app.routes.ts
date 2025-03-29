@@ -29,6 +29,11 @@ import { ResetPasswordPageComponent } from './pages/reset-passowrd-page/reset-pa
 import { ForgotPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
 import { PartCreateComponent } from './components/part/part-create/part-create.component';
 
+/**
+ * Main application routes.
+ * - Defines child routes under `DefaultComponent`.
+ * - Routes include page titles and resolvers where needed.
+ */
 export const routes: Routes = [
   {
     path: '',

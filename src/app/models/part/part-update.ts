@@ -1,3 +1,6 @@
+/**
+ * Defines the structure for part to update.
+ */
 export interface PartUpdate {
     id: string;
     name: string;

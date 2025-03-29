@@ -1,5 +1,7 @@
 import { MaterialSimple } from "./part-simple.interface";
-
+/**
+ * Defines the structure for detail of new Part.
+ */
 export interface PartDetail {
     id: string;
     name: string;

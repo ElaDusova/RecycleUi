@@ -1,3 +1,6 @@
+/**
+ * Defines Types of containers.
+ */
 export type Type =
   | 'Plastic'
   | 'Glass'

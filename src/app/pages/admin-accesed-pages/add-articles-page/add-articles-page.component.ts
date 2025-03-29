@@ -5,6 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
+/**
+ * Component for creating a new article.
+ * Allows users to input article details, upload an image, and submit the article.
+ */
 @Component({
   selector: 'app-add-articles-page',
   templateUrl: './add-articles-page.component.html',
