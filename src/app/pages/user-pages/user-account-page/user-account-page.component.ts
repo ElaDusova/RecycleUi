@@ -141,31 +141,31 @@
         };
       }
     }
+    /*
     uploadProfilePicture(): void {
       if (!this.selectedFile) {
-        console.error('No file selected for upload.');
+        console.error('❌ No file selected for upload.');
         return;
       }
 
       this.isUploading = true;
-      const formData = new FormData();
-      formData.append('profilePicture', this.selectedFile); // ✅ Ensure correct form field name
 
       this.userService.updateProfilePicture(this.selectedFile).subscribe({
         next: (uploadResponse) => {
           console.log('✅ Profile picture uploaded successfully:', uploadResponse.imagePath);
 
-          // ✅ Fix incorrect double slashes in image path
-          this.profilePictureUrl = `http://localhost:5100/Uploads/${uploadResponse.imagePath}`;
+          // ✅ Update image preview
+          this.profilePictureUrl = `http://localhost:5100${uploadResponse.imagePath}`;
 
           this.isUploading = false;
-          this.successMessage = "Profile picture updated successfully!";
+          this.successMessage = "✅ Profile picture updated successfully!";
         },
         error: (error) => {
           console.error('❌ Error uploading profile picture:', error);
           this.isUploading = false;
-          this.errorMessage = "Failed to upload profile picture.";
+          this.errorMessage = "❌ Failed to upload profile picture.";
         }
       });
     }
-  }
+      */
+      }

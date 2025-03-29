@@ -18,18 +18,6 @@ export class ProductDetailResolver implements Resolve<ProductDetail | undefined>
 
     if (productId) {
       return this.productService.getProduct(productId).pipe(
-        switchMap((product) => {
-          if (product && !product.isVerified) {
-            return this.productService.verifyProduct(product.id).pipe(
-              switchMap(() => this.productService.getProduct(product.id)), // ✅ Refetch updated product
-              catchError((err) => {
-                console.error('Error verifying product:', err);
-                return of(product);
-              })
-            );
-          }
-          return of(product);
-        }),
         catchError((err) => {
           console.error('Error fetching product:', err);
           return of(undefined);

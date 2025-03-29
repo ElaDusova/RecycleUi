@@ -7,4 +7,6 @@ export type Type =
   | 'Electronics'
   | 'Bio'
   | 'CommunalTrash'
-  | 'Textile';
+  | 'Textile'
+  | 'Collection Yard';
+

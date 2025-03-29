@@ -23,7 +23,7 @@ export class MaterialCreateComponent implements OnInit {
   protected errorMessage = signal<string | null>(null);
   protected availableTypes: string[] = [
     'Plastic', 'Glass', 'Metal', 'Paper', 'Cartons',
-    'Electronics', 'Bio', 'CommunalTrash', 'Textile'
+    'Electronics', 'Bio', 'CommunalTrash', 'Textile', 'Collection Yard'
   ];
   protected availableContainers: ContainerSimple[] = [];
   protected filteredContainers: ContainerSimple[] = [];

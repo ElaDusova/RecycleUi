@@ -5,5 +5,5 @@ export interface ProductUpdate {
     description: string;
     picturePath: string;
     isVerified: boolean;
-    partIds: string[];
+    parts: any[];
 }

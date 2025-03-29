@@ -49,7 +49,7 @@ export const routes: Routes = [
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
       { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
       { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
-      { path: 'utilitiesCreate', component: UtilitiesAddPageComponent, title: 'Create a Utility' },
+      { path: 'utilitiesCreate', component: UtilitiesAddPageComponent, title: 'Create Items' },
       { path: 'confirm', component: ValidationPageComponent, title: 'Email Validation'},
       { path: 'create-container', component: ContainerCreateComponent },
       { path: 'create-material', component: MaterialCreateComponent },

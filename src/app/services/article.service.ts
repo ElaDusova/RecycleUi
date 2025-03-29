@@ -16,8 +16,14 @@ export class ArticleService {
   constructor(private http: HttpClient) {}
 
   createArticle(model: ArticleCreateModel): Observable<ArticleDetail> {
-    return this.http.post<ArticleDetail>(this.baseUrl, model);
+    const fixedModel = {
+      ...model,
+      text: model.text.replace(/\r\n/g, '\n')
+    };
+
+    return this.http.post<ArticleDetail>(this.baseUrl, fixedModel);
   }
+
   getUserById(userId: string): Observable<{ displayName: string; userName: string }> {
     return this.http.get<{ displayName: string; userName: string }>(`${this.userBaseUrl}/${userId}`);
   }

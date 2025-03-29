@@ -3,13 +3,12 @@ import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { PartService } from '../../../services/part.service';
 import { MaterialService } from '../../../services/material.service';
-import { PartDetail } from '../../../models/part/part-detail';
 import { MaterialDetail } from '../../../models/material/material-detail';
 import { CommonModule, Location } from '@angular/common';
 import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { Operation } from 'fast-json-patch';
-import { PartUpdate } from '../../../models/part/part-update';
+import { ProductPartUpdate } from '../../../models/part/part-product-update';
 import { ProductUpdate } from '../../../models/product/product-update.inerface';
 import { PartCreate } from '../../../models/part/part-create';
 import { MaterialSimple } from '../../../models/part/part-simple.interface';
@@ -31,18 +30,18 @@ export class ValidationProductsPageComponent implements OnInit {
 
   products$: BehaviorSubject<ProductUpdate[]> = new BehaviorSubject<ProductUpdate[]>([]); // ✅ Use ProductUpdate
   products: ProductUpdate[] = [];
-  parts$: BehaviorSubject<PartDetail[]> = new BehaviorSubject<PartDetail[]>([]);
+  parts$: BehaviorSubject<ProductPartUpdate[]> = new BehaviorSubject<ProductPartUpdate[]>([]);
   materials$: BehaviorSubject<MaterialDetail[]> = new BehaviorSubject<MaterialDetail[]>([]);
 
   selectedProduct: ProductUpdate | null = null;
-  selectedParts: PartDetail[] = [];
+  selectedParts: ProductPartUpdate[] = [];
   errorMessage: string | null = null;
 
   materialSearchQuery: string = '';
   searchQuery: string = '';
-  protected availableParts: PartDetail[] = [];
-  filteredParts: PartDetail[] = [];
-  allParts: PartDetail[] = [];
+  protected availableParts: ProductPartUpdate[] = [];
+  filteredParts: ProductPartUpdate[] = [];
+  allParts: ProductPartUpdate[] = [];
   protected newPart: PartCreate = {
     name: '',
     description: '',
@@ -70,7 +69,7 @@ export class ValidationProductsPageComponent implements OnInit {
     description: '',
     isVerified: false,
     picturePath: '',
-    partIds: []
+    parts: []
   };
 
   ngOnInit(): void {
@@ -92,7 +91,9 @@ export class ValidationProductsPageComponent implements OnInit {
             isVerified: product.isVerified,
             picturePath: product.picturePath,
             partIds: product.parts ? product.parts.map(part => part.id) : [],
+            parts: product.parts ?? [], // 🔧 přidáno, aby odpovídalo ProductUpdate
           }) as ProductUpdate);
+
         this.products$.next(this.products);
       },
       error: (err) => {
@@ -100,7 +101,8 @@ export class ValidationProductsPageComponent implements OnInit {
         this.errorMessage = 'Failed to load products';
       }
     });
-}
+  }
+
 openModal(): void {
   this.modalOpen = true;
 }
@@ -118,22 +120,16 @@ goBack(): void {
       }
     });
   }
-  convertToPartUpdate(part: PartDetail): PartUpdate {
+  convertToPartUpdate(part: ProductPartUpdate): ProductPartUpdate {
     return {
       id: part.id,
       name: part.name,
-      description: part.description,
-      picturePath: part.picturePath,
-      type: part.type,
-      isVerified: part.isVerified,
-      materialId: part.material?.id || '', // ✅ Ensure materialId is assigned
-      trashCans: part.trashCans || [] // ✅ Ensure trashCans exist
     };
   }
-  selectPart(part: PartDetail): void {
+  selectPart(part: ProductPartUpdate): void {
     if (!this.selectedParts.some(p => p.id === part.id)) {
       this.selectedParts.push(part);
-      this.product.partIds.push(part.id);
+      this.product.parts.push(part.id);
     }
   }
   selectMaterial(material: MaterialSimple): void {
@@ -225,7 +221,6 @@ trackById(index: number, item: { id: string }): string {
     const query = this.searchQuery.toLowerCase().trim();
     this.filteredParts = this.availableParts.filter(part => part.name.toLowerCase().includes(query));
   }
-
   addPart(part: PartCreate): void {
     if (!part.name.trim() || !part.materialId) {
       console.error("Error: Name and Material are required.");
@@ -240,11 +235,11 @@ trackById(index: number, item: { id: string }): string {
     });
   }
 
-  removePart(part: PartDetail): void {
+  removePart(part: ProductPartUpdate): void {
     this.selectedParts = this.selectedParts.filter(p => p.id !== part.id);
 
     if (this.selectedProduct) {
-      this.selectedProduct.partIds = this.selectedProduct.partIds.filter(id => id !== part.id);
+      this.selectedProduct.parts = this.selectedProduct.parts.filter(id => id !== part.id);
     }
   }
 
@@ -252,7 +247,6 @@ trackById(index: number, item: { id: string }): string {
     if (!this.selectedProduct) return;
 
     const patch: Operation[] = [];
-    this.selectedProduct.isVerified = true;
 
     if (this.selectedProduct.name) {
       patch.push({ op: 'replace', path: '/name', value: this.selectedProduct.name });
@@ -263,10 +257,8 @@ trackById(index: number, item: { id: string }): string {
     if (this.selectedProduct.ean) {
       patch.push({ op: 'replace', path: '/ean', value: this.selectedProduct.ean });
     }
-    patch.push({ op: 'replace', path: '/isVerified', value: this.selectedProduct.isVerified });
 
-    // ✅ Update partIds correctly
-    patch.push({ op: 'replace', path: '/partIds', value: this.selectedProduct.partIds });
+    // ✅ The backend automatically sets isVerified = true, so we don't need to send it
 
     this.productService.updateProduct(this.selectedProduct.id, patch).subscribe({
       next: () => {
@@ -279,6 +271,8 @@ trackById(index: number, item: { id: string }): string {
       }
     });
   }
+
+
   verifyProduct(product: ProductUpdate): void {
     this.selectedProduct = { ...product };
   }

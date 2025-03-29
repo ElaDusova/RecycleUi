@@ -26,7 +26,7 @@ export class ContainerCreateComponent {
 
   constructor(private location: Location, private containerService: ContainerService, private router: Router) {}
 
-  protected availableTypes: string[] = ['Plastic', 'Glass', 'Metal', 'Paper', 'Cartons', 'Electronics', 'Bio', 'CommunalTrash', 'Textile'];
+  protected availableTypes: string[] = ['Plastic', 'Glass', 'Metal', 'Paper', 'Cartons', 'Electronics', 'Bio', 'CommunalTrash', 'Textile', 'Collection Yard'];
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   protected newContainer: ContainerCreate = {

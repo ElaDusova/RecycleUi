@@ -19,7 +19,8 @@ export class UtilitiesAddPageComponent {
       this.router.navigate(['/create-material']);
     } else if (page === 'part') {
       this.router.navigate(['/create-part']);
+    } else if (page === 'product') {
+      this.router.navigate(['/product/create']);
     }
   }
-
 }
