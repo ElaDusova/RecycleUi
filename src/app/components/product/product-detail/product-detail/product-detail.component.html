@@ -1,10 +1,10 @@
 <div class="product-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row items-start gap-8">
+    <div class="flex flex-col lg:flex-row items-start gap-8 py-10">
       <!-- Left Side: Product Title and Description -->
       <div class="lg:w-3/4">
         <h2
-          class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-10"
+          class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl "
         >
           {{ product.name }}
         </h2>
@@ -49,17 +49,17 @@
               <tbody>
                 @for (part of product.parts; track part.id) {
                 <tr>
-                  <!-- ✅ Display Part Name -->
+                  <!-- Display Part Name -->
                   <td class="border border-gray-300 px-4 py-2">
                     {{ part.name }}
                   </td>
 
-                  <!-- ✅ Display Material Name -->
+                  <!-- Display Material Name -->
                   <td class="border border-gray-300 px-4 py-2">
                     {{ part.materialName || "N/A" }}
                   </td>
 
-                  <!-- ✅ Loop Through Material's TrashCans -->
+                  <!-- Loop Through Material's TrashCans -->
                   <td class="border border-gray-300 px-4 py-2">
                     @if (part.trashCans &&
                     part.trashCans.length > 0) {
@@ -83,18 +83,22 @@
           }
         </div>
       </div>
-      <img [class]="product.picturePath ? '' : 'hidden'"
-          [src]="product.picturePath"
-          alt="{{ product.name }}"
-          class="rounded-lg shadow-lg w-full max-w-xs object-cover"
-        />
-      @if (!product.picturePath) {
-      <div
-        class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500"
-      >
-        No Image
+        <!-- Right Side: Image -->
+      <div class="lg:w-1/4 pl-24">
+        <div class="w-64 h-64 overflow-hidden rounded-lg shadow-lg bg-gray-200">
+          @if (product.picturePath) {
+            <img
+              [src]="product.picturePath"
+              alt="{{ product.name }}"
+              class="w-full h-full object-cover rounded-lg " />
+          } @else {
+            <div class="no-image bg-gray-200 w-full h-full flex items-center justify-center text-gray-500">
+              No Image
+            </div>
+          }
+        </div>
       </div>
-      }
+
     </div>
   </div>
 </div>

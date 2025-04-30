@@ -28,6 +28,11 @@ import { ContainerCreateComponent } from './components/container/container-creat
 import { ResetPasswordPageComponent } from './pages/reset-passowrd-page/reset-passowrd-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgotten-password-page/forgotten-password-page.component';
 import { PartCreateComponent } from './components/part/part-create/part-create.component';
+import { ContainerDeleteComponent } from './components/container/container-delete/container-delete.component';
+import { DeleteItemsPageComponent } from './pages/delete-items-page/delete-items-page.component';
+import { MaterialDeleteComponent } from './components/material/material-delete/material-delete.component';
+import { PartDeleteComponent } from './components/part/part-delete/part-delete.component';
+import { ProductDeleteComponent } from './components/product/product-delete/product-delete.component';
 
 /**
  * Main application routes.
@@ -40,27 +45,45 @@ export const routes: Routes = [
     component: DefaultComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
+      // Default Pages
       { path: 'home', component: HomePageComponent, title: 'Home', resolve: { articles: ArticleListResolver } },
       { path: 'register', component: RegisterPageComponent, title: 'Registration' },
       { path: 'login', component: LoginPageComponent, title: 'Login' },
       { path: 'logout', component: LogoutPageComponent, title: 'Logout' },
-      { path: 'container', component: ContainerListPageComponent, title: 'Containers', resolve: { containers: ContainerListResolver } },
       { path: 'aboutUs', component: AboutUsPageComponent, title: 'About Us', },
       { path: 'useraccount', component: UserAccountPageComponent, title: 'User Account', },
       { path: 'product-search', component: ProductSearchPageComponent, title: 'Product Search', },
-      { path: 'product/create', component: ProductAddPageComponent, title: 'Product Add',resolve: { product: ProductCreateResolver }, },
+      { path: 'container', component: ContainerListPageComponent, title: 'Containers', resolve: { containers: ContainerListResolver } },
+
+      // Product Validation Page
+      { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
+
+      // Emil Validation Page
+      { path: 'confirm', component: ValidationPageComponent, title: 'Email Validation'},
+
+      // Detail Items Pages
       { path: 'product/detail/:productId',component: ProductDetailPageComponent,title: 'Product Detail',resolve: { product: ProductDetailResolver },},
       { path: 'article/detail/:articleId',component: ArticleDetailPageComponent,title: 'Article Detail',resolve: { article: ArticleDetailResolver },},
       { path: 'container/detail/:containerId',component: ContainerDetailPageComponent,title: 'Container Detail',resolve: { container: ContainerDetailResolver },},
-      { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
-      { path: 'validationProducts', component: ValidationProductsPageComponent, title: 'Validation of Products' },
+
+      // Create Items Pges
       { path: 'utilitiesCreate', component: UtilitiesAddPageComponent, title: 'Create Items' },
-      { path: 'confirm', component: ValidationPageComponent, title: 'Email Validation'},
+      { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
+      { path: 'product/create', component: ProductAddPageComponent, title: 'Product Add',resolve: { product: ProductCreateResolver }, },
       { path: 'create-container', component: ContainerCreateComponent },
       { path: 'create-material', component: MaterialCreateComponent },
       { path: 'create-part', component: PartCreateComponent },
+
+      //Password Reset Pages
       { path: 'forgottenpassword', component: ForgotPasswordPageComponent },
       { path: 'reset-password', component: ResetPasswordPageComponent },
+
+      // Items Delete Pages
+      { path: 'itemsDelete', component: DeleteItemsPageComponent, title: 'Delete Items' },
+      { path: 'delete-part', component: PartDeleteComponent},
+      { path: 'delete-product', component: ProductDeleteComponent},
+      { path: 'delete-container', component: ContainerDeleteComponent},
+      { path: 'delete-material', component: MaterialDeleteComponent},
 
             ],
  },

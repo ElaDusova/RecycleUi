@@ -1,5 +1,5 @@
 <section class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white shadow-lg rounded-lg p-8 w-full sm:max-w-sm">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full sm:max-w-sm mt-6 mb-6">
     <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Registration</h2>
 
     <!-- Success Message -->
@@ -40,19 +40,41 @@
       <div class="mb-5">
         <label for="email" class="block mb-2 text-sm font-medium">Your email</label>
         <input type="email" id="email" formControlName="email"
-          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+          required
+           />
+
       </div>
 
       <div class="mb-5">
         <label for="password" class="block mb-2 text-sm font-medium">Your password</label>
         <input type="password" id="password" formControlName="password"
-          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+          required
+          placeholder="Enter your password"
+          />
+
+      @if (hasError("password", "required")) {
+        <small class="text-red-600">Password is required.</small>
+    }
+
+    @if (hasError("password", "minlength")) {
+        <small class="text-red-600">Password must contain at least 6 characters.</small>
+    }
+
+
       </div>
 
       <div class="mb-5">
         <label for="passwordConfirm" class="block mb-2 text-sm font-medium">Confirm password</label>
         <input type="password" id="passwordConfirm" formControlName="passwordConfirm"
-          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required />
+          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+          placeholder="Re-enter your password"
+          required
+      />
+      @if (formular.errors?.['passwordMismatch'] && (formular.touched || submitted)) {
+        <small class="text-red-600">Passwords do not match.</small>
+      }
       </div>
 
       <button type="submit"

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { catchError } from 'rxjs';
@@ -21,6 +21,7 @@ import { passwordMatchValidator } from '../../validators/password-match.validato
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
+
 export class RegisterPageComponent {
 
   protected readonly fb = inject(FormBuilder);
@@ -43,6 +44,8 @@ export class RegisterPageComponent {
   protected isSubmitting = false;
   protected successMessage: string | null = null;
   protected errorMessage: string | null = null;
+  protected submitted = true; // Tracks if the form was submitted
+
 
     /**
    * Handles form submission for user registration.
@@ -74,5 +77,9 @@ export class RegisterPageComponent {
         this.isSubmitting = false;
       }
     });
+  }
+  protected hasError(controlName: string, errorType: string): boolean {
+    const control = this.formular.get(controlName);
+    return !!control && control.hasError(errorType) && (control.dirty || control.touched || this.submitted);
   }
 }

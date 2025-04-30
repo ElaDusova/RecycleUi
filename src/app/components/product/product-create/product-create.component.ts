@@ -7,8 +7,9 @@ import { MaterialService } from '../../../services/material.service';
 import { MaterialSimple } from '../../../models/material/material-simple';
 import { PartCreate } from '../../../models/part/part-create';
 import { PartDetail } from '../../../models/part/part-detail';
-import { FormsModule, Validators } from '@angular/forms';
+import { FormsModule, Validators, FormControl } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
+import { validEAN13 } from '../../../validators/ean-validator';
 
 /**
  * Component for creating a new product.
@@ -43,6 +44,9 @@ export class ProductCreateComponent implements OnInit {
   protected filteredParts: PartDetail[] = [];
   protected selectedParts: PartDetail[] = [];
   protected searchQuery: string = '';
+
+  isChecksumValid = true;
+  eanControl = new FormControl('', [validEAN13]);
 
   protected availableMaterials: MaterialSimple[] = [];
   protected filteredMaterials: MaterialSimple[] = [];
@@ -82,8 +86,26 @@ export class ProductCreateComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+  checkChecksum(): void {
+    const ean = this.product.ean;
 
-  fetchParts(): void {
+    if (!/^\d{13}$/.test(ean)) {
+      this.isChecksumValid = true;
+      return;
+    }
+
+    let sum = 0;
+    for (let i = 0; i < 12; i++) {
+      const digit = parseInt(ean[i], 10);
+      sum += (i % 2 === 0) ? digit : digit * 3;
+    }
+
+    const calculatedCheck = (10 - (sum % 10)) % 10;
+    const actualCheck = parseInt(ean[12], 10);
+    this.isChecksumValid = calculatedCheck === actualCheck;
+
+  }
+    fetchParts(): void {
     this.partService.getParts().subscribe({
       next: (parts) => {
         this.availableParts = parts;
@@ -138,7 +160,6 @@ export class ProductCreateComponent implements OnInit {
     this.newPart = { name: '', description: '', picturePath: null, type: 'Wrapping', materialId: '' };
     this.selectedMaterial = null;
   }
-
   async addPart() {
     if (!this.newPart.name.trim() || !this.newPart.materialId) {
       console.error("Error: Name and Material are required.");
@@ -172,7 +193,13 @@ export class ProductCreateComponent implements OnInit {
         material: createdPart.material
       };
 
-      console.log("Part created successfully", newPartDetail);
+      this.availableParts.push(newPartDetail);
+      this.filteredParts = [...this.availableParts];
+
+      this.selectPart(newPartDetail);
+
+      this.closeModal();
+
     } catch (error) {
       console.error("Error creating part:", error);
     }

@@ -1,0 +1,30 @@
+<section class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-5xl">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Delete Containers</h2>
+
+    @if (containers && containers.length > 0) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        @for (container of containers; track container.id) {
+          <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex flex-col items-center">
+            @if (container.picturePath) {
+              <img [src]="container.picturePath" alt="{{ container.name }}" class="w-32 h-32 object-cover rounded mb-4">
+            } @else {
+              <div class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded mb-4 text-gray-500">No Image</div>
+            }
+
+            <h3 class="text-lg font-semibold text-center mb-2">{{ container.name }}</h3>
+
+            <button
+              (click)="deleteContainer(container.id)"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors duration-200"
+            >
+              Delete
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="text-center text-gray-500">No containers found.</p>
+    }
+  </div>
+</section>

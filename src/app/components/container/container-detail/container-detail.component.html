@@ -1,6 +1,6 @@
 <div class="container-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row items-start gap-8">
+    <div class="flex flex-col lg:flex-row items-start gap-8 py-10">
 
       <!-- Left Side: Container Title and Description -->
       <div class="lg:w-3/4">
@@ -17,11 +17,12 @@
       </div>
 
       <!-- Right Side: Image -->
-      <div class="lg:w-1/4 flex justify-end py-12">
+      <div class="lg:w-1/4 pl-24">
+        <div class="w-64 h-64 overflow-hidden rounded-lg shadow-lg bg-gray-200">
         @if (container.picturePath) {
           <img [src]="container.picturePath"
             alt="{{ container.name }}"
-            class="rounded-lg shadow-lg w-full max-w-xs object-cover"
+            class="w-full h-full object-cover rounded-lg"
           />
         } @else {
           <div class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500">
@@ -29,7 +30,7 @@
           </div>
         }
       </div>
-
+      </div>
     </div>
   </div>
 </div>

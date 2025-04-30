@@ -1,10 +1,10 @@
 <div class="article-detail bg-white py-24 sm:py-12">
   <div class="mx-auto max-w-5xl px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row items-start gap-8">
+    <div class="flex flex-col lg:flex-row items-start gap-8 py-10">
 
       <!-- Left Side: Article Title and Content -->
       <div class="lg:w-3/4">
-        <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl py-12">
+        <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
           @if (article) {
             {{ article.heading }}
           } @else {
@@ -14,8 +14,7 @@
 
         <!-- Author Info -->
         <div class="mt-8">
-          <p class="text-2xl font-semibold text-gray-900">Author:</p>
-          <p class="text-2xl text-black-600 mt-2">{{ article.authorsName }}</p>
+          <p class="text-2xl font-semibold text-gray-900">Author: {{ article.authorsName }}</p>
         </div>
         <div class="mt-8">
           <p class="mt-4 text-lg text-gray-600 whitespace-pre-line">
@@ -27,11 +26,12 @@
       </div>
 
       <!-- Right Side: Image -->
-      <div class="lg:w-1/4 flex justify-end py-24 ml-12">
-        @if (article.picturePath) {
+      <div class="lg:w-1/4 pl-24">
+        <div class="w-64 h-64 overflow-hidden rounded-lg shadow-lg bg-gray-200">
+          @if (article.picturePath) {
           <img [src]="article.picturePath"
             alt="{{ article.heading }}"
-            class="rounded-lg shadow-lg w-full max-w-xs object-cover"
+            class="w-full h-full object-cover rounded-lg"
           />
         } @else {
           <div class="no-image bg-gray-200 rounded-lg shadow-lg w-full max-w-xs flex items-center justify-center h-64 text-gray-500">
@@ -39,7 +39,7 @@
           </div>
         }
       </div>
-
+    </div>
     </div>
   </div>
 </div>
