@@ -4,6 +4,7 @@ import { ArticleService } from '../../../services/article.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 
 /**
  * Component for creating a new article.
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-articles-page',
   templateUrl: './add-articles-page.component.html',
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, QuillModule],
+  standalone: true
 })
 export class AddArticlesPageComponent implements OnInit {
   constructor(private location: Location, private articleService: ArticleService, private router: Router) {}
@@ -31,6 +33,14 @@ export class AddArticlesPageComponent implements OnInit {
     picturePath: null
   };
 
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'header': [1, 2, 3, false] }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['clean']
+    ]
+  };
   currentDate: string = new Date().toLocaleDateString();
   successMessage: string | null = null;
   errorMessage: string | null = null;
@@ -57,7 +67,7 @@ export class AddArticlesPageComponent implements OnInit {
 
     this.isUploading = true;
     const formData = new FormData();
-    formData.append('trashCanImage', this.selectedFile);
+    formData.append('articleImage', this.selectedFile);
 
     this.articleService.uploadArticleImage(this.selectedFile).subscribe({
       next: (uploadResponse) => {
@@ -102,7 +112,7 @@ export class AddArticlesPageComponent implements OnInit {
   private createArticle(): void {
     const articlePayload = { ...this.article };
 
-    console.log('Creating Container:', articlePayload);
+    console.log('Creating Article:', articlePayload);
 
     this.articleService.createArticle(articlePayload).subscribe({
       next: (response) => {

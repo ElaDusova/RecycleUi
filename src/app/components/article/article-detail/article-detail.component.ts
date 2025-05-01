@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ArticleDetail } from '../../../models/article/article-detail.interface';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ArticleService } from '../../../services/article.service';
 
-/**
- * Displays details of an article.
- */
 @Component({
   selector: 'app-article-detail',
   standalone: true,
@@ -12,9 +11,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.scss'
 })
-export class ArticleDetailComponent {
-    /**
-   * The article data to display.
-   */
+export class ArticleDetailComponent implements OnChanges {
   @Input() article!: ArticleDetail;
+  safeText!: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  ngOnChanges(): void {
+    if (this.article?.text) {
+      this.safeText = this.sanitizer.bypassSecurityTrustHtml(this.article.text);
+    }
+  }
+
 }

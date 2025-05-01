@@ -1,0 +1,30 @@
+<div class="bg-white py-16 px-6 sm:px-12 lg:px-24">
+  <h2 class="text-3xl font-semibold text-gray-900 mb-8 text-center">Delete Articles</h2>
+
+  @if (errorMessage) {
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (articles.length > 0) {
+    <div class="grid gap-6 md:grid-cols-2">
+      @for (article of articles; track article.id) {
+        <div class="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ article.heading }}</h3>
+            <p class="text-sm text-gray-600 mb-4">Author: {{ article.authorsName }}</p>
+            <p class="text-sm text-gray-700 line-clamp-3">{{ article.annotation }}</p>
+          </div>
+          <button
+            (click)="deleteArticle(article.id)"
+            class="mt-4 bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded">
+            Delete
+          </button>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="text-center text-gray-500">No articles available.</p>
+  }
+</div>

@@ -18,21 +18,31 @@
 
     <!-- Part Name -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Part Name</label>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Part Name</label>
       <input type="text" [(ngModel)]="newPart.name" name="partName" [ngModelOptions]="{standalone: true}"
         class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-mainGreen" required />
     </div>
 
     <!-- Part Description -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Description</label>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
       <textarea [(ngModel)]="newPart.description" name="partDescription" [ngModelOptions]="{standalone: true}"
         class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-mainGreen"></textarea>
     </div>
 
+    <!-- Part Type -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Part Type</label>
+      <select [(ngModel)]="newPart.type" name="partType" [ngModelOptions]="{ standalone: true }"
+        class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-mainGreen">
+        <option value="Wrapping">Wrapping</option>
+        <option value="Part">Part</option>
+      </select>
+    </div>
+
     <!-- Materials Selection -->
     <div>
-      <label for="materialSelection" class="block text-sm font-medium text-gray-700">Search Materials</label>
+      <label for="materialSelection" class="block text-sm font-medium text-gray-700 mb-2">Search Materials</label>
       <div class="relative">
         <input type="text" [(ngModel)]="materialSearchQuery" name="searchMaterial" [ngModelOptions]="{standalone: true}"
           (input)="filterMaterials()" placeholder="Search materials..."
@@ -40,7 +50,7 @@
 
         @if (filteredMaterials.length > 0) {
           <div class="mt-4">
-            <h3 class="block text-sm font-medium text-gray-700">Available Materials</h3>
+            <h3 class="block text-sm font-medium text-gray-700 mb-2">Available Materials</h3>
             <ul class="max-h-40 overflow-auto border border-gray-300 rounded-lg p-2 bg-white">
               @for (material of filteredMaterials; track material.id) {
                 <li class="p-2 cursor-pointer hover:bg-gray-200 border-b border-gray-300" (click)="selectMaterial(material)">
@@ -56,7 +66,7 @@
     <!-- Selected Material -->
     @if (selectedMaterial) {
       <div class="mt-4 mb-4">
-        <h3 class="block text-sm font-medium text-gray-700">Selected Material</h3>
+        <h3 class="block text-sm font-medium text-gray-700 mb-2">Selected Material</h3>
         <div class="flex items-center justify-between p-2 border border-gray-300 rounded-md mt-2">
           {{ selectedMaterial.name }}
           <button (click)="removeMaterial()" class="text-red-600">x</button>
@@ -65,7 +75,7 @@
     }
 
     <!-- Add Part Button -->
-    <button class="w-full px-4 py-2 mb-4 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen"
+    <button class="w-full px-4 py-2 mb-4 text-white rounded-lg bg-mainGreen hover:bg-hoverGreen mt-4"
       (click)="addPart()">Add Part</button>
 
     <!-- Cancel Button -->

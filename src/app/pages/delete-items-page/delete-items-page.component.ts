@@ -23,6 +23,8 @@ export class DeleteItemsPageComponent {
       this.router.navigate(['/delete-part']);
     } else if (page === 'product') {
       this.router.navigate(['/delete-product']);
+    } else if (page === 'article') {
+      this.router.navigate(['/delete-article']);
     }
   }
 }

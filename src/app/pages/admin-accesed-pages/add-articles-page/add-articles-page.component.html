@@ -28,10 +28,15 @@
       </div>
 
       <!-- Article Text -->
-      <div>
+      <div class="mb-6">
         <label class="block mb-2 text-sm font-medium text-gray-700">Article Text</label>
-        <textarea [(ngModel)]="article.text" name="text"
-          class="w-full h-40 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5" required></textarea>
+        <quill-editor
+          [(ngModel)]="article.text"
+          name="text"
+          [style]="{height: '250px'}"
+          [modules]="quillModules"
+          class="w-full h-40 border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+        ></quill-editor>
       </div>
 
       <!-- Image Upload Section -->

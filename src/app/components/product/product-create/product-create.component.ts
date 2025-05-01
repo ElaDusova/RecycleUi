@@ -105,6 +105,12 @@ export class ProductCreateComponent implements OnInit {
     this.isChecksumValid = calculatedCheck === actualCheck;
 
   }
+  onEANInputChange(rawValue: string): void {
+    const cleaned = rawValue.replace(/\s+/g, ''); // remove all spaces
+    this.product.ean = cleaned;
+    this.checkChecksum(); // run checksum on cleaned value
+  }
+
     fetchParts(): void {
     this.partService.getParts().subscribe({
       next: (parts) => {

@@ -33,6 +33,7 @@ import { DeleteItemsPageComponent } from './pages/delete-items-page/delete-items
 import { MaterialDeleteComponent } from './components/material/material-delete/material-delete.component';
 import { PartDeleteComponent } from './components/part/part-delete/part-delete.component';
 import { ProductDeleteComponent } from './components/product/product-delete/product-delete.component';
+import { ArticleDeleteComponent } from './components/article/article-delete/article-delete.component';
 
 /**
  * Main application routes.
@@ -84,6 +85,8 @@ export const routes: Routes = [
       { path: 'delete-product', component: ProductDeleteComponent},
       { path: 'delete-container', component: ContainerDeleteComponent},
       { path: 'delete-material', component: MaterialDeleteComponent},
+      { path: 'delete-article', component: ArticleDeleteComponent},
+
 
             ],
  },
