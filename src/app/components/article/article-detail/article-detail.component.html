@@ -15,12 +15,18 @@
         <p class="mt-8 text-2xl font-semibold text-gray-900 mb-4">
           Author: {{ article.authorsName }}
         </p>
-
-        <div class="prose max-w-4xl break-words whitespace-normal overflow-hidden" [innerHTML]="article.text"></div>
-      </div>
+        <p class="text-lg text-gray-700 mb-4">
+          @if (article) {
+            {{ article.createdAt | date: 'longDate' }}
+          } @else {
+            <span>Article Not Found</span>
+          }
+        </p>
+          <div class="prose max-w-4xl hyphens-auto break-words whitespace-normal" [innerHTML]="safeText"></div>
+     </div>
 
       <!-- Right: Image -->
-      <div class="w-full lg:w-1/4 flex justify-center lg:justify-end">
+      <div class="lg:w-1/4 pl-24">
         <div class="w-64 h-64 overflow-hidden rounded-lg shadow-lg bg-gray-200">
           @if (article.picturePath) {
             <img [src]="article.picturePath" alt="{{ article.heading }}" class="w-full h-full object-cover" />

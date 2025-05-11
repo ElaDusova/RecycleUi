@@ -19,14 +19,14 @@
     </div>
     <button>
       <a routerLink="/product/create"
-        class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition my-4">
+        class="block w-full bg-mainGreen text-white font-bold py-4 px-6 rounded-lg hover:bg-hoverGreen transition my-2">
         Add Product
       </a>
     </button>
   </div>
 
   <div
-    class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+    class="mx-auto mt-10 grid-cols-1 gap-x-8 gap-y-12 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
   >
     <!-- Check if there are products -->
     @if(filteredProducts.length > 0) {
@@ -44,7 +44,7 @@
               <img
                 [src]="product.picturePath"
                 alt="{{ product.name }}"
-                class="w-full h-48 object-cover rounded-t-lg"
+                class="w-full h-64 object-cover rounded-t-lg"
               />
             } @else {
               <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-t-lg">
