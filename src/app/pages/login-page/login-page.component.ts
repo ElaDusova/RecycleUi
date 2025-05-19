@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormControl,
@@ -26,6 +27,7 @@ export class LoginPageComponent {
   protected readonly fb = inject(FormBuilder);
   protected readonly authService = inject(AuthService);
   protected readonly router = inject(Router);
+  protected readonly route = inject(ActivatedRoute);
 
   // Form group with validations
   protected formular: FormGroup = this.fb.group({
@@ -37,6 +39,13 @@ export class LoginPageComponent {
   protected isLoading = false; // Loading state
   protected submitted = false; // Tracks if the form was submitted
 
+  constructor() {
+  this.route.queryParams.subscribe(params => {
+    if (params['error'] === 'loginRequired') {
+      this.errorMessage = 'You must be logged in before creating a product.';
+    }
+  });
+}
     /**
    * Handles form submission and user authentication.
    * Displays validation errors and handles API responses.

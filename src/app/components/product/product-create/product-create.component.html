@@ -6,51 +6,63 @@
 
     <form class="space-y-6" (submit)="onSubmit()">
       <!-- Name & EAN -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block mb-2 text-sm font-medium text-gray-700"
-            >Product Name</label
-          >
-          <input
-            type="text"
-            [(ngModel)]="product.name"
-            name="productName"
-            [ngModelOptions]="{ standalone: true }"
-            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
-            required
-          />
-        </div>
-        <div>
-          <label class="block mb-2 text-sm font-medium text-gray-700"
-            >EAN Code</label
-          >
-          <input
-          type="text"
-          [(ngModel)]="product.ean"
-          name="productEan"
-          [ngModelOptions]="{ standalone: true }"
-          class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
-          required
-          #eanInput="ngModel"
-          (ngModelChange)="onEANInputChange($event)"
-        />
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">
+              Product Name
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="product.name"
+              name="productName"
+              [ngModelOptions]="{ standalone: true }"
+              class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+              required
+            />
+          </div>
 
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">
+              EAN Code
+            </label>
+            <input              type="text"
+              [(ngModel)]="product.ean"
+              name="productEan"
+              pattern="^[0-9]*$"
+              [ngModelOptions]="{ standalone: true }"
+              class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+              required
+              #eanInput="ngModel"
+              (ngModelChange)="onEANInputChange($event)"
+            />
 
-          @if (eanInput.invalid && eanInput.touched) {
-          <div class="text-red-600 text-sm mt-1">
-            @if (eanInput.errors?.['pattern']) {
-            <span>EAN must contain only numbers.</span>
-            } @if (eanInput.errors?.['required']) {
-            <span>EAN is required.</span>
+            <!-- Hlášky k required / pattern -->
+            @if (eanInput.invalid && eanInput.touched) {
+              <div class="text-red-600 text-sm mt-1">
+                @if (eanInput.errors?.['pattern']) {
+                  <span>EAN must contain only numbers.</span>
+                }
+                @if (eanInput.errors?.['required']) {
+                  <span>EAN is required.</span>
+                }
+              </div>
+            }
+
+            <!-- FE chyba z onSubmit (např. nevalidní délka nebo checksum) -->
+            @if (eanErrorMessage) {
+              <div class="text-red-600 text-sm mt-1">
+                {{ eanErrorMessage }}
+              </div>
+            }
+
+            <!-- Checksum chyba když má 13 číslic a validní formát -->
+            @if (!isChecksumValid && product.ean.length === 13 && eanInput.valid) {
+              <div class="text-red-600 text-sm mt-1">
+                <span>EAN checksum is invalid.</span>
+              </div>
             }
           </div>
-          } @if (!isChecksumValid && product.ean.length === 13) {
-          <div class="text-red-600 text-sm mt-1">
-            <span>EAN checksum is invalid.</span>
-          </div>
-          }
         </div>
-      </div>
 
       <!-- Description -->
       <div>

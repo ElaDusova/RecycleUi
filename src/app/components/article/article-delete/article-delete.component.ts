@@ -28,12 +28,11 @@ export class ArticleDeleteComponent implements OnInit {
   }
 
   deleteArticle(id: string): void {
+    if (confirm('Are you sure you want to delete this article?')) {
     this.articleService.deleteArticle(id).subscribe({
-      next: () => this.articles = this.articles.filter(a => a.id !== id),
-      error: (err) => {
-        console.error('Failed to delete article:', err);
-        this.errorMessage = 'Failed to delete article.';
-      }
-    });
+        next: () => this.fetchArticles(),
+        error: (err) => this.errorMessage = 'Failed to delete article.'
+      });
+    }
   }
 }

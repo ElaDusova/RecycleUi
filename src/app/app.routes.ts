@@ -34,6 +34,7 @@ import { MaterialDeleteComponent } from './components/material/material-delete/m
 import { PartDeleteComponent } from './components/part/part-delete/part-delete.component';
 import { ProductDeleteComponent } from './components/product/product-delete/product-delete.component';
 import { ArticleDeleteComponent } from './components/article/article-delete/article-delete.component';
+import { AuthGuard } from './guards/auth.guard';
 
 /**
  * Main application routes.
@@ -70,7 +71,7 @@ export const routes: Routes = [
       // Create Items Pges
       { path: 'utilitiesCreate', component: UtilitiesAddPageComponent, title: 'Create Items' },
       { path: 'articleadd', component: AddArticlesPageComponent, title: 'Add Articles' },
-      { path: 'product/create', component: ProductAddPageComponent, title: 'Product Add',resolve: { product: ProductCreateResolver }, },
+      { path: 'product/create', component: ProductAddPageComponent, title: 'Product Add',canActivate: [AuthGuard],resolve: { product: ProductCreateResolver }, },
       { path: 'create-container', component: ContainerCreateComponent },
       { path: 'create-material', component: MaterialCreateComponent },
       { path: 'create-part', component: PartCreateComponent },

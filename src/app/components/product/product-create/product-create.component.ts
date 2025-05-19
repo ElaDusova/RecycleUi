@@ -7,7 +7,7 @@ import { MaterialService } from '../../../services/material.service';
 import { MaterialSimple } from '../../../models/material/material-simple';
 import { PartCreate } from '../../../models/part/part-create';
 import { PartDetail } from '../../../models/part/part-detail';
-import { FormsModule, Validators, FormControl } from '@angular/forms';
+import { FormsModule, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { validEAN13 } from '../../../validators/ean-validator';
 
@@ -18,7 +18,7 @@ import { validEAN13 } from '../../../validators/ean-validator';
 @Component({
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   standalone: true
 })
 export class ProductCreateComponent implements OnInit {
@@ -47,6 +47,8 @@ export class ProductCreateComponent implements OnInit {
 
   isChecksumValid = true;
   eanControl = new FormControl('', [validEAN13]);
+  eanErrorMessage: string | null = null;
+
 
   protected availableMaterials: MaterialSimple[] = [];
   protected filteredMaterials: MaterialSimple[] = [];
@@ -105,11 +107,12 @@ export class ProductCreateComponent implements OnInit {
     this.isChecksumValid = calculatedCheck === actualCheck;
 
   }
-  onEANInputChange(rawValue: string): void {
-    const cleaned = rawValue.replace(/\s+/g, ''); // remove all spaces
-    this.product.ean = cleaned;
-    this.checkChecksum(); // run checksum on cleaned value
-  }
+onEANInputChange(value: string): void {
+  const cleaned = value.replace(/\s+/g, '');
+  this.product.ean = cleaned;
+  this.checkChecksum();
+}
+
 
     fetchParts(): void {
     this.partService.getParts().subscribe({
@@ -211,15 +214,23 @@ export class ProductCreateComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
-    this.product.isVerified = false;
+onSubmit(): void {
+  this.eanErrorMessage = null;
 
-    if (this.selectedFile) {
-      this.uploadImage();
-    } else {
-      this.createProduct();
-    }
+  // FE kontrola EAN
+  if (!this.product.ean || this.product.ean.length !== 13 || !this.isChecksumValid) {
+    this.eanErrorMessage = 'EAN code is invalid.';
+    return;
   }
+
+  this.product.isVerified = false;
+
+  if (this.selectedFile) {
+    this.uploadImage();
+  } else {
+    this.createProduct();
+  }
+}
 
   uploadImage(): void {
     if (!this.selectedFile) {
